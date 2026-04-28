@@ -55,9 +55,17 @@ class NostrRelayImpl implements INostrRelay {
 
   @override
   Future<String> publishEvent(NostrEvent event) async {
+    final eventJson = _eventToJson(event);
+    print('[RELAY DEBUG] Publishing event:');
+    print('[RELAY DEBUG] - ID: ${event.id}');
+    print('[RELAY DEBUG] - Pubkey: ${event.pubkey}');
+    print('[RELAY DEBUG] - Sig length: ${event.sig.length}');
+    print('[RELAY DEBUG] - Sig: ${event.sig}');
+    print('[RELAY DEBUG] - Content: ${event.content}');
+
     final eventMessage = [
       'EVENT',
-      _eventToJson(event),
+      eventJson,
     ];
 
     _channel.sink.add(jsonEncode(eventMessage));
@@ -101,40 +109,50 @@ class NostrRelayImpl implements INostrRelay {
 
   void _handleRelayMessage(dynamic message) {
     try {
+      print('[RELAY DEBUG] Messaggio ricevuto: $message');
       final decoded = jsonDecode(message as String) as List<dynamic>;
 
-      if (decoded.isEmpty) return;
+      if (decoded.isEmpty) {
+        print('[RELAY DEBUG] Messaggio vuoto');
+        return;
+      }
 
       final messageType = decoded[0] as String;
+      print('[RELAY DEBUG] Tipo: $messageType, Lunghezza: ${decoded.length}');
 
       switch (messageType) {
         case 'EVENT':
+          print('[RELAY DEBUG] EVENT ricevuto');
           if (decoded.length >= 3) {
             final subscriptionId = decoded[1] as String;
             final eventData = decoded[2] as Map<String, dynamic>;
+            print('[RELAY DEBUG] SubID: $subscriptionId, Event: $eventData');
             final event = _jsonToEvent(eventData);
 
+            print('[RELAY DEBUG] Callback per $subscriptionId: ${_subscriptions.containsKey(subscriptionId)}');
             _subscriptions[subscriptionId]?.call(event);
+            print('[RELAY DEBUG] Callback eseguito');
           }
           break;
 
         case 'EOSE':
-          // End of stored events
+          print('[RELAY DEBUG] EOSE (End of stored events)');
           break;
 
         case 'NOTICE':
-          // Relay notice message
+          print('[RELAY DEBUG] NOTICE: ${decoded.length > 1 ? decoded[1] : 'n/a'}');
           break;
 
         case 'OK':
-          // Event accepted/rejected
+          print('[RELAY DEBUG] OK: ${decoded.sublist(1)}');
           break;
 
         default:
+          print('[RELAY DEBUG] Tipo sconosciuto: $messageType');
           break;
       }
     } catch (e) {
-      // Errore nel parsing del messaggio
+      print('[RELAY DEBUG] ERRORE parsing: $e');
     }
   }
 

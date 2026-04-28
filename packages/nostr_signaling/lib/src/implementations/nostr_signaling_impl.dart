@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:bip340/bip340.dart' as bip340;
 import 'package:crypto/crypto.dart';
+import 'package:hex/hex.dart';
 
 import '../interfaces/compression.dart';
 import '../interfaces/nostr_signaling.dart';
@@ -63,13 +66,14 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   @override
+  @override
   Future<String> subscribe(NostrId id, EventCallback onEvent) async {
     _subscriptions[id] = onEvent;
 
-    final filter = {
-      'authors': [pubkey],
+    // Subscribe to all events from the specified author with our custom kinds
+    final filter = <String, dynamic>{
+      'authors': [id],
       'kinds': [1000, 1001],
-      '#p': [id],
     };
 
     _currentSubscriptionId = await relay.subscribe(filter, (event) {
@@ -82,15 +86,14 @@ class NostrSignalingImpl implements INostrSignaling {
 
   @override
   Future<List<int>> retriveLast(NostrId id) async {
-    final filter = {
-      'authors': [pubkey],
+    final filter = <String, dynamic>{
+      'authors': [id],
       'kinds': [1000, 1001],
-      '#p': [id],
       'limit': 1,
     };
 
-    late List<int> lastData;
-    late Completer<void> completer = Completer();
+    List<int> lastData = [];
+    final completer = Completer<void>();
 
     final subId = await relay.subscribe(filter, (event) {
       lastData = _decodeContent(event.content);
@@ -99,12 +102,13 @@ class NostrSignalingImpl implements INostrSignaling {
       }
     });
 
-    await completer.future.timeout(
-      const Duration(seconds: 5),
-      onTimeout: () {
-        relay.unsubscribe(subId);
-      },
-    );
+    try {
+      await completer.future.timeout(const Duration(seconds: 5));
+    } catch (e) {
+      // Timeout o errore
+    } finally {
+      await relay.unsubscribe(subId);
+    }
 
     return lastData;
   }
@@ -124,7 +128,11 @@ class NostrSignalingImpl implements INostrSignaling {
     required int kind,
   }) {
     final now = (DateTime.now().millisecondsSinceEpoch / 1000).floor();
+
+    // Calculate event ID from canonical Nostr representation
     final eventId = _generateEventId(content, kind, now);
+
+    // Sign the event ID using BIP340 Schnorr signature
     final signature = _signEvent(eventId);
 
     return NostrEvent(
@@ -139,33 +147,29 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   String _generateEventId(String content, int kind, int createdAt) {
-    // Nostr event ID: SHA256([0, pubkey, created_at, kind, tags, content])
-    final eventData = [
-      0,
-      pubkey,
-      createdAt,
-      kind,
-      [],
-      content,
-    ];
-
+    // Nostr NIP-01: Event ID is SHA256 of [0, pubkey, created_at, kind, tags, content]
+    final eventData = [0, pubkey, createdAt, kind, [], content];
     final jsonString = jsonEncode(eventData);
+    print('[DEBUG] Computing event ID from: $jsonString');
+    
     final bytes = utf8.encode(jsonString);
     final digest = sha256.convert(bytes);
-
-    return digest.toString();
-  }
-
-  String _signEvent(String eventId) {
-    // TODO: Implementare Schnorr signature con private key
-    // Per ora usa una versione "firmata" con formato corretto
-    // Formato Nostr signature: hex string di 128 caratteri (64 bytes)
+    final eventId = digest.toString();
+    print('[DEBUG] Event ID: $eventId');
     
-    // Questa è una implementazione di placeholder che genera
-    // una "firma" valida nel formato ma non cryptograficamente corretta
-    final hash = sha256.convert(utf8.encode('$privkey$eventId'));
-    return hash.toString();
+    return eventId;
   }
+
+  String _signEvent(String eventIdHex) {
+    // Sign the event ID (which is a 32-byte SHA256 hash) using BIP340 Schnorr
+    // bip340.sign expects: privateKey (hex string), message (hex string), auxData (hex string)
+    final signature = bip340.sign(privkey, eventIdHex, '');
+    return signature;
+  }
+
+  
+
+  
 
   String _encodeContent(List<int> data) {
     // Codifica i dati come base64 per trasporto sicuro

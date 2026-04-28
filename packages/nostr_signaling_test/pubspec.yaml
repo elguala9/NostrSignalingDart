@@ -1,0 +1,16 @@
+name: nostr_signaling_test
+version: 0.1.0
+description: Test package for Nostr Signaling library
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  mockito: ^5.4.0
+  nostr_signaling:
+    path: ../nostr_signaling
+  test: ^1.24.0
+
+dev_dependencies:
+  lints: ^2.1.0
