@@ -1,0 +1,6 @@
+name: nostr_signaling_monorepo
+version: 0.1.0
+description: Monorepo for Nostr signaling system with data compression
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'

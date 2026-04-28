@@ -1,0 +1,16 @@
+include: package:lints/recommended.yaml
+
+linter:
+  rules:
+    - camel_case_types
+    - camel_case_extensions
+    - library_names
+    - library_prefixes
+    - type_init_formals
+    - empty_constructor_bodies
+    - unnecessary_getters_setters
+
+analyzer:
+  exclude:
+    - '**.freezed.dart'
+    - '**.config.dart'
