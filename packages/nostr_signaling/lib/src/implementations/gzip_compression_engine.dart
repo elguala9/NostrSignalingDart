@@ -25,39 +25,51 @@ class GzipCompressionEngine implements ICompressionEngine {
     );
   }
 
-  /// Controlla se i dati sono già compressi
-  /// Lancia ArgumentError se riconosce un formato compresso
+  /// Checks if data is already compressed
+  /// Throws ArgumentError if a known compressed format is detected
   void _checkIfAlreadyCompressed(List<int> data) {
     if (data.isEmpty) return;
 
-    // Controlla magic number (primi 2-3 byte)
+    // Check magic number (first 2-3 bytes)
     final first = data[0];
     final second = data.length > 1 ? data[1] : 0;
     final third = data.length > 2 ? data[2] : 0;
 
+    const suggestion = 'Consider using compress: false flag to skip compression.';
+
     // GZIP: 0x1f 0x8b
     if (first == 0x1f && second == 0x8b) {
-      throw ArgumentError('I dati sono già compressi con GZIP');
+      throw ArgumentError(
+        'Data is already compressed with GZIP. $suggestion',
+      );
     }
 
     // ZIP: 0x50 0x4b ('PK')
     if (first == 0x50 && second == 0x4b) {
-      throw ArgumentError('I dati sono già compressi con ZIP');
+      throw ArgumentError(
+        'Data is already compressed with ZIP. $suggestion',
+      );
     }
 
     // BZIP2: 0x42 0x5a ('BZ')
     if (first == 0x42 && second == 0x5a) {
-      throw ArgumentError('I dati sono già compressi con BZIP2');
+      throw ArgumentError(
+        'Data is already compressed with BZIP2. $suggestion',
+      );
     }
 
     // 7z: 0x37 0x7a 0xbc
     if (first == 0x37 && second == 0x7a && third == 0xbc) {
-      throw ArgumentError('I dati sono già compressi con 7z');
+      throw ArgumentError(
+        'Data is already compressed with 7z. $suggestion',
+      );
     }
 
     // RAR: 0x52 0x61 0x72 ('Rar')
     if (first == 0x52 && second == 0x61 && third == 0x72) {
-      throw ArgumentError('I dati sono già compressi con RAR');
+      throw ArgumentError(
+        'Data is already compressed with RAR. $suggestion',
+      );
     }
   }
 
