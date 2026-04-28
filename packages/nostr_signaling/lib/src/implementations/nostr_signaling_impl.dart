@@ -5,9 +5,9 @@ import 'package:crypto/crypto.dart';
 import 'package:hex/hex.dart';
 import 'package:nostr/nostr.dart';
 
-import '../interfaces/compression.dart';
-import '../interfaces/nostr_signaling.dart';
-import '../interfaces/relay.dart';
+import '../interfaces/i_compression.dart';
+import '../interfaces/i_nostr_signaling.dart';
+import '../interfaces/i_relay.dart';
 import '../types.dart';
 
 class NostrSignalingImpl implements INostrSignaling {

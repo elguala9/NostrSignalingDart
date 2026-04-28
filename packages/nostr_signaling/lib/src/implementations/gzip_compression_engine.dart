@@ -1,6 +1,6 @@
 import 'package:archive/archive.dart';
 
-import '../interfaces/compression.dart';
+import '../interfaces/i_compression.dart';
 import '../types.dart';
 
 class GzipCompressionEngine implements ICompressionEngine {

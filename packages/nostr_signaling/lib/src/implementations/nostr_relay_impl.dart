@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import '../interfaces/relay.dart';
+import '../interfaces/i_relay.dart';
 import '../types.dart';
 
 class NostrRelayImpl implements INostrRelay {

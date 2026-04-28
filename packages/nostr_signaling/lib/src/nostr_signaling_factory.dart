@@ -1,8 +1,8 @@
 import 'implementations/gzip_compression_engine.dart';
 import 'implementations/nostr_relay_impl.dart';
 import 'implementations/nostr_signaling_impl.dart';
-import 'interfaces/compression.dart';
-import 'interfaces/nostr_signaling.dart';
+import 'interfaces/i_compression.dart';
+import 'interfaces/i_nostr_signaling.dart';
 
 class NostrSignalingFactory {
   static const String _defaultRelayUrl = 'wss://relay.damus.io';
