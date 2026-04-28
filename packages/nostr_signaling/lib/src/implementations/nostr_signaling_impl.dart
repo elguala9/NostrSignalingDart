@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:bip340/bip340.dart' as bip340;
 import 'package:crypto/crypto.dart';
 import 'package:hex/hex.dart';
+import 'package:nostr/nostr.dart';
 
 import '../interfaces/compression.dart';
 import '../interfaces/nostr_signaling.dart';
@@ -19,6 +19,7 @@ class NostrSignalingImpl implements INostrSignaling {
 
   late String _currentSubscriptionId;
   final Map<NostrId, EventCallback> _subscriptions = {};
+  final Map<NostrId, String> _subscriptionIds = {};
 
   NostrSignalingImpl({
     required this.pubkey,
@@ -66,22 +67,30 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   @override
-  @override
-  Future<String> subscribe(NostrId id, EventCallback onEvent) async {
+  Future<String> subscribe(NostrId id, EventCallback onEvent, {int? since}) async {
+    // Unsubscribe from previous subscription to this ID if it exists
+    if (_subscriptionIds.containsKey(id)) {
+      await relay.unsubscribe(_subscriptionIds[id]!);
+    }
+
     _subscriptions[id] = onEvent;
 
     // Subscribe to all events from the specified author with our custom kinds
     final filter = <String, dynamic>{
       'authors': [id],
       'kinds': [1000, 1001],
+      if (since != null) 'since': since,
     };
 
-    _currentSubscriptionId = await relay.subscribe(filter, (event) {
+    final subId = await relay.subscribe(filter, (event) {
       final data = _decodeContent(event.content);
       onEvent(id, data);
     });
 
-    return _currentSubscriptionId;
+    _subscriptionIds[id] = subId;
+    _currentSubscriptionId = subId;
+
+    return subId;
   }
 
   @override
@@ -117,9 +126,8 @@ class NostrSignalingImpl implements INostrSignaling {
   Future<void> unsubscribe(NostrId id) async {
     if (_subscriptions.containsKey(id)) {
       _subscriptions.remove(id);
-      if (_currentSubscriptionId.isNotEmpty) {
-        await relay.unsubscribe(_currentSubscriptionId);
-      }
+      final subId = _subscriptionIds.remove(id);
+      if (subId != null) await relay.unsubscribe(subId);
     }
   }
 
@@ -127,49 +135,26 @@ class NostrSignalingImpl implements INostrSignaling {
     required String content,
     required int kind,
   }) {
-    final now = (DateTime.now().millisecondsSinceEpoch / 1000).floor();
-
-    // Calculate event ID from canonical Nostr representation
-    final eventId = _generateEventId(content, kind, now);
-
-    // Sign the event ID using BIP340 Schnorr signature
-    final signature = _signEvent(eventId);
-
-    return NostrEvent(
-      id: eventId,
-      pubkey: pubkey,
-      createdAt: now,
+    // Use nostr library Event.from() which automatically:
+    // 1. Generates event ID from canonical JSON
+    // 2. Signs with BIP340 Schnorr signature
+    final event = Event.from(
       kind: kind,
       tags: [],
       content: content,
-      sig: signature,
+      privkey: privkey,
+    );
+
+    return NostrEvent(
+      id: event.id,
+      pubkey: event.pubkey,
+      createdAt: event.createdAt,
+      kind: event.kind,
+      tags: event.tags,
+      content: event.content,
+      sig: event.sig,
     );
   }
-
-  String _generateEventId(String content, int kind, int createdAt) {
-    // Nostr NIP-01: Event ID is SHA256 of [0, pubkey, created_at, kind, tags, content]
-    final eventData = [0, pubkey, createdAt, kind, [], content];
-    final jsonString = jsonEncode(eventData);
-    print('[DEBUG] Computing event ID from: $jsonString');
-    
-    final bytes = utf8.encode(jsonString);
-    final digest = sha256.convert(bytes);
-    final eventId = digest.toString();
-    print('[DEBUG] Event ID: $eventId');
-    
-    return eventId;
-  }
-
-  String _signEvent(String eventIdHex) {
-    // Sign the event ID (which is a 32-byte SHA256 hash) using BIP340 Schnorr
-    // bip340.sign expects: privateKey (hex string), message (hex string), auxData (hex string)
-    final signature = bip340.sign(privkey, eventIdHex, '');
-    return signature;
-  }
-
-  
-
-  
 
   String _encodeContent(List<int> data) {
     // Codifica i dati come base64 per trasporto sicuro

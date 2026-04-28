@@ -50,16 +50,20 @@ void main() {
       final connectTime = DateTime.now().difference(connectStart);
       print('✓ Connesso al relay in ${connectTime.inMilliseconds}ms');
 
-      // Peer2 si sottoscrive ai dati di Peer1
+      // Peer2 si sottoscrive ai dati di Peer1 con since=ora (solo eventi nuovi)
       print('Peer2 si sottoscrive ai dati di Peer1...');
+      final since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       final subscribeStart = DateTime.now();
       await peer2.subscribe(
         NostrTestKeys.testPublicKey1,
         (id, data) {
           print('✓ Peer2 ha ricevuto dati: $data');
-          receivedData = data;
-          dataReceivedCompleter.complete();
+          if (!dataReceivedCompleter.isCompleted && _listEquals(data, testData)) {
+            receivedData = data;
+            dataReceivedCompleter.complete();
+          }
         },
+        since: since,
       ).timeout(Duration(seconds: 15));
       final subscribeTime = DateTime.now().difference(subscribeStart);
       print('✓ Sottoscritto in ${subscribeTime.inMilliseconds}ms');
@@ -105,6 +109,9 @@ void main() {
       print('Setup delle sottoscrizioni...');
       final setupStart = DateTime.now();
 
+      // Record since before connecting so we only get new events
+      final since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
       await peer1.connect().timeout(Duration(seconds: 15));
       await peer2.connect().timeout(Duration(seconds: 15));
 
@@ -112,18 +119,24 @@ void main() {
         NostrTestKeys.testPublicKey2,
         (id, data) {
           print('✓ Peer1 riceve da Peer2: $data');
-          peer1ReceivedFromPeer2 = data;
-          peer1Completer.complete();
+          if (!peer1Completer.isCompleted && _listEquals(data, data2)) {
+            peer1ReceivedFromPeer2 = data;
+            peer1Completer.complete();
+          }
         },
+        since: since,
       ).timeout(Duration(seconds: 15));
 
       await peer2.subscribe(
         NostrTestKeys.testPublicKey1,
         (id, data) {
           print('✓ Peer2 riceve da Peer1: $data');
-          peer2ReceivedFromPeer1 = data;
-          peer2Completer.complete();
+          if (!peer2Completer.isCompleted && _listEquals(data, data1)) {
+            peer2ReceivedFromPeer1 = data;
+            peer2Completer.complete();
+          }
         },
+        since: since,
       ).timeout(Duration(seconds: 15));
 
       final setupTime = DateTime.now().difference(setupStart);
@@ -142,8 +155,8 @@ void main() {
       // Attendi ricezione
       print('In attesa della ricezione...');
       await Future.wait([
-        peer1Completer.future.timeout(Duration(seconds: 10)),
-        peer2Completer.future.timeout(Duration(seconds: 10)),
+        peer1Completer.future.timeout(Duration(seconds: 20)),
+        peer2Completer.future.timeout(Duration(seconds: 20)),
       ]);
 
       final exchangeTime = DateTime.now().difference(exchangeStart);
@@ -166,31 +179,39 @@ void main() {
     test('Multipli messaggi successivi mantengono ordine e integrità', () async {
       print('\n=== Test: Multiple Messages Integrity ===');
 
+      // Record since before connecting so we only get new events
+      final since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
       await peer1.connect().timeout(Duration(seconds: 15));
 
       final receivedMessages = <List<int>>[];
       final completer = Completer<void>();
       int messagesExpected = 3;
 
-      await peer2.subscribe(
-        NostrTestKeys.testPublicKey1,
-        (id, data) {
-          receivedMessages.add(data);
-          print('✓ Messaggio ${receivedMessages.length} ricevuto: $data');
-          if (receivedMessages.length == messagesExpected) {
-            completer.complete();
-          }
-        },
-      ).timeout(Duration(seconds: 15));
-
-      print('Invio di $messagesExpected messaggi...');
-      final startTime = DateTime.now();
-
       final messages = [
         [1, 1, 1],
         [2, 2, 2],
         [3, 3, 3],
       ];
+
+      await peer2.subscribe(
+        NostrTestKeys.testPublicKey1,
+        (id, data) {
+          // Only count messages that belong to this test's expected set
+          if (messages.any((m) => _listEquals(m, data)) &&
+              !receivedMessages.any((m) => _listEquals(m, data))) {
+            receivedMessages.add(data);
+            print('✓ Messaggio ${receivedMessages.length} ricevuto: $data');
+            if (receivedMessages.length == messagesExpected) {
+              if (!completer.isCompleted) completer.complete();
+            }
+          }
+        },
+        since: since,
+      ).timeout(Duration(seconds: 15));
+
+      print('Invio di $messagesExpected messaggi...');
+      final startTime = DateTime.now();
 
       for (int i = 0; i < messages.length; i++) {
         print('Invio messaggio ${i + 1}: ${messages[i]}');
@@ -212,3 +233,7 @@ void main() {
     });
   });
 }
+
+bool _listEquals(List<int> a, List<int> b) =>
+    a.length == b.length &&
+    List.generate(a.length, (i) => a[i] == b[i]).every((e) => e);

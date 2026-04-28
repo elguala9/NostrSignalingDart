@@ -1,0 +1,1658 @@
+00:00 +0: loading test\bip340_test.dart
+00:00 +0: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+
+🔐 BIP340 Signature Test
+Private Key: 0000000000000000000000000000000000000000000000000000000000000001
+Message: 0000000000000000000000000000000000000000000000000000000000000000
+00:00 +1: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +2: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +3: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +4: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +5: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +6: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +7: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +8: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +9: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+00:00 +9: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+
+=== Debug Data Flow ===
+1️⃣ Connessione al relay...
+✓ Relay connesso
+
+2️⃣ Peer2 si sottoscrive ai dati di Peer1...
+   Peer1 pubkey: 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+   Peer2 pubkey: c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5
+📥 Relay: subscribe ricevuto
+   SubID: sub_1
+   Filter: {authors: [79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798], kinds: [1000, 1001]}
+   Cercando eventi degli autori: [79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798]
+✓ Peer2 iscritto
+
+3️⃣ Peer1 pubblica dati: [1, 2, 3, 4, 5]
+00:00 +9: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with known private key
+✓ Signature generated: d2bcee6a047e765467f3ed7c3e8f55edcfa4a5fd37a9bcd064c1b5041599b187c3f9f2be0665d539e38eb75989b4bc3f6dd2d9d18c5c123613615d1731e0523e
+  Length: 128 chars (64 bytes)
+00:00 +10: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +10: test\bip340_test.dart: BIP340 Signature Test Test bip340.sign() with a simple message
+
+🔐 BIP340 Signature Test with Project Keys
+Private Key: 009d7edc1c7b89f2e3d4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
+Message: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+✓ Signature generated: 135a49cb79b9fa8a86b0fac13fd90a6168cc8794977a5d99bc93c41edc20cc72fc9550c9e840eac207bcb10c2bad7f41494ad6d61db9509c40b0347f59303cef
+  Length: 128 chars (64 bytes)
+00:00 +11: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +12: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +13: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +14: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +15: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +16: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +17: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +18: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +19: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +20: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +21: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +22: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +23: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +24: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+00:00 +24: test\key_verification_test.dart: Key Verification Test Verify public key matches private key
+
+🔐 Key Verification Test
+Private Key: 0000000000000000000000000000000000000000000000000000000000000001
+Public Key:  79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+00:00 +24: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+
+╔═══════════════════════════════════════════════════════════╗
+║        TEST RELAY 1: nos.lol                             ║
+╚═══════════════════════════════════════════════════════════╝
+
+📤 Pubblicazione su nos.lol...
+00:00 +24: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+📤 Relay: publishEvent ricevuto
+   Event ID: 0b13f48ef75cc254b3c86ebd3b72179c3de3b1967c20eee8b7f35d6698353104
+   Pubkey: 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+   Content: AQIDBAU=
+   Subscribers: 1
+   → Notificando sub_1 con 1 callbacks
+   ✓ Callback eseguito per sub_1
+00:00 +24: test\key_verification_test.dart: Key Verification Test Verify public key matches private key
+Derived Public Key: 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+Expected Public Key: 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+✓ Keys match!
+00:00 +25: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+📨 CALLBACK: Peer2 ha ricevuto dati da 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+   Data: [1, 2, 3, 4, 5]
+✓ Evento pubblicato con ID: 0b13f48ef75cc254b3c86ebd3b72179c3de3b1967c20eee8b7f35d6698353104
+
+4️⃣ In attesa della ricezione...
+00:00 +25: test\key_verification_test.dart: Key Verification Test Sign and verify a message
+
+🔐 Sign and Verify Test
+Message: test message
+00:00 +25: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+✓ Dati ricevuti!
+
+5️⃣ Verifica:
+   Inviato:  [1, 2, 3, 4, 5]
+   Ricevuto: [1, 2, 3, 4, 5]
+00:00 +25: test\key_verification_test.dart: Key Verification Test Sign and verify a message
+Message Hex: 74657374206d657373616765
+00:00 +25: test\data_flow_mock_test.dart: Data Flow Test con Mock Relay Peer1 pubblica e Peer2 riceve con debug completo
+✓ SUCCESSO: I dati sono identici!
+
+00:00 +26: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +26: test\nostr_persistence_test.dart: Nostr Persistence - Dati Scritti Veramente su Relay Dati pubblicati da Peer1 sono recuperabili da Peer2 dal relay (Persistence)
+
+╔═══════════════════════════════════════════════════════════╗
+║        NOSTR PERSISTENCE TEST - DATI SU RELAY            ║
+╚═══════════════════════════════════════════════════════════╝
+
+📍 FASE 1: PUBBLICAZIONE DEI DATI
+Publisher pubkey: 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+Receiver pubkey: c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5
+Dati da pubblicare: [42, 99, 123, 200]
+
+Connessione del publisher al relay...
+✓ Publisher connesso in 20ms
+Pubblicazione dei dati...
+00:00 +27: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +27: test\key_verification_test.dart: Key Verification Test Sign and verify a message
+Signature: 8f542d72ac3832ececbcb745ff0839f2b6f4350b328de90316bf0996d4ba4b7ad42ddee8c5ae813587063aba39c73f3ceff3911e7e77df5344fef05a32a68d4b
+Signature Length: 128 chars (64 bytes)
+00:00 +28: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +29: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +30: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +31: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +32: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +32: test\key_verification_test.dart: Key Verification Test Sign and verify a message
+Verification: ✓ VALID
+00:00 +33: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+✓ Evento pubblicato: 981eb315b918e3f253538b32c485d3f27c3990fbe1a5d422f0c31b9f243b9615
+  Tempo: 120ms
+
+⏳ Attesa propagazione nel relay: 10 secondi...
+00:00 +33: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Peer1 pubblica dati e Peer2 li riceve dal relay reale
+
+=== Test: Data Flow Through Real Relay ===
+Connessione al relay...
+00:00 +33: test\nostr_persistence_test.dart: Nostr Persistence - Dati Scritti Veramente su Relay Dati pubblicati da Peer1 sono recuperabili da Peer2 dal relay (Persistence)
+✓ Dati pubblicati con Event ID: 7c0dafa20d06e688bf5672ba6fb40be6af68fb91207c39ed74c6490649dfb267
+  Tempo pubblicazione: 95ms
+
+⏳ Attesa propagazione nel relay (3 secondi)...
+00:00 +33: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Peer1 pubblica dati e Peer2 li riceve dal relay reale
+✓ Connesso al relay in 34ms
+Peer2 si sottoscrive ai dati di Peer1...
+✓ Sottoscritto in 4ms
+Peer1 pubblica dati: [1, 2, 3, 4, 5]
+00:00 +33: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+
+╔═══════════════════════════════════════════════════════════╗
+║    TEST: retriveLast() vs subscribe() + callback        ║
+╚═══════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════
+FASE 1: PUBBLICAZIONE
+═══════════════════════════════════════════════════════════
+
+📤 Publisher si connette e pubblica dati...
+00:00 +34: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +34: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Peer1 pubblica dati e Peer2 li riceve dal relay reale
+✓ Evento pubblicato con ID: 786a0ae2e2e6f5791218352f9d62cc7714c0aa05abfe4819050a5e9df2094cb1 in 77ms
+In attesa della ricezione dei dati...
+00:00 +34: test\timing_performance_test.dart: Performance & Timing Analysis Single Message: Peer1 → Peer2
+
+╔════════════════════════════════════════════════════════╗
+║     SINGLE MESSAGE: PEER1 → PEER2                   ║
+╚════════════════════════════════════════════════════════╝
+
+📍 SETUP
+   Sottoscrizione completata in: 1010μs
+
+📤 PUBBLICAZIONE
+   Dati: [1, 2, 3, 4, 5]
+00:00 +34: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+✓ Evento pubblicato: 84a7fe3a5af0fc0aca90e60e8cc98e8e90c9d1f4c28d756649ba978ee9a844c7
+  Dati: [42, 84, 126]
+
+⏳ Attesa 5 secondi per propagazione nel relay...
+00:00 +35: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +36: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+[RELAY] Message type: OK, subscriptions count: 0
+[RELAY] OK response
+00:00 +36: test\nostr_persistence_test.dart: Nostr Persistence - Dati Scritti Veramente su Relay Dati pubblicati da Peer1 sono recuperabili da Peer2 dal relay (Persistence)
+[RELAY] Message type: OK, subscriptions count: 0
+[RELAY] OK response
+00:00 +36: test\timing_performance_test.dart: Performance & Timing Analysis Single Message: Peer1 → Peer2
+   Tempo di pubblicazione: 79971μs
+
+📥 RICEZIONE
+   Tempo di ricezione: 0μs
+   Dati ricevuti: [1, 2, 3, 4, 5]
+
+═══════════════════════════════════════════════════════
+📊 RIEPILOGO TEMPI
+═══════════════════════════════════════════════════════
+Sottoscrizione:          1010μs
+Pubblicazione:          79971μs
+Ricezione:                  0μs
+Totale:                 84909μs
+═══════════════════════════════════════════════════════
+
+00:00 +37: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +37: test\timing_performance_test.dart: Performance & Timing Analysis Bidirectional Exchange: Peer1 ↔ Peer2 ↔ Peer3
+
+╔════════════════════════════════════════════════════════╗
+║  BIDIRECTIONAL: PEER1 ↔ PEER2 ↔ PEER3            ║
+╚════════════════════════════════════════════════════════╝
+
+📍 SETUP SOTTOSCRIZIONI
+   6 sottoscrizioni completate in: 0μs
+
+📤 PUBBLICAZIONE
+00:00 +38: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +38: test\timing_performance_test.dart: Performance & Timing Analysis Bidirectional Exchange: Peer1 ↔ Peer2 ↔ Peer3
+   Peer1 pubblica [10,20,30] in 9513μs
+   Peer2 pubblica [40,50,60] in 7035μs
+   Peer3 pubblica [70,80,90] in 6160μs
+
+📥 RICEZIONE
+   Tutti i messaggi ricevuti in: 1013μs
+
+✓ Peer1 ricevuto: P2=70,80,90 P3=70,80,90
+✓ Peer2 ricevuto: P1=70,80,90 P3=70,80,90
+✓ Peer3 ricevuto: P1=70,80,90 P2=70,80,90
+
+═══════════════════════════════════════════════════════
+📊 RIEPILOGO TEMPI
+═══════════════════════════════════════════════════════
+Setup:                      0μs
+Pub Peer1:               9513μs
+Pub Peer2:               7035μs
+Pub Peer3:               6160μs
+Ricezione:               1013μs
+Totale:                 25721μs
+═══════════════════════════════════════════════════════
+
+00:00 +38 -1: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +38 -1: test\timing_performance_test.dart: Performance & Timing Analysis Bidirectional Exchange: Peer1 ↔ Peer2 ↔ Peer3 [E]
+  Expected: [10, 20, 30]
+    Actual: [70, 80, 90]
+     Which: at location [0] is <70> instead of <10>
+  
+  package:matcher                          expect
+  test\timing_performance_test.dart 243:7  main.<fn>.<fn>
+  
+00:00 +38 -1: test\timing_performance_test.dart: Performance & Timing Analysis Throughput: 50 messaggi da Peer1
+
+╔════════════════════════════════════════════════════════╗
+║        THROUGHPUT: 50 MESSAGGI DA PEER1            ║
+╚════════════════════════════════════════════════════════╝
+
+📍 SETUP
+   Setup completato in: 0μs
+
+📤 INVIO DI 50 MESSAGGI
+00:00 +38 -1: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Peer1 pubblica dati e Peer2 li riceve dal relay reale
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736006, has callback: true
+✓ Peer2 ha ricevuto dati: [42, 99, 123, 200]
+✓ Dati ricevuti in 247ms dalla pubblicazione
+
+=== Verifica Dati ===
+Dati inviati:  [1, 2, 3, 4, 5]
+Dati ricevuti: [42, 99, 123, 200]
+00:00 +38 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +38 -2: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Peer1 pubblica dati e Peer2 li riceve dal relay reale [E]
+  Expected: [1, 2, 3, 4, 5]
+    Actual: [42, 99, 123, 200]
+     Which: at location [0] is <42> instead of <1>
+  I dati devono essere identici
+  
+  package:matcher                             expect
+  test\real_relay_integration_test.dart 85:7  main.<fn>.<fn>
+  
+00:00 +38 -2: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+
+=== Test: Bidirectional Data Exchange ===
+Setup delle sottoscrizioni...
+✓ Setup completato in 1ms
+
+Scambio dati...
+Peer1 pubblica: [10, 20, 30]
+Peer2 pubblica: [40, 50, 60]
+00:00 +38 -2: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+[RELAY] Message type: OK, subscriptions count: 0
+[RELAY] OK response
+00:00 +38 -2: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+In attesa della ricezione...
+00:00 +39 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +39 -2: test\timing_performance_test.dart: Performance & Timing Analysis Throughput: 50 messaggi da Peer1
+   ✓ 10 messaggi inviati
+00:00 +40 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +41 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +42 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +43 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +43 -2: test\timing_performance_test.dart: Performance & Timing Analysis Throughput: 50 messaggi da Peer1
+   ✓ 20 messaggi inviati
+00:00 +44 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +44 -2: test\timing_performance_test.dart: Performance & Timing Analysis Throughput: 50 messaggi da Peer1
+   ✓ 30 messaggi inviati
+00:00 +44 -2: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [40, 50, 60]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EOSE, subscriptions count: 1
+[RELAY] End of stored events
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+00:00 +44 -2: test\timing_performance_test.dart: Performance & Timing Analysis Throughput: 50 messaggi da Peer1
+   ✓ 40 messaggi inviati
+00:00 +44 -2: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [3, 3, 3]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [2, 2, 2]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 1, 1]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 84, 126]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [1, 2, 3, 4, 5]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [111, 222, 100, 50]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [42, 99, 123, 200]
+[RELAY] Error parsing message: Bad state: Future already completed
+[RELAY] Message type: EOSE, subscriptions count: 1
+[RELAY] End of stored events
+[RELAY] Message type: OK, subscriptions count: 1
+[RELAY] OK response
+[RELAY] Message type: OK, subscriptions count: 1
+[RELAY] OK response
+00:00 +45 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +45 -2: test\timing_performance_test.dart: Performance & Timing Analysis Throughput: 50 messaggi da Peer1
+   ✓ 50 messaggi inviati
+
+📥 RICEZIONE
+
+═══════════════════════════════════════════════════════
+📊 RIEPILOGO PERFORMANCE
+═══════════════════════════════════════════════════════
+Messaggi inviati:     50
+Messaggi ricevuti:    50
+Tempo totale:         255ms
+Tempo medio/msg:      5113μs
+Throughput:           196 msg/sec
+═══════════════════════════════════════════════════════
+
+00:00 +46 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:00 +46 -2: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [10, 20, 30]
+[RELAY] Error parsing message: Bad state: Future already completed
+00:01 +46 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   1/10 secondi...
+00:01 +47 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:01 +47 -2: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+   1/5 secondi...
+00:01 +48 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   2/10 secondi...
+00:02 +49 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:02 +49 -2: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+   2/5 secondi...
+00:02 +50 -2: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   3/10 secondi...
+00:03 +50 -2: test\nostr_persistence_test.dart: Nostr Persistence - Dati Scritti Veramente su Relay Dati pubblicati da Peer1 sono recuperabili da Peer2 dal relay (Persistence)
+
+📍 FASE 2: RECUPERO DEI DATI
+Connessione del receiver al relay...
+✓ Receiver connesso in 0ms
+Receiver si sottoscrive ai dati del Publisher (dai dati memorizzati)...
+✓ Receiver iscritto
+
+In attesa della ricezione dei dati memorizzati dal relay...
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383739007, has callback: true
+📨 Receiver ha ricevuto dati dal relay: [10, 20, 30]
+
+📍 VERIFICA PERSISTENZA
+═══════════════════════════════════════════════════════════
+✓ SUCCESSO: Dati trovati nel relay!
+  Originali: [42, 99, 123, 200]
+  Recuperati: [10, 20, 30]
+00:03 +50 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:03 +51 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:03 +52 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:03 +53 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:03 +53 -3: test\nostr_persistence_test.dart: Nostr Persistence - Dati Scritti Veramente su Relay Dati pubblicati da Peer1 sono recuperabili da Peer2 dal relay (Persistence) [E]
+  Expected: [42, 99, 123, 200]
+    Actual: [10, 20, 30]
+     Which: at location [0] is <10> instead of <42>
+  I dati persistiti devono essere identici
+  
+  package:matcher                         expect
+  test\nostr_persistence_test.dart 112:9  main.<fn>.<fn>
+  
+00:03 +53 -3: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+   3/5 secondi...
+00:04 +53 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   4/10 secondi...
+00:04 +53 -3: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+   4/5 secondi...
+00:05 +53 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   5/10 secondi...
+00:05 +53 -3: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Test retriveLast() vs subscribe() con callback
+   5/5 secondi...
+
+═══════════════════════════════════════════════════════════
+FASE 2A: TEST retriveLast()
+═══════════════════════════════════════════════════════════
+
+📥 Receiver si connette...
+✓ Receiver connesso
+
+🔍 Tentativo di retriveLast() dal publisher...
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383741169, has callback: true
+✅ retriveLast() SUCCESSO!
+  Dati recuperati: [10, 20, 30]
+  Tempo: 120ms
+❌ retriveLast() FALLITO
+  Errore: Expected: [42, 84, 126]
+  Actual: [10, 20, 30]
+   Which: at location [0] is <10> instead of <42>
+
+
+
+═══════════════════════════════════════════════════════════
+FASE 2B: TEST subscribe() + callback
+═══════════════════════════════════════════════════════════
+
+📌 Receiver si sottoscrive con callback...
+✓ Sottoscrizione registrata
+  In attesa di callback...
+
+[RELAY] Message type: EOSE, subscriptions count: 1
+[RELAY] End of stored events
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383741297, has callback: true
+📨 CALLBACK TRIGERATO!
+  ID: 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+  Dati: [10, 20, 30]
+  Tempo dalla sottoscrizione: 27ms
+✅ subscribe() SUCCESSO!
+✅ subscribe() + callback SUCCESSO!
+❌ Errore generale: Expected: [42, 84, 126]
+  Actual: [10, 20, 30]
+   Which: at location [0] is <10> instead of <42>
+
+00:05 +54 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+00:05 +54 -3: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Debug: Pubblica e verifica flusso in dettaglio
+
+╔═══════════════════════════════════════════════════════════╗
+║        DEBUG: ANALISI DETTAGLIATA DEL FLUSSO             ║
+╚═══════════════════════════════════════════════════════════╝
+
+1️⃣ Connessione Peer1...
+✓ Peer1 connesso
+
+2️⃣ Pubblicazione evento...
+✓ Evento ID: afb4e84a78acad8f461013528647e96eef31c80edf0fdc77add5bf0b0495690b
+  Firma: Schnorr BIP340 (valida)
+  Dati: [11, 22, 33]
+
+3️⃣ Connessione Peer2...
+✓ Peer2 connesso
+
+4️⃣ Attesa propagazione (3 secondi)...
+[RELAY] Message type: OK, subscriptions count: 0
+[RELAY] OK response
+00:05 +54 -3: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383736290, has callback: true
+✓ Peer2 riceve da Peer1: [11, 22, 33]
+[RELAY] Error parsing message: Bad state: Future already completed
+00:06 +54 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   6/10 secondi...
+   7/10 secondi...
+   8/10 secondi...
+00:08 +54 -3: test\retrieve_callback_test.dart: Retrieve & Callback Test - Verifica funzionamento Debug: Pubblica e verifica flusso in dettaglio
+✓ Pronto per retrieve
+
+5️⃣ Test retriveLast() - Peer2 cerca ultimi dati di Peer1...
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383744340, has callback: true
+[RELAY] Message type: EOSE, subscriptions count: 0
+[RELAY] End of stored events
+✅ TROVATO: [11, 22, 33]
+
+6️⃣ Test subscribe() + callback - Peer2 si sottoscrive...
+✓ Sottoscrizione registrata
+
+⏳ Attesa callback (5 secondi)...
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383744366, has callback: true
+📨 CALLBACK RICEVUTO: [11, 22, 33] da 79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+✅ CALLBACK FUNZIONA
+00:08 +55 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su nos.lol e attendi recupero con retry
+   9/10 secondi...
+   10/10 secondi...
+
+📥 Tentativo di recupero con RETRY (max 3 tentativi)...
+
+Tentativo 1:
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746063, has callback: true
+  ✓ Dati ricevuti: [11, 22, 33] (aspettiamo: [111, 222, 100, 50])
+  ✓ TROVATO!
+❌ Errore: Expected: [111, 222, 100, 50]
+  Actual: [11, 22, 33]
+   Which: at location [0] is <11> instead of <111>
+
+00:10 +56 -3: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2
+00:10 +56 -3: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su relay.damus.io e attendi recupero
+
+╔═══════════════════════════════════════════════════════════╗
+║        TEST RELAY 2: relay.damus.io                      ║
+╚═══════════════════════════════════════════════════════════╝
+
+📤 Pubblicazione su relay.damus.io...
+✓ Evento pubblicato: 743f682cca886e08f9071f586ce99dde33a6a8cdbf340e9deb3c7d68f709c89a
+  Tempo: 6ms
+
+⏳ Attesa propagazione nel relay: 10 secondi...
+00:10 +56 -4: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su relay.damus.io e attendi recupero
+00:10 +56 -4: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Scambio bidirezionale: Peer1 ↔ Peer2 [E]
+  TimeoutException after 0:00:10.000000: Future not completed
+  test\real_relay_integration_test.dart 147:7  main.<fn>.<fn>
+  
+00:10 +56 -4: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Multipli messaggi successivi mantengono ordine e integrità
+
+=== Test: Multiple Messages Integrity ===
+Invio di 3 messaggi...
+Invio messaggio 1: [1, 1, 1]
+00:10 +56 -5: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Multipli messaggi successivi mantengono ordine e integrità
+00:10 +56 -5: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su relay.damus.io e attendi recupero [E]
+  WebSocketChannelException: WebSocketException: Connection to 'https://relay.damus.io:0#' was not upgraded to websocket
+  
+00:10 +56 -5: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Multipli messaggi successivi mantengono ordine e integrità
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 1 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 2 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 3 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 4 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 5 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 6 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 7 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 8 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 9 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 10 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 11 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 12 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 13 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 14 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 15 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 16 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 17 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 18 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 19 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 20 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 21 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 22 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 23 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 24 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 25 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 26 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 27 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 28 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 29 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 30 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 31 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 32 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 33 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 34 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 35 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 36 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 37 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 38 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 39 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 40 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 41 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 42 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 43 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 44 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 45 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 46 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 47 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 48 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 49 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 50 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 51 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 52 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 53 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 54 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 55 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 56 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 57 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 58 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 59 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 60 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 61 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 62 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 63 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 64 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 65 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 66 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 67 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 68 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 69 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 70 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 71 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 72 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 73 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 74 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 75 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 76 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 77 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 78 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 79 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 80 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 81 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 82 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 83 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 84 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 85 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 86 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 87 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 88 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 89 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 90 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 91 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 92 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 93 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 94 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 95 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 96 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 97 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 98 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 99 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 100 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 101 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 102 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 103 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 104 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 105 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 106 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 107 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 108 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 109 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 110 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 111 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 112 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 113 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 114 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 115 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 116 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 117 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 118 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 119 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 120 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 121 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 122 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 123 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 124 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 125 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 126 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 127 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 128 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 129 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 130 ricevuto: [3, 3, 3]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 131 ricevuto: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 132 ricevuto: [1, 1, 1]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 133 ricevuto: [11, 22, 33]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 134 ricevuto: [10, 20, 30]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 135 ricevuto: [42, 84, 126]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 136 ricevuto: [1, 2, 3, 4, 5]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 137 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 138 ricevuto: [111, 222, 100, 50]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 139 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 140 ricevuto: [42, 99, 123, 200]
+[RELAY] Message type: EOSE, subscriptions count: 1
+[RELAY] End of stored events
+[RELAY] Message type: OK, subscriptions count: 1
+[RELAY] OK response
+Invio messaggio 2: [2, 2, 2]
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 141 ricevuto: [1, 1, 1]
+[RELAY] Message type: OK, subscriptions count: 1
+[RELAY] OK response
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 142 ricevuto: [2, 2, 2]
+Invio messaggio 3: [3, 3, 3]
+[RELAY] Message type: OK, subscriptions count: 1
+[RELAY] OK response
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383746330, has callback: true
+✓ Messaggio 143 ricevuto: [3, 3, 3]
+In attesa della ricezione di tutti i messaggi...
+
+=== Verifica Integrità ===
+Messaggio 1: inviato [1, 1, 1], ricevuto [11, 22, 33]
+00:11 +56 -6: test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Multipli messaggi successivi mantengono ordine e integrità [E]
+  Expected: [1, 1, 1]
+    Actual: [11, 22, 33]
+     Which: at location [0] is <11> instead of <1>
+  
+  package:matcher                              expect
+  test\real_relay_integration_test.dart 214:9  main.<fn>.<fn>
+  
+00:11 +56 -6: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su relay.damus.io e attendi recupero
+   1/10 secondi...
+   2/10 secondi...
+   3/10 secondi...
+   4/10 secondi...
+   5/10 secondi...
+   6/10 secondi...
+   7/10 secondi...
+   8/10 secondi...
+   9/10 secondi...
+   10/10 secondi...
+
+📥 Tentativo di recupero con RETRY (max 3 tentativi)...
+
+Tentativo 1:
+00:20 +56 -6: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su relay.damus.io e attendi recupero [E]
+  WebSocketChannelException: WebSocketException: Connection to 'https://relay.damus.io:0#' was not upgraded to websocket
+  
+  ⏳ Tentativo 1 fallito, retry...
+
+Tentativo 2:
+[RELAY] Message type: EVENT, subscriptions count: 1
+[RELAY] EVENT for subscription sub_1777383764219, has callback: true
+  ✓ Dati ricevuti: [200, 150, 100, 50] (aspettiamo: [200, 150, 100, 50])
+  ✓ TROVATO!
+
+✅ SUCCESSO: Dati recuperati da relay.damus.io!
+00:28 +56 -6: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su primal.net e attendi recupero
+
+╔═══════════════════════════════════════════════════════════╗
+║        TEST RELAY 3: primal.net                          ║
+╚═══════════════════════════════════════════════════════════╝
+
+📤 Pubblicazione su primal.net...
+✓ Evento pubblicato: c03c321a04cfbbb80f6848b75f89309f281fb78e280b3a8119dcddba86068667
+  Tempo: 10ms
+
+⏳ Attesa propagazione nel relay: 10 secondi...
+00:29 +56 -7: test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su primal.net e attendi recupero [E]
+  WebSocketChannelException: WebSocketException: Connection to 'https://primal.net:0#' was not upgraded to websocket
+  
+   1/10 secondi...
+   2/10 secondi...
+   3/10 secondi...
+   4/10 secondi...
+   5/10 secondi...
+   6/10 secondi...
+   7/10 secondi...
+   8/10 secondi...
+   9/10 secondi...
+   10/10 secondi...
+
+📥 Tentativo di recupero con RETRY (max 3 tentativi)...
+
+Tentativo 1:
+  WebSocketChannelException: WebSocketException: Connection to 'https://primal.net:0#' was not upgraded to websocket
+  
+  ⏳ Tentativo 1 fallito, retry...
+
+Tentativo 2:
+  WebSocketChannelException: WebSocketException: Connection to 'https://primal.net:0#' was not upgraded to websocket
+  
+  ⏳ Tentativo 2 fallito, retry...
+
+Tentativo 3:
+  WebSocketChannelException: WebSocketException: Connection to 'https://primal.net:0#' was not upgraded to websocket
+  
+  TimeoutException after 0:00:30.000000: Test timed out after 30 seconds. See https://pub.dev/packages/test#timeouts
+  dart:isolate  _RawReceivePort._handleMessage
+  
+00:59 +56 -7: Some tests failed.
+
+Failing tests:
+  test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su primal.net e attendi recupero
+  test\multi_relay_test.dart: Multi-Relay Test - Pubblicazione su 3 Relay Diversi Pubblica su relay.damus.io e attendi recupero
+  test\nostr_persistence_test.dart: Nostr Persistence - Dati Scritti Veramente su Relay Dati pubblicati da Peer1 sono recuperabili da Peer2 dal relay (Persistence)
+  test\real_relay_integration_test.dart: Real Relay Integration - Data Flow Verification Multipli messaggi successivi mantengono ordine e integrità
+  ... and 3 more
+
+Consider enabling the flag chain-stack-traces to receive more detailed exceptions.
+For example, 'dart test --chain-stack-traces'.

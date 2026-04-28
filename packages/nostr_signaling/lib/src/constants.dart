@@ -12,21 +12,21 @@ class NostrTestKeys {
   static const String testPublicKey1 =
       '79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798';
 
-  /// Chiave privata di test 2
+  /// Chiave privata di test 2 (random, non-sequential)
   static const String testPrivateKey2 =
-      '0000000000000000000000000000000000000000000000000000000000000002';
+      'd624e64db378fe3cd13fa9f562b176a46b3afc837b0ff294b7c4dd41297eb44b';
 
   /// Chiave pubblica corrispondente a testPrivateKey2
   static const String testPublicKey2 =
-      'c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5';
+      '59f6054fde4d37f43d539f6b128e0116cf30718adff96224291c68ec46dc3aa1';
 
-  /// Chiave privata di test 3
+  /// Chiave privata di test 3 (random, non-sequential)
   static const String testPrivateKey3 =
-      '0000000000000000000000000000000000000000000000000000000000000003';
+      '088af2d17d8c507f69bc9d1e727ca3ace683c5d13a453e5489712920afa2e43e';
 
   /// Chiave pubblica corrispondente a testPrivateKey3
   static const String testPublicKey3 =
-      'f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9';
+      'ffa8f33bc30bee0152260b34f24b850d257b97ceb4ae51ef0157e0a6a9e27d4f';
 
   /// Chiave privata di test Luca Gualandi
   /// Generata da: luca@omniagroup.it
@@ -43,6 +43,6 @@ class NostrTestRelays {
   static const String damus = 'wss://relay.damus.io';
   static const String nostr = 'wss://relay.nostr.info';
   static const String nos = 'wss://nos.lol';
-  static const String primal = 'wss://primal.net';
+  static const String primal = 'wss://relay.primal.net';
   static const String startr = 'wss://nostr-relay.wlvs.space';
 }

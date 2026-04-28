@@ -12,7 +12,7 @@ abstract class INostrSignaling {
 
   Future<String> publish(List<int> data);
 
-  Future<String> subscribe(NostrId id, EventCallback onEvent);
+  Future<String> subscribe(NostrId id, EventCallback onEvent, {int? since});
 
   Future<List<int>> retriveLast(NostrId id); // retrive the data of the last event
 

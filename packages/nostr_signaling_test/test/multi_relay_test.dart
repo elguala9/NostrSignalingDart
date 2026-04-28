@@ -48,13 +48,22 @@ void main() {
           print('\nTentativo $attempt:');
           final completer = Completer<void>();
 
+          if (!receiver.isConnected()) {
+            await receiver.connect().timeout(Duration(seconds: 15));
+          }
+
           await receiver.subscribe(
             publisher.pubkey,
             (id, data) {
-              print('  ✓ Dati ricevuti: $data');
-              retrievedData = data;
-              dataFound = true;
-              if (!completer.isCompleted) completer.complete();
+              print('  ✓ Dati ricevuti: $data (aspettiamo: $testData)');
+              // Only complete when we find the exact data we published
+              if (data.length == testData.length &&
+                  List.generate(data.length, (i) => data[i] == testData[i])
+                      .every((e) => e)) {
+                retrievedData = data;
+                dataFound = true;
+                if (!completer.isCompleted) completer.complete();
+              }
             },
           ).timeout(Duration(seconds: 15));
 
@@ -128,13 +137,22 @@ void main() {
           print('\nTentativo $attempt:');
           final completer = Completer<void>();
 
+          if (!receiver.isConnected()) {
+            await receiver.connect().timeout(Duration(seconds: 15));
+          }
+
           await receiver.subscribe(
             publisher.pubkey,
             (id, data) {
-              print('  ✓ Dati ricevuti: $data');
-              retrievedData = data;
-              dataFound = true;
-              if (!completer.isCompleted) completer.complete();
+              print('  ✓ Dati ricevuti: $data (aspettiamo: $testData)');
+              // Only complete when we find the exact data we published
+              if (data.length == testData.length &&
+                  List.generate(data.length, (i) => data[i] == testData[i])
+                      .every((e) => e)) {
+                retrievedData = data;
+                dataFound = true;
+                if (!completer.isCompleted) completer.complete();
+              }
             },
           ).timeout(Duration(seconds: 15));
 
@@ -164,16 +182,16 @@ void main() {
       }
     });
 
-    test('Pubblica su primal.net e attendi recupero', () async {
+    test('Pubblica su relay.primal.net e attendi recupero', () async {
       print('\n╔═══════════════════════════════════════════════════════════╗');
-      print('║        TEST RELAY 3: primal.net                          ║');
+      print('║        TEST RELAY 3: relay.primal.net                    ║');
       print('╚═══════════════════════════════════════════════════════════╝\n');
 
       final testData = [250, 200, 150, 100];
       late List<int> retrievedData;
       bool dataFound = false;
 
-      final relay = NostrRelayImpl(relayUrl: 'wss://primal.net');
+      final relay = NostrRelayImpl(relayUrl: 'wss://relay.primal.net');
 
       final publisher = NostrSignalingImpl(
         pubkey: NostrTestKeys.testPublicKey1,
@@ -190,7 +208,7 @@ void main() {
       );
 
       try {
-        print('📤 Pubblicazione su primal.net...');
+        print('📤 Pubblicazione su relay.primal.net...');
         final pubStart = DateTime.now();
         await publisher.connect().timeout(Duration(seconds: 15));
         final eventId = await publisher.publish(testData).timeout(Duration(seconds: 15));
@@ -208,13 +226,21 @@ void main() {
           print('\nTentativo $attempt:');
           final completer = Completer<void>();
 
+          if (!receiver.isConnected()) {
+            await receiver.connect().timeout(Duration(seconds: 15));
+          }
+
           await receiver.subscribe(
             publisher.pubkey,
             (id, data) {
-              print('  ✓ Dati ricevuti: $data');
-              retrievedData = data;
-              dataFound = true;
-              if (!completer.isCompleted) completer.complete();
+              print('  ✓ Dati ricevuti: $data (aspettiamo: $testData)');
+              if (data.length == testData.length &&
+                  List.generate(data.length, (i) => data[i] == testData[i])
+                      .every((e) => e)) {
+                retrievedData = data;
+                dataFound = true;
+                if (!completer.isCompleted) completer.complete();
+              }
             },
           ).timeout(Duration(seconds: 15));
 
@@ -232,9 +258,9 @@ void main() {
 
         if (dataFound) {
           expect(retrievedData, equals(testData));
-          print('\n✅ SUCCESSO: Dati recuperati da primal.net!');
+          print('\n✅ SUCCESSO: Dati recuperati da relay.primal.net!');
         } else {
-          print('\n⚠️  Dati non trovati su primal.net dopo 3 tentativi');
+          print('\n⚠️  Dati non trovati su relay.primal.net dopo 3 tentativi');
         }
 
         await relay.disconnect();

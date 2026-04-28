@@ -86,10 +86,14 @@ void main() {
         (id, data) {
           print(
               '📨 Receiver ha ricevuto dati dal relay: ${data.toString().replaceAll('List<int> ', '')}');
-          retrievedData = data;
-          dataFound = true;
-          if (!completer.isCompleted) {
-            completer.complete();
+          // Only complete when we find the exact data we published
+          if (!dataFound &&
+              data.length == testData.length &&
+              List.generate(data.length, (i) => data[i] == testData[i])
+                  .every((e) => e)) {
+            retrievedData = data;
+            dataFound = true;
+            if (!completer.isCompleted) completer.complete();
           }
         },
       ).timeout(Duration(seconds: 15));

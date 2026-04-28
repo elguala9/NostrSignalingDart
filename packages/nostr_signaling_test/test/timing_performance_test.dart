@@ -2,10 +2,24 @@ import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
 
+class _Subscription {
+  final Map<String, dynamic> filter;
+  final RelayEventCallback callback;
+  _Subscription(this.filter, this.callback);
+}
+
 class TimingRelay implements INostrRelay {
   final List<NostrEvent> publishedEvents = [];
-  final Map<String, List<RelayEventCallback>> subscriptions = {};
+  final Map<String, _Subscription> subscriptions = {};
   bool _isConnected = false;
+
+  bool _matchesFilter(NostrEvent event, Map<String, dynamic> filter) {
+    final authors = filter['authors'] as List?;
+    if (authors != null && !authors.contains(event.pubkey)) return false;
+    final kinds = filter['kinds'] as List?;
+    if (kinds != null && !kinds.contains(event.kind)) return false;
+    return true;
+  }
 
   @override
   Future<void> connect() async {
@@ -25,9 +39,9 @@ class TimingRelay implements INostrRelay {
   @override
   Future<String> publishEvent(NostrEvent event) async {
     publishedEvents.add(event);
-    for (final callbacks in subscriptions.values) {
-      for (final callback in callbacks) {
-        Future.microtask(() => callback(event));
+    for (final sub in subscriptions.values) {
+      if (_matchesFilter(event, sub.filter)) {
+        Future.microtask(() => sub.callback(event));
       }
     }
     return event.id;
@@ -39,13 +53,10 @@ class TimingRelay implements INostrRelay {
     RelayEventCallback onEvent,
   ) async {
     final subId = 'sub_${subscriptions.length + 1}';
-    subscriptions.putIfAbsent(subId, () => []).add(onEvent);
-    final authors = filter['authors'] as List<String>?;
-    if (authors != null) {
-      for (final event in publishedEvents) {
-        if (authors.contains(event.pubkey)) {
-          Future.microtask(() => onEvent(event));
-        }
+    subscriptions[subId] = _Subscription(filter, onEvent);
+    for (final event in publishedEvents) {
+      if (_matchesFilter(event, filter)) {
+        Future.microtask(() => onEvent(event));
       }
     }
     return subId;
