@@ -1,5 +1,4 @@
 import 'package:bip340/bip340.dart' as bip340;
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 

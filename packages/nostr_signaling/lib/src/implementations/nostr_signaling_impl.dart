@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:crypto/crypto.dart';
-import 'package:hex/hex.dart';
 import 'package:nostr/nostr.dart';
 
 import '../interfaces/i_compression.dart';
@@ -13,25 +10,35 @@ import '../types.dart';
 class NostrSignalingImpl implements INostrSignaling {
   final String pubkey;
   final String privkey;
-  final INostrRelay relay;
+  final List<INostrRelay> relays;
   final bool useCompression;
   final ICompressionEngine? compressionEngine;
 
-  late String _currentSubscriptionId;
   final Map<NostrId, EventCallback> _subscriptions = {};
-  final Map<NostrId, String> _subscriptionIds = {};
+  final Map<NostrId, Map<INostrRelay, String>> _relaySubscriptionIds = {};
 
   NostrSignalingImpl({
     required this.pubkey,
     required this.privkey,
-    required this.relay,
+    required List<INostrRelay> relays,
     this.useCompression = false,
     this.compressionEngine,
-  });
+  }) : relays = relays.isNotEmpty ? relays : throw ArgumentError('At least one relay is required');
+
+  /// Convenience constructor for a single relay
+  NostrSignalingImpl.single({
+    required this.pubkey,
+    required this.privkey,
+    required INostrRelay relay,
+    this.useCompression = false,
+    this.compressionEngine,
+  }) : relays = [relay] {
+    if (relays.isEmpty) throw ArgumentError('At least one relay is required');
+  }
 
   @override
   Future<void> connect() async {
-    await relay.connect();
+    await Future.wait(relays.map((relay) => relay.connect()));
   }
 
   @override
@@ -39,12 +46,12 @@ class NostrSignalingImpl implements INostrSignaling {
     for (final id in _subscriptions.keys) {
       await unsubscribe(id);
     }
-    await relay.disconnect();
+    await Future.wait(relays.map((relay) => relay.disconnect()));
   }
 
   @override
   bool isConnected() {
-    return relay.isConnected();
+    return relays.any((relay) => relay.isConnected());
   }
 
   @override
@@ -62,18 +69,24 @@ class NostrSignalingImpl implements INostrSignaling {
       kind: useCompression ? 1000 : 1001,
     );
 
-    final eventId = await relay.publishEvent(event);
-    return eventId;
+    // Publish to all relays and return the event ID
+    // All relays get the same event with the same ID
+    final publishFutures = relays.map((relay) => relay.publishEvent(event));
+    final results = await Future.wait(publishFutures, eagerError: false);
+
+    // Return the first successful result or the first result
+    return results.whereType<String>().firstOrNull ?? results.first;
   }
 
   @override
   Future<String> subscribe(NostrId id, EventCallback onEvent, {int? since}) async {
     // Unsubscribe from previous subscription to this ID if it exists
-    if (_subscriptionIds.containsKey(id)) {
-      await relay.unsubscribe(_subscriptionIds[id]!);
+    if (_relaySubscriptionIds.containsKey(id)) {
+      await unsubscribe(id);
     }
 
     _subscriptions[id] = onEvent;
+    _relaySubscriptionIds[id] = {};
 
     // Subscribe to all events from the specified author with our custom kinds
     final filter = <String, dynamic>{
@@ -82,15 +95,18 @@ class NostrSignalingImpl implements INostrSignaling {
       if (since != null) 'since': since,
     };
 
-    final subId = await relay.subscribe(filter, (event) {
-      final data = _decodeContent(event.content);
-      onEvent(id, data);
+    // Subscribe on all relays
+    final subscriptionFutures = relays.map((relay) async {
+      final subId = await relay.subscribe(filter, (event) {
+        final data = _decodeContent(event.content);
+        onEvent(id, data);
+      });
+      _relaySubscriptionIds[id]![relay] = subId;
+      return subId;
     });
 
-    _subscriptionIds[id] = subId;
-    _currentSubscriptionId = subId;
-
-    return subId;
+    final subIds = await Future.wait(subscriptionFutures);
+    return subIds.first;
   }
 
   @override
@@ -101,33 +117,55 @@ class NostrSignalingImpl implements INostrSignaling {
       'limit': 1,
     };
 
-    List<int> lastData = [];
-    final completer = Completer<void>();
+    // Try to retrieve from all relays concurrently and return the first successful result
+    final retrieveFutures = relays.map((relay) async {
+      List<int> lastData = [];
+      final completer = Completer<void>();
 
-    final subId = await relay.subscribe(filter, (event) {
-      lastData = _decodeContent(event.content);
-      if (!completer.isCompleted) {
-        completer.complete();
+      try {
+        final subId = await relay.subscribe(filter, (event) {
+          lastData = _decodeContent(event.content);
+          if (!completer.isCompleted) {
+            completer.complete();
+          }
+        });
+
+        try {
+          await completer.future.timeout(const Duration(seconds: 5));
+        } finally {
+          await relay.unsubscribe(subId);
+        }
+      } catch (e) {
+        // Relay failed, will try next one
       }
+
+      return lastData;
     });
 
-    try {
-      await completer.future.timeout(const Duration(seconds: 5));
-    } catch (e) {
-      // Timeout o errore
-    } finally {
-      await relay.unsubscribe(subId);
-    }
+    final results = await Future.wait(retrieveFutures);
 
-    return lastData;
+    // Return the first non-empty result, or empty list if all failed
+    return results.firstWhere(
+      (data) => data.isNotEmpty,
+      orElse: () => [],
+    );
   }
 
   @override
   Future<void> unsubscribe(NostrId id) async {
     if (_subscriptions.containsKey(id)) {
       _subscriptions.remove(id);
-      final subId = _subscriptionIds.remove(id);
-      if (subId != null) await relay.unsubscribe(subId);
+      final relaySubIds = _relaySubscriptionIds.remove(id) ?? {};
+
+      // Unsubscribe from all relays
+      await Future.wait(
+        relaySubIds.entries.map((entry) async {
+          final relay = entry.key;
+          final subId = entry.value;
+          await relay.unsubscribe(subId);
+        }),
+        eagerError: false,
+      );
     }
   }
 

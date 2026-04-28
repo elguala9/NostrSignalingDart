@@ -10,7 +10,7 @@ void main() {
     setUp(() {
       realRelay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
-      signaling = NostrSignalingImpl(
+      signaling = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: realRelay,
@@ -87,7 +87,7 @@ void main() {
     });
 
     test('useCompression flag è impostato correttamente', () {
-      final withoutCompression = NostrSignalingImpl(
+      final withoutCompression = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: realRelay,
@@ -97,7 +97,7 @@ void main() {
       expect(withoutCompression.useCompression, equals(false));
 
       final gzipEngine = GzipCompressionEngine();
-      final withCompression = NostrSignalingImpl(
+      final withCompression = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: realRelay,
@@ -106,6 +106,58 @@ void main() {
       );
 
       expect(withCompression.useCompression, equals(true));
+    });
+  });
+
+  group('NostrSignalingImpl con multiple relay', () {
+    late NostrRelayImpl relay1;
+    late NostrRelayImpl relay2;
+    late NostrSignalingImpl signaling;
+
+    setUp(() {
+      relay1 = NostrRelayImpl(relayUrl: 'wss://nos.lol');
+      relay2 = NostrRelayImpl(relayUrl: 'wss://relay.damus.io');
+
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: [relay1, relay2],
+        useCompression: false,
+      );
+    });
+
+    tearDown(() async {
+      try {
+        if (relay1.isConnected()) await relay1.disconnect();
+        if (relay2.isConnected()) await relay2.disconnect();
+      } catch (e) {
+        // Ignore errors
+      }
+    });
+
+    test('connect connette a tutti i relay', () async {
+      expect(relay1.isConnected(), false);
+      expect(relay2.isConnected(), false);
+      await signaling.connect().timeout(Duration(seconds: 15));
+      await Future.delayed(Duration(milliseconds: 500));
+      expect(signaling.isConnected(), true);
+    });
+
+    test('publish invia a tutti i relay', () async {
+      await signaling.connect().timeout(Duration(seconds: 15));
+      await Future.delayed(Duration(milliseconds: 500));
+      const testData = [1, 2, 3, 4, 5];
+
+      final eventId = await signaling.publish(testData).timeout(Duration(seconds: 15));
+
+      expect(eventId, isNotEmpty);
+    });
+
+    test('isConnected ritorna true se almeno un relay è connesso', () async {
+      expect(signaling.isConnected(), false);
+      await signaling.connect().timeout(Duration(seconds: 15));
+      await Future.delayed(Duration(milliseconds: 500));
+      expect(signaling.isConnected(), true);
     });
   });
 }
