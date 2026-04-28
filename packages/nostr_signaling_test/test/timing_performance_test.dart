@@ -79,21 +79,21 @@ void main() {
       relay = TimingRelay();
       relay.connect();
 
-      peer1 = NostrSignalingImpl(
+      peer1 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
         useCompression: false,
       );
 
-      peer2 = NostrSignalingImpl(
+      peer2 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,
         useCompression: false,
       );
 
-      peer3 = NostrSignalingImpl(
+      peer3 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey3,
         privkey: NostrTestKeys.testPrivateKey3,
         relay: relay,

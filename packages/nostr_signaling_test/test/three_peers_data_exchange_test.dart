@@ -85,21 +85,21 @@ void main() {
     setUp(() {
       sharedRelay = SharedNostrRelay();
 
-      peer1 = NostrSignalingImpl(
+      peer1 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: sharedRelay,
         useCompression: false,
       );
 
-      peer2 = NostrSignalingImpl(
+      peer2 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: sharedRelay,
         useCompression: false,
       );
 
-      peer3 = NostrSignalingImpl(
+      peer3 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey3,
         privkey: NostrTestKeys.testPrivateKey3,
         relay: sharedRelay,

@@ -44,13 +44,34 @@ void main() {
       expect(signaling, isA<INostrSignaling>());
     });
 
-    test('createWithCustomRelay() accetta un relay iniettato', () {
-      final customRelay = NostrRelayImpl(relayUrl: NostrTestRelays.nos);
+    test('createWithCustomRelays() accetta una lista di relay iniettati', () {
+      final customRelay1 = NostrRelayImpl(relayUrl: NostrTestRelays.nos);
+      final customRelay2 = NostrRelayImpl(relayUrl: NostrTestRelays.damus);
 
-      final signaling = NostrSignalingFactory.createWithCustomRelay(
+      final signaling = NostrSignalingFactory.createWithCustomRelays(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
-        relay: customRelay,
+        relays: [customRelay1, customRelay2],
+      );
+
+      expect(signaling, isA<INostrSignaling>());
+    });
+
+    test('createWithMultipleRelays() accetta una lista di URL', () {
+      final signaling = NostrSignalingFactory.createWithMultipleRelays(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relayUrls: [NostrTestRelays.nos, NostrTestRelays.damus],
+      );
+
+      expect(signaling, isA<INostrSignaling>());
+    });
+
+    test('createWithGzipCompressionAndMultipleRelays() abilita compressione e multi-relay', () {
+      final signaling = NostrSignalingFactory.createWithGzipCompressionAndMultipleRelays(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relayUrls: [NostrTestRelays.nos, NostrTestRelays.damus],
       );
 
       expect(signaling, isA<INostrSignaling>());

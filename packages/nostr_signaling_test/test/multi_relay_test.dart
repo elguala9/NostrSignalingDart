@@ -15,14 +15,14 @@ void main() {
 
       final relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
-      final publisher = NostrSignalingImpl(
+      final publisher = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
         useCompression: false,
       );
 
-      final receiver = NostrSignalingImpl(
+      final receiver = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,
@@ -104,14 +104,14 @@ void main() {
 
       final relay = NostrRelayImpl(relayUrl: 'wss://relay.damus.io');
 
-      final publisher = NostrSignalingImpl(
+      final publisher = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
         useCompression: false,
       );
 
-      final receiver = NostrSignalingImpl(
+      final receiver = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,
@@ -193,14 +193,14 @@ void main() {
 
       final relay = NostrRelayImpl(relayUrl: 'wss://relay.primal.net');
 
-      final publisher = NostrSignalingImpl(
+      final publisher = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
         useCompression: false,
       );
 
-      final receiver = NostrSignalingImpl(
+      final receiver = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,

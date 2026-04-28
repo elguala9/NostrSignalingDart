@@ -13,7 +13,7 @@ void main() {
       // I relay Nostr non comunicano tra loro
       relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
-      publisher = NostrSignalingImpl(
+      publisher = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
@@ -21,7 +21,7 @@ void main() {
       );
 
       // Receiver usa la STESSA istanza di relay
-      receiver = NostrSignalingImpl(
+      receiver = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,

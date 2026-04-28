@@ -16,14 +16,14 @@ void main() {
 
       final relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
-      final publisher = NostrSignalingImpl(
+      final publisher = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
         useCompression: false,
       );
 
-      final receiver = NostrSignalingImpl(
+      final receiver = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,
@@ -143,14 +143,14 @@ void main() {
       final testData = [11, 22, 33];
       final relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
-      final peer1 = NostrSignalingImpl(
+      final peer1 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: relay,
         useCompression: false,
       );
 
-      final peer2 = NostrSignalingImpl(
+      final peer2 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: relay,

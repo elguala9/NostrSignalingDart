@@ -89,14 +89,14 @@ void main() {
     setUp(() {
       debugRelay = DebugSharedRelay();
 
-      peer1 = NostrSignalingImpl(
+      peer1 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
         relay: debugRelay,
         useCompression: false,
       );
 
-      peer2 = NostrSignalingImpl(
+      peer2 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey2,
         privkey: NostrTestKeys.testPrivateKey2,
         relay: debugRelay,
