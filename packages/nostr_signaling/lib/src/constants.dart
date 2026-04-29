@@ -44,5 +44,10 @@ class NostrTestRelays {
   static const String nostr = 'wss://relay.nostr.info';
   static const String nos = 'wss://nos.lol';
   static const String primal = 'wss://relay.primal.net';
-  static const String startr = 'wss://nostr-relay.wlvs.space';
+  static const String startr = 'wss://relay.nostr.net';
+  static const String band = 'wss://relay.mostr.pub';
+  static const String purple = 'wss://purplepag.es';
+  static const String snort = 'wss://nostr-pub.wellorder.net';
+  static const String wine = 'wss://nostr.wine';
+  static const String offchain = 'wss://offchain.pub';
 }

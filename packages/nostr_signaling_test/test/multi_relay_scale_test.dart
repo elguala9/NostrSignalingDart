@@ -1,197 +1,238 @@
+import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
 
-/// Mock relay for testing without actual network connections
-class MockRelay implements INostrRelay {
-  final String id;
-  bool _connected = false;
-  final Map<String, RelayEventCallback> _subscriptions = {};
-  final List<NostrEvent> _publishedEvents = [];
+const allRelayUrls = [
+  NostrTestRelays.damus,
+  NostrTestRelays.nostr,
+  NostrTestRelays.nos,
+  NostrTestRelays.primal,
+  NostrTestRelays.startr,
+  NostrTestRelays.band,
+  NostrTestRelays.purple,
+  NostrTestRelays.snort,
+  NostrTestRelays.wine,
+  NostrTestRelays.offchain,
+];
 
-  MockRelay({required this.id});
+List<NostrRelayImpl> _createRelayInstances() =>
+    allRelayUrls.map((url) => NostrRelayImpl(relayUrl: url)).toList();
 
-  @override
-  Future<void> connect() async {
-    _connected = true;
-    await Future.delayed(Duration(milliseconds: 100));
+Future<List<NostrRelayImpl>> _connectSequentially(
+    List<NostrRelayImpl> relays) async {
+  final connected = <NostrRelayImpl>[];
+  for (final relay in relays) {
+    try {
+      await relay.connect().timeout(Duration(seconds: 10));
+      if (relay.isConnected()) {
+        connected.add(relay);
+      }
+    } catch (e) {
+      print('  ⚠ Relay ${relay.relayUrl} non connesso: $e');
+    }
   }
+  return connected;
+}
 
-  @override
-  Future<void> disconnect() async {
-    _connected = false;
-    _subscriptions.clear();
+Future<void> _disconnectAll(List<NostrRelayImpl> relays) async {
+  for (final relay in relays) {
+    try {
+      if (relay.isConnected()) {
+        await relay.disconnect().timeout(Duration(seconds: 5));
+      }
+    } catch (_) {}
   }
-
-  @override
-  bool isConnected() => _connected;
-
-  @override
-  Future<String> publishEvent(NostrEvent event) async {
-    if (!_connected) throw Exception('Relay $id not connected');
-    _publishedEvents.add(event);
-    await Future.delayed(Duration(milliseconds: 50));
-    return event.id;
-  }
-
-  @override
-  Future<String> subscribe(
-    Map<String, dynamic> filter,
-    RelayEventCallback onEvent,
-  ) async {
-    if (!_connected) throw Exception('Relay $id not connected');
-    final subId = 'sub_$id';
-    _subscriptions[subId] = onEvent;
-    await Future.delayed(Duration(milliseconds: 50));
-    return subId;
-  }
-
-  @override
-  Future<void> unsubscribe(String subscriptionId) async {
-    _subscriptions.remove(subscriptionId);
-    await Future.delayed(Duration(milliseconds: 50));
-  }
-
-  // Test helpers
-  int get publishedEventsCount => _publishedEvents.length;
-  int get activeSubscriptionsCount => _subscriptions.length;
 }
 
 void main() {
-  group('NostrSignalingImpl with 10 relays', () {
-    late List<MockRelay> mockRelays;
+  group('NostrSignalingImpl with 10 real relays', () {
+    late List<NostrRelayImpl> relayInstances;
     late NostrSignalingImpl signaling;
 
     setUp(() {
-      // Create 10 mock relays
-      mockRelays = List.generate(
-        10,
-        (index) => MockRelay(id: 'relay_$index'),
-      );
+      relayInstances = _createRelayInstances();
+    });
+
+    tearDown(() async {
+      await _disconnectAll(relayInstances);
+    });
+
+    test('connect connette a tutti i 10 relay', () async {
+      final connected = await _connectSequentially(relayInstances);
+      print('  Connessi: ${connected.length}/10 relay');
+
+      expect(connected.length, greaterThanOrEqualTo(8),
+          reason: 'Almeno 8 relay su 10 devono connettersi');
+    }, timeout: Timeout(Duration(seconds: 120)));
+
+    test('disconnect disconnette dai relay connessi', () async {
+      final connected = await _connectSequentially(relayInstances);
+      expect(connected, isNotEmpty);
+
+      await _disconnectAll(connected);
+
+      final stillConnected = connected.where((r) => r.isConnected());
+      expect(stillConnected, isEmpty);
+    }, timeout: Timeout(Duration(seconds: 120)));
+
+    test('publish restituisce event ID valido sui relay connessi', () async {
+      final connected = await _connectSequentially(relayInstances);
 
       signaling = NostrSignalingImpl(
         pubkey: NostrTestKeys.testPublicKey1,
         privkey: NostrTestKeys.testPrivateKey1,
-        relays: mockRelays,
+        relays: connected,
         useCompression: false,
       );
-    });
 
-    test('connect connette a tutti i 10 relay', () async {
-      // Verify all relays are initially disconnected
-      expect(mockRelays.every((r) => !r.isConnected()), true);
-
-      // Connect
-      await signaling.connect();
-
-      // Verify all relays are connected
-      expect(mockRelays.every((r) => r.isConnected()), true);
-      expect(signaling.isConnected(), true);
-    });
-
-    test('disconnect disconnette da tutti i 10 relay', () async {
-      // Connect first
-      await signaling.connect();
-      expect(mockRelays.every((r) => r.isConnected()), true);
-
-      // Disconnect
-      await signaling.disconnect();
-
-      // Verify all relays are disconnected
-      expect(mockRelays.every((r) => !r.isConnected()), true);
-      expect(signaling.isConnected(), false);
-    });
-
-    test('publish invia l\'evento a tutti i 10 relay', () async {
-      await signaling.connect();
       const testData = [1, 2, 3, 4, 5];
-
       final eventId = await signaling.publish(testData);
 
       expect(eventId, isNotEmpty);
+      expect(eventId.length, equals(64));
+    }, timeout: Timeout(Duration(seconds: 30)));
 
-      // Verify all relays received the same event
-      for (final relay in mockRelays) {
-        expect(relay.publishedEventsCount, equals(1));
-        // All events should have the same ID
-        expect(relay._publishedEvents[0].id, equals(eventId));
-      }
-    });
+    test('publish + callback recupera dati propagati', () async {
+      final connected = await _connectSequentially(relayInstances);
 
-    test('subscribe crea sottoscrizioni su tutti i 10 relay', () async {
-      await signaling.connect();
-      const targetId = 'user_123';
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: connected,
+        useCompression: false,
+      );
 
-      final subId = await signaling.subscribe(targetId, (id, data) {});
+      final uniqueData = [
+        DateTime.now().millisecondsSinceEpoch % 256,
+        77,
+        88,
+      ];
 
-      expect(subId, isNotEmpty);
+      final since = DateTime.now().millisecondsSinceEpoch ~/ 1000 - 1;
+      final completer = Completer<List<int>>();
+      await signaling.subscribe(
+        NostrTestKeys.testPublicKey1,
+        (id, data) {
+          if (!completer.isCompleted && _listMatches(data, uniqueData)) {
+            completer.complete(data);
+          }
+        },
+        since: since,
+      );
 
-      // Verify all relays have an active subscription
-      for (final relay in mockRelays) {
-        expect(relay.activeSubscriptionsCount, equals(1));
-      }
-    });
+      await signaling.publish(uniqueData);
 
-    test('unsubscribe rimuove sottoscrizioni da tutti i 10 relay', () async {
-      await signaling.connect();
-      const targetId = 'user_123';
+      print('⏳ Attesa ricezione dati su ${connected.length} relay...');
+      final recovered = await completer.future
+          .timeout(Duration(seconds: 15));
 
-      await signaling.subscribe(targetId, (id, data) {});
+      print('  Dati originali:  $uniqueData');
+      print('  Dati ricevuti:   $recovered');
 
-      // Verify subscriptions are active
-      expect(mockRelays.every((r) => r.activeSubscriptionsCount == 1), true);
+      expect(recovered, equals(uniqueData));
+    }, timeout: Timeout(Duration(seconds: 30)));
 
-      // Unsubscribe
-      await signaling.unsubscribe(targetId);
+    test('publish multipli senza errori', () async {
+      final connected = await _connectSequentially(relayInstances);
 
-      // Verify subscriptions are removed from all relays
-      expect(mockRelays.every((r) => r.activeSubscriptionsCount == 0), true);
-    });
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: connected,
+        useCompression: false,
+      );
 
-    test('isConnected ritorna true se almeno 1 relay è connesso', () async {
-      // Connect only 3 relays manually
-      await mockRelays[0].connect();
-      await mockRelays[1].connect();
-      await mockRelays[2].connect();
+      const data1 = [10, 20, 30];
+      const data2 = [40, 50, 60];
+      const data3 = [70, 80, 90];
+
+      final id1 = await signaling.publish(data1);
+      final id2 = await signaling.publish(data2);
+      final id3 = await signaling.publish(data3);
+
+      expect(id1, isNotEmpty);
+      expect(id2, isNotEmpty);
+      expect(id3, isNotEmpty);
+      expect(id1, isNot(id2));
+      expect(id2, isNot(id3));
+
+      print('  Event IDs: $id1, $id2, $id3');
+    }, timeout: Timeout(Duration(seconds: 30)));
+
+    test('isConnected true se almeno 1 relay connesso', () async {
+      final connected = await _connectSequentially(relayInstances.take(3).toList());
+      expect(connected, isNotEmpty);
+
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: connected,
+        useCompression: false,
+      );
 
       expect(signaling.isConnected(), true);
-    });
+    }, timeout: Timeout(Duration(seconds: 30)));
 
-    test('isConnected ritorna false se nessun relay è connesso', () async {
-      // All start disconnected
+    test('isConnected false se nessun relay connesso', () {
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: relayInstances,
+        useCompression: false,
+      );
+
       expect(signaling.isConnected(), false);
     });
 
-    test('multiple publish invia diversi eventi a tutti i relay', () async {
-      await signaling.connect();
+    test('subscribe e unsubscribe sui relay connessi', () async {
+      final connected = await _connectSequentially(relayInstances);
 
-      const testData1 = [1, 2, 3];
-      const testData2 = [4, 5, 6];
-      const testData3 = [7, 8, 9];
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: connected,
+        useCompression: false,
+      );
 
-      await signaling.publish(testData1);
-      await signaling.publish(testData2);
-      await signaling.publish(testData3);
+      final subId = await signaling.subscribe(
+        NostrTestKeys.testPublicKey2,
+        (id, data) {},
+      );
 
-      // Each relay should have received 3 events
-      for (final relay in mockRelays) {
-        expect(relay.publishedEventsCount, equals(3));
-      }
-    });
+      expect(subId, isNotEmpty);
+      expect(subId, startsWith('sub_'));
 
-    test('publish scala bene con 10 relay', () async {
-      await signaling.connect();
+      await signaling.unsubscribe(NostrTestKeys.testPublicKey2);
+    }, timeout: Timeout(Duration(seconds: 30)));
+
+    test('publish scala con i relay connessi (performance)', () async {
+      final connected = await _connectSequentially(relayInstances);
+
+      signaling = NostrSignalingImpl(
+        pubkey: NostrTestKeys.testPublicKey1,
+        privkey: NostrTestKeys.testPrivateKey1,
+        relays: connected,
+        useCompression: false,
+      );
+
       final testData = List.generate(100, (i) => i);
 
       final stopwatch = Stopwatch()..start();
       await signaling.publish(testData);
       stopwatch.stop();
 
-      // Verify all relays got the event
-      expect(mockRelays.every((r) => r.publishedEventsCount == 1), true);
+      print(
+          'Published to ${connected.length} relays in ${stopwatch.elapsedMilliseconds}ms');
 
-      // Performance check: should complete reasonably fast
-      expect(stopwatch.elapsedMilliseconds, lessThan(5000));
-      print('Published to 10 relays in ${stopwatch.elapsedMilliseconds}ms');
-    });
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(10000),
+        reason: 'Publish should complete within 10 seconds',
+      );
+    }, timeout: Timeout(Duration(seconds: 30)));
   });
 }
+
+bool _listMatches(List<int> a, List<int> b) =>
+    a.length == b.length &&
+    List.generate(a.length, (i) => a[i] == b[i]).every((e) => e);

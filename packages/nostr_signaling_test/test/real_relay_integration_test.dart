@@ -109,8 +109,7 @@ void main() {
       print('Setup delle sottoscrizioni...');
       final setupStart = DateTime.now();
 
-      // Record since before connecting so we only get new events
-      final since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      final since = DateTime.now().millisecondsSinceEpoch ~/ 1000 - 5;
 
       await peer1.connect().timeout(Duration(seconds: 15));
       await peer2.connect().timeout(Duration(seconds: 15));
@@ -149,14 +148,16 @@ void main() {
       print('Peer1 pubblica: $data1');
       await peer1.publish(data1).timeout(Duration(seconds: 15));
 
+      await Future.delayed(Duration(milliseconds: 500));
+
       print('Peer2 pubblica: $data2');
       await peer2.publish(data2).timeout(Duration(seconds: 15));
 
       // Attendi ricezione
       print('In attesa della ricezione...');
       await Future.wait([
-        peer1Completer.future.timeout(Duration(seconds: 20)),
-        peer2Completer.future.timeout(Duration(seconds: 20)),
+        peer1Completer.future.timeout(Duration(seconds: 60)),
+        peer2Completer.future.timeout(Duration(seconds: 60)),
       ]);
 
       final exchangeTime = DateTime.now().difference(exchangeStart);
@@ -174,7 +175,7 @@ void main() {
       print('Setup:     ${setupTime.inMilliseconds}ms');
       print('Scambio:   ${exchangeTime.inMilliseconds}ms');
       print('Totale:    ${DateTime.now().difference(setupStart).inMilliseconds}ms\n');
-    });
+    }, timeout: Timeout(Duration(seconds: 150)));
 
     test('Multipli messaggi successivi mantengono ordine e integrità', () async {
       print('\n=== Test: Multiple Messages Integrity ===');

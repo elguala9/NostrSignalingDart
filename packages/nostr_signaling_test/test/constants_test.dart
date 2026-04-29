@@ -56,12 +56,31 @@ void main() {
       expect(NostrTestRelays.nos, startsWith('wss://'));
       expect(NostrTestRelays.primal, startsWith('wss://'));
       expect(NostrTestRelays.startr, startsWith('wss://'));
+      expect(NostrTestRelays.band, startsWith('wss://'));
+      expect(NostrTestRelays.purple, startsWith('wss://'));
+      expect(NostrTestRelays.snort, startsWith('wss://'));
+      expect(NostrTestRelays.wine, startsWith('wss://'));
+      expect(NostrTestRelays.offchain, startsWith('wss://'));
     });
 
     test('i relay sono diversi gli uni dagli altri', () {
-      expect(NostrTestRelays.damus, isNot(NostrTestRelays.nostr));
-      expect(NostrTestRelays.nostr, isNot(NostrTestRelays.nos));
-      expect(NostrTestRelays.primal, isNot(NostrTestRelays.startr));
+      final allRelays = [
+        NostrTestRelays.damus,
+        NostrTestRelays.nostr,
+        NostrTestRelays.nos,
+        NostrTestRelays.primal,
+        NostrTestRelays.startr,
+        NostrTestRelays.band,
+        NostrTestRelays.purple,
+        NostrTestRelays.snort,
+        NostrTestRelays.wine,
+        NostrTestRelays.offchain,
+      ];
+      for (var i = 0; i < allRelays.length; i++) {
+        for (var j = i + 1; j < allRelays.length; j++) {
+          expect(allRelays[i], isNot(allRelays[j]));
+        }
+      }
     });
 
     test('gli URL dei relay non sono vuoti', () {
@@ -70,6 +89,28 @@ void main() {
       expect(NostrTestRelays.nos.isNotEmpty, true);
       expect(NostrTestRelays.primal.isNotEmpty, true);
       expect(NostrTestRelays.startr.isNotEmpty, true);
+      expect(NostrTestRelays.band.isNotEmpty, true);
+      expect(NostrTestRelays.purple.isNotEmpty, true);
+      expect(NostrTestRelays.snort.isNotEmpty, true);
+      expect(NostrTestRelays.wine.isNotEmpty, true);
+      expect(NostrTestRelays.offchain.isNotEmpty, true);
+    });
+
+    test('10 relay disponibili per test', () {
+      final allRelays = [
+        NostrTestRelays.damus,
+        NostrTestRelays.nostr,
+        NostrTestRelays.nos,
+        NostrTestRelays.primal,
+        NostrTestRelays.startr,
+        NostrTestRelays.band,
+        NostrTestRelays.purple,
+        NostrTestRelays.snort,
+        NostrTestRelays.wine,
+        NostrTestRelays.offchain,
+      ];
+      expect(allRelays.length, equals(10));
+      expect(allRelays.toSet().length, equals(10));
     });
   });
 }
