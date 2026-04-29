@@ -42,15 +42,15 @@ void main() {
 
   group('EventCallback typedef', () {
     test('EventCallback è definito correttamente', () {
-      // EventCallback = void Function(NostrId id, List<int> data)
+      // EventCallback = void Function(NostrUserId id, List<int> data)
       void testCallback(String id, List<int> data) {}
 
       expect(testCallback, isNotNull);
     });
   });
 
-  group('NostrId typedef', () {
-    test('NostrId è un alias per String', () {
+  group('NostrUserId typedef', () {
+    test('NostrUserId è un alias per String', () {
       const testId = 'test_id_123';
       expect(testId, isA<String>());
       expect(testId, equals('test_id_123'));

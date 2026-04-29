@@ -29,4 +29,4 @@ class CompressedData {
 }
 
 /// A Nostr public key identifier (hex-encoded 32-byte public key).
-typedef NostrId = String;
+typedef NostrUserId = String;

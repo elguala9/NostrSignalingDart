@@ -3,7 +3,7 @@ import '../types.dart';
 /// Callback invoked when an event is received from a peer.
 ///
 /// [id] is the sender's Nostr public key, [data] is the decoded payload.
-typedef EventCallback = void Function(NostrId id, List<int> data);
+typedef EventCallback = void Function(NostrUserId id, List<int> data);
 
 /// Abstract Nostr signaling interface.
 ///
@@ -31,13 +31,13 @@ abstract class INostrSignaling {
   /// [onEvent] is called for each received event. Optionally filters
   /// events after the given Unix timestamp [since].
   /// Returns the subscription ID.
-  Future<String> subscribe(NostrId id, EventCallback onEvent, {int? since});
+  Future<String> subscribe(NostrUserId id, EventCallback onEvent, {int? since});
 
   /// Retrieves the last published event from [id].
   ///
   /// Returns the decoded byte payload, or an empty list if no events found.
-  Future<List<int>> retriveLast(NostrId id);
+  Future<List<int>> retriveLast(NostrUserId id);
 
   /// Unsubscribes from all events from [id].
-  Future<void> unsubscribe(NostrId id);
+  Future<void> unsubscribe(NostrUserId id);
 }

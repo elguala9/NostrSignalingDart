@@ -30,8 +30,8 @@ class NostrSignalingImpl implements INostrSignaling {
   /// The compression engine to use (required if [useCompression] is true).
   final ICompressionEngine? compressionEngine;
 
-  final Map<NostrId, EventCallback> _subscriptions = {};
-  final Map<NostrId, Map<INostrRelay, String>> _relaySubscriptionIds = {};
+  final Map<NostrUserId, EventCallback> _subscriptions = {};
+  final Map<NostrUserId, Map<INostrRelay, String>> _relaySubscriptionIds = {};
 
   /// Creates a [NostrSignalingImpl] with one or more relays.
   ///
@@ -110,7 +110,7 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   @override
-  Future<String> subscribe(NostrId id, EventCallback onEvent, {int? since}) async {
+  Future<String> subscribe(NostrUserId id, EventCallback onEvent, {int? since}) async {
     // Unsubscribe from previous subscription to this ID if it exists
     if (_relaySubscriptionIds.containsKey(id)) {
       await unsubscribe(id);
@@ -143,7 +143,7 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   @override
-  Future<List<int>> retriveLast(NostrId id) async {
+  Future<List<int>> retriveLast(NostrUserId id) async {
     final filter = NostrFilter(
       authors: [id],
       kinds: [1000, 1001],
@@ -185,7 +185,7 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   @override
-  Future<void> unsubscribe(NostrId id) async {
+  Future<void> unsubscribe(NostrUserId id) async {
     if (_subscriptions.containsKey(id)) {
       _subscriptions.remove(id);
       final relaySubIds = _relaySubscriptionIds.remove(id) ?? {};
