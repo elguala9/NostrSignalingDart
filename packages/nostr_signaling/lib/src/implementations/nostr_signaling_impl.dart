@@ -143,7 +143,7 @@ class NostrSignalingImpl implements INostrSignaling {
   }
 
   @override
-  Future<List<int>> retriveLast(NostrUserId id) async {
+  Future<List<int>> retrieveLast(NostrUserId id) async {
     final filter = NostrFilter(
       authors: [id],
       kinds: [1000, 1001],

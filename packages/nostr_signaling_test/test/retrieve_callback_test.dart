@@ -5,9 +5,9 @@ import 'package:test/test.dart';
 
 void main() {
   group('Retrieve & Callback Test - Verifica funzionamento', () {
-    test('Test retriveLast() vs subscribe() con callback', () async {
+    test('Test retrieveLast() vs subscribe() con callback', () async {
       print('\n╔═══════════════════════════════════════════════════════════╗');
-      print('║    TEST: retriveLast() vs subscribe() + callback        ║');
+      print('║    TEST: retrieveLast() vs subscribe() + callback        ║');
       print('╚═══════════════════════════════════════════════════════════╝\n');
 
       final testData = [42, 84, 126];
@@ -49,26 +49,26 @@ void main() {
         }
 
         print('\n═══════════════════════════════════════════════════════════');
-        print('FASE 2A: TEST retriveLast()');
+        print('FASE 2A: TEST retrieveLast()');
         print('═══════════════════════════════════════════════════════════\n');
 
         print('📥 Receiver si connette...');
         await receiver.connect().timeout(const Duration(seconds: 15));
         print('✓ Receiver connesso\n');
 
-        print('🔍 Tentativo di retriveLast() dal publisher...');
+        print('🔍 Tentativo di retrieveLast() dal publisher...');
         final retrieveStart = DateTime.now();
         try {
           retrievedViaRetrieve = await receiver
-              .retriveLast(publisher.pubkey)
+              .retrieveLast(publisher.pubkey)
               .timeout(const Duration(seconds: 10));
           final retrieveTime = DateTime.now().difference(retrieveStart);
-          print('✅ retriveLast() SUCCESSO!');
+          print('✅ retrieveLast() SUCCESSO!');
           print('  Dati recuperati: $retrievedViaRetrieve');
           print('  Tempo: ${retrieveTime.inMilliseconds}ms');
           expect(retrievedViaRetrieve, equals(testData));
         } catch (e) {
-          print('❌ retriveLast() FALLITO');
+          print('❌ retrieveLast() FALLITO');
           print('  Errore: $e\n');
         }
 
@@ -116,7 +116,7 @@ void main() {
         print('═══════════════════════════════════════════════════════════\n');
 
         print('Dati originali:       $testData');
-        print('Dati via retriveLast: $retrievedViaRetrieve ✓');
+        print('Dati via retrieveLast: $retrievedViaRetrieve ✓');
               if (callbackTriggered) {
           print('Dati via callback:    $receivedViaCallback ✓');
         } else {
@@ -173,10 +173,10 @@ void main() {
         await Future.delayed(const Duration(seconds: 3));
         print('✓ Pronto per retrieve\n');
 
-        print('5️⃣ Test retriveLast() - Peer2 cerca ultimi dati di Peer1...');
+        print('5️⃣ Test retrieveLast() - Peer2 cerca ultimi dati di Peer1...');
         try {
           final retrieved = await peer2
-              .retriveLast(peer1.pubkey)
+              .retrieveLast(peer1.pubkey)
               .timeout(const Duration(seconds: 10));
           print('✅ TROVATO: $retrieved');
         } catch (e) {

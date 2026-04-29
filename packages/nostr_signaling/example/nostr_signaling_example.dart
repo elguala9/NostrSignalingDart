@@ -25,7 +25,7 @@ void main() async {
   });
 
   // Retrieve the last event from a peer
-  final lastData = await signaling.retriveLast('target_user_id');
+  final lastData = await signaling.retrieveLast('target_user_id');
   print('Last data from peer: $lastData');
 
   await signaling.disconnect();

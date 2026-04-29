@@ -36,7 +36,7 @@ abstract class INostrSignaling {
   /// Retrieves the last published event from [id].
   ///
   /// Returns the decoded byte payload, or an empty list if no events found.
-  Future<List<int>> retriveLast(NostrUserId id);
+  Future<List<int>> retrieveLast(NostrUserId id);
 
   /// Unsubscribes from all events from [id].
   Future<void> unsubscribe(NostrUserId id);
