@@ -1,15 +1,31 @@
 name: nostr_signaling
 version: 0.1.0
-description: Nostr signaling library with data compression support
+description: >-
+  Nostr-based signaling library for Dart enabling arbitrary data
+  exchange between peers with optional GZip compression and
+  multi-relay redundancy.
+homepage: https://github.com/elguala9/NostrSignalingDart
+repository: https://github.com/elguala9/NostrSignalingDart
+issue_tracker: https://github.com/elguala9/NostrSignalingDart/issues
+documentation: https://github.com/elguala9/NostrSignalingDart/tree/main/packages/nostr_signaling#readme
+funding:
+  - https://github.com/sponsors/elguala9
+
+topics:
+  - nostr
+  - signaling
+  - compression
+  - p2p
+  - decentralized
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  archive: ^3.4.0
+  archive: ^4.0.9
   dart_nostr: ^10.0.1
   convert: ^3.1.0
 
 dev_dependencies:
   test: ^1.31.1
-  lints: ^2.1.0
+  lints: ^4.0.0

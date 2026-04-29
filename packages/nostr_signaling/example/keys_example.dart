@@ -1,49 +1,63 @@
 import 'package:nostr_signaling/nostr_signaling.dart';
 
 void main() {
-  // ===== Generare una nuova coppia di chiavi casuale =====
-  print('=== Generare nuove chiavi ===');
+  // ====================================================================
+  // Generate a new random key pair
+  // ====================================================================
+  print('=== Generating new keys ===');
   final newKeyPair = NostrKeys.generate();
   print('Private Key: ${newKeyPair.privateKey}');
   print('Public Key:  ${newKeyPair.publicKey}');
-  print('Valida? ${newKeyPair.isValid()}');
+  print('Valid? ${newKeyPair.isValid()}');
   print('');
 
-  // ===== Importare una coppia da una chiave privata =====
-  print('=== Importare da chiave privata ===');
-  const myPrivateKey = '0000000000000000000000000000000000000000000000000000000000000001';
+  // ====================================================================
+  // Import a key pair from a private key
+  // ====================================================================
+  print('=== Importing from private key ===');
+  const myPrivateKey =
+      '0000000000000000000000000000000000000000000000000000000000000001';
   final keyPairFromPrivate = NostrKeys.fromPrivateKeyHex(myPrivateKey);
   print('Private Key: ${keyPairFromPrivate.privateKey}');
   print('Public Key:  ${keyPairFromPrivate.publicKey}');
   print('');
 
-  // ===== Importare una coppia completa =====
-  print('=== Importare entrambe le chiavi ===');
-  const privateKey = '0000000000000000000000000000000000000000000000000000000000000001';
-  const publicKey = '79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798';
+  // ====================================================================
+  // Import a full key pair (both keys)
+  // ====================================================================
+  print('=== Importing both keys ===');
+  const privateKey =
+      '0000000000000000000000000000000000000000000000000000000000000001';
+  const publicKey =
+      '79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798';
 
   try {
     final importedKeyPair = NostrKeys.fromHex(
       privateKeyHex: privateKey,
       publicKeyHex: publicKey,
     );
-    print('Chiavi importate con successo!');
-    print('Private Key: ${importedKeyPair.privateKey}');
-    print('Public Key:  ${importedKeyPair.publicKey}');
+    print('Keys imported successfully!');
+    print('Private: ${importedKeyPair.privateKey}');
+    print('Public:  ${importedKeyPair.publicKey}');
   } catch (e) {
-    print('Errore: $e');
+    print('Error: $e');
   }
   print('');
 
-  // ===== Validare il formato delle chiavi =====
-  print('=== Validare il formato delle chiavi ===');
-  const testKey = '0000000000000000000000000000000000000000000000000000000000000001';
-  print('Formato privata valido? ${NostrKeys.isValidPrivateKeyFormat(testKey)}');
-  print('Formato pubblica valido? ${NostrKeys.isValidPublicKeyFormat(publicKey)}');
+  // ====================================================================
+  // Validate key format
+  // ====================================================================
+  print('=== Validating key format ===');
+  const testKey =
+      '0000000000000000000000000000000000000000000000000000000000000001';
+  print('Valid private key format? ${NostrKeys.isValidPrivateKeyFormat(testKey)}');
+  print('Valid public key format? ${NostrKeys.isValidPublicKeyFormat(publicKey)}');
   print('');
 
-  // ===== Usare il toString per stampare in modo leggibile =====
-  print('=== Stampa leggibile ===');
+  // ====================================================================
+  // Human-readable toString output
+  // ====================================================================
+  print('=== Human-readable output ===');
   final keyPair = NostrKeys.generate();
   print('KeyPair: $keyPair');
 }

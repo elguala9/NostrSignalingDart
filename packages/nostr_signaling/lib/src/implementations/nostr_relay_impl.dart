@@ -4,12 +4,19 @@ import 'package:dart_nostr/dart_nostr.dart';
 
 import '../interfaces/i_relay.dart';
 
+/// Concrete Nostr relay implementation using [dart_nostr].
+///
+/// Manages a single WebSocket connection to a Nostr relay with
+/// automatic subscription lifecycle tracking.
 class NostrRelayImpl implements INostrRelay {
+  /// The WebSocket URL of the Nostr relay.
   final String relayUrl;
+
   final Nostr _nostr = Nostr();
   bool _isConnected = false;
   final Map<String, NostrEventsStream> _subscriptions = {};
 
+  /// Creates a relay connection to [relayUrl].
   NostrRelayImpl({required this.relayUrl});
 
   @override

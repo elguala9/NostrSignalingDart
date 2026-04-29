@@ -1,3 +1,8 @@
+/// A Nostr-based signaling library for exchanging binary data between peers.
+///
+/// Provides publish/subscribe semantics over the Nostr protocol with
+/// optional GZip compression, multi-relay redundancy, and pluggable
+/// compression engines.
 library nostr_signaling;
 
 export 'src/constants.dart';

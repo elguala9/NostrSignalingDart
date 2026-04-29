@@ -5,10 +5,17 @@ import 'interfaces/i_relay.dart';
 import 'interfaces/i_compression.dart';
 import 'interfaces/i_nostr_signaling.dart';
 
+/// Factory for creating [INostrSignaling] instances with common configurations.
+///
+/// Provides pre-configured factory methods for single relay, multi-relay,
+/// compression, and custom relay setups.
 class NostrSignalingFactory {
   static const String _defaultRelayUrl = 'wss://relay.damus.io';
 
-  /// Creates INostrSignaling with a single relay (default: Damus relay)
+  /// Creates an [INostrSignaling] with a single relay.
+  ///
+  /// Uses the Damus relay by default. Optionally enables compression
+  /// with a custom [compressionEngine].
   static INostrSignaling create({
     required String pubkey,
     required String privkey,
@@ -27,7 +34,10 @@ class NostrSignalingFactory {
     );
   }
 
-  /// Creates INostrSignaling with multiple relays for redundancy
+  /// Creates an [INostrSignaling] with multiple relays for redundancy.
+  ///
+  /// Events are published to all relays. The first successful response
+  /// is returned.
   static INostrSignaling createWithMultipleRelays({
     required String pubkey,
     required String privkey,
@@ -46,7 +56,7 @@ class NostrSignalingFactory {
     );
   }
 
-  /// Creates INostrSignaling with GZIP compression and a single relay
+  /// Creates an [INostrSignaling] with GZip compression and a single relay.
   static INostrSignaling createWithGzipCompression({
     required String pubkey,
     required String privkey,
@@ -64,7 +74,7 @@ class NostrSignalingFactory {
     );
   }
 
-  /// Creates INostrSignaling with GZIP compression and multiple relays
+  /// Creates an [INostrSignaling] with GZip compression and multiple relays.
   static INostrSignaling createWithGzipCompressionAndMultipleRelays({
     required String pubkey,
     required String privkey,
@@ -82,7 +92,9 @@ class NostrSignalingFactory {
     );
   }
 
-  /// Creates INostrSignaling with custom relay instances
+  /// Creates an [INostrSignaling] with custom [INostrRelay] instances.
+  ///
+  /// Use this when you need full control over relay configuration.
   static INostrSignaling createWithCustomRelays({
     required String pubkey,
     required String privkey,

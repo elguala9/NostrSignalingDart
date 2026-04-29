@@ -1,8 +1,10 @@
 import 'package:nostr_signaling/nostr_signaling.dart';
 
 void main() async {
-  // === ESEMPIO 1: Signaling semplice senza compressione ===
-  print('=== Esempio 1: Signaling semplice ===');
+  // ====================================================================
+  // Example 1: Simple signaling without compression
+  // ====================================================================
+  print('=== Example 1: Basic Signaling ===');
 
   final signaling = NostrSignalingFactory.create(
     pubkey: NostrTestKeys.testPublicKey1,
@@ -11,23 +13,29 @@ void main() async {
   );
 
   await signaling.connect();
-  print('Connesso al relay');
+  print('Connected to relay');
 
-  // Pubblica dati raw
+  // Publish raw data
   final eventId = await signaling.publish([1, 2, 3, 4, 5]);
-  print('Evento pubblicato: $eventId');
+  print('Event published: $eventId');
 
-  // Ascolta messaggi
+  // Listen for messages from a peer
   await signaling.subscribe('target_user_id', (id, data) {
-    print('Ricevuto da $id: $data');
+    print('Received from $id: $data');
   });
+
+  // Retrieve the last event from a peer
+  final lastData = await signaling.retriveLast('target_user_id');
+  print('Last data from peer: $lastData');
 
   await signaling.disconnect();
 
-  print('\n');
+  print('');
 
-  // === ESEMPIO 2: Signaling con compressione GZip ===
-  print('=== Esempio 2: Con compressione GZip ===');
+  // ====================================================================
+  // Example 2: Signaling with GZip compression
+  // ====================================================================
+  print('=== Example 2: With GZip Compression ===');
 
   final signalingWithCompression =
       NostrSignalingFactory.createWithGzipCompression(
@@ -37,28 +45,54 @@ void main() async {
   );
 
   await signalingWithCompression.connect();
-  print('Connesso al relay con compressione');
+  print('Connected to relay with compression');
 
-  // I dati verranno compressi automaticamente
+  // Large data will be compressed automatically before publishing
   final largeData = List<int>.generate(1000, (i) => i % 256);
   final compressedEventId = await signalingWithCompression.publish(largeData);
-  print('Evento compresso pubblicato: $compressedEventId');
+  print('Compressed event published: $compressedEventId');
 
   await signalingWithCompression.disconnect();
 
-  print('\n');
+  print('');
 
-  // === ESEMPIO 3: Compressione custom ===
-  print('=== Esempio 3: Compressione custom ===');
+  // ====================================================================
+  // Example 3: Using the compression engine directly
+  // ====================================================================
+  print('=== Example 3: Direct Compression Engine Usage ===');
 
   final gzipEngine = GzipCompressionEngine();
   final dataToCompress = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   final compressed = await gzipEngine.compress(dataToCompress);
-  print('Dati originali: ${compressed.originalSize} bytes');
-  print('Dati compressi: ${compressed.compressedSize} bytes');
-  print('Ratio compressione: ${compressed.compressionRatio.toStringAsFixed(2)}%');
+  print('Original size: ${compressed.originalSize} bytes');
+  print('Compressed size: ${compressed.compressedSize} bytes');
+  print('Ratio: ${compressed.compressionRatio.toStringAsFixed(2)}%');
 
   final decompressed = await gzipEngine.decompress(compressed);
-  print('Decompresso: $decompressed');
+  print('Decompressed data: $decompressed');
+
+  print('');
+
+  // ====================================================================
+  // Example 4: Multi-relay redundancy
+  // ====================================================================
+  print('=== Example 4: Multi-Relay Redundancy ===');
+
+  final multiRelay = NostrSignalingFactory.createWithMultipleRelays(
+    pubkey: NostrTestKeys.testPublicKey3,
+    privkey: NostrTestKeys.testPrivateKey3,
+    relayUrls: [
+      NostrTestRelays.damus,
+      NostrTestRelays.nos,
+    ],
+  );
+
+  await multiRelay.connect();
+  print('Connected to multiple relays');
+
+  final multiEventId = await multiRelay.publish([10, 20, 30]);
+  print('Event published to all relays: $multiEventId');
+
+  await multiRelay.disconnect();
 }

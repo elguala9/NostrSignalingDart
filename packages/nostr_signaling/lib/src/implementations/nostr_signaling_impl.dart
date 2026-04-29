@@ -8,16 +8,34 @@ import '../interfaces/i_nostr_signaling.dart';
 import '../interfaces/i_relay.dart';
 import '../types.dart';
 
+/// Concrete implementation of [INostrSignaling].
+///
+/// Supports single and multi-relay configurations with optional
+/// compression. Data is base64-encoded for safe transport over Nostr.
+/// Events are published to all relays concurrently; the first successful
+/// response is returned.
 class NostrSignalingImpl implements INostrSignaling {
+  /// The signer's Nostr public key.
   final String pubkey;
+
+  /// The signer's Nostr private key.
   final String privkey;
+
+  /// The list of relays to publish/subscribe to.
   final List<INostrRelay> relays;
+
+  /// Whether to compress data before publishing.
   final bool useCompression;
+
+  /// The compression engine to use (required if [useCompression] is true).
   final ICompressionEngine? compressionEngine;
 
   final Map<NostrId, EventCallback> _subscriptions = {};
   final Map<NostrId, Map<INostrRelay, String>> _relaySubscriptionIds = {};
 
+  /// Creates a [NostrSignalingImpl] with one or more relays.
+  ///
+  /// Throws [ArgumentError] if [relays] is empty.
   NostrSignalingImpl({
     required this.pubkey,
     required this.privkey,
@@ -26,7 +44,7 @@ class NostrSignalingImpl implements INostrSignaling {
     this.compressionEngine,
   }) : relays = relays.isNotEmpty ? relays : throw ArgumentError('At least one relay is required');
 
-  /// Convenience constructor for a single relay
+  /// Creates a [NostrSignalingImpl] with a single relay.
   NostrSignalingImpl.single({
     required this.pubkey,
     required this.privkey,

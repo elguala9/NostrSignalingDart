@@ -3,6 +3,10 @@ import 'package:archive/archive.dart';
 import '../interfaces/i_compression.dart';
 import '../types.dart';
 
+/// GZip compression engine implementing [ICompressionEngine].
+///
+/// Compresses data using the GZip format and detects already-compressed
+/// data by inspecting magic bytes to prevent double compression.
 class GzipCompressionEngine implements ICompressionEngine {
   @override
   Future<CompressedData> compress(List<int> data) async {
@@ -10,7 +14,7 @@ class GzipCompressionEngine implements ICompressionEngine {
 
     final originalSize = data.length;
     final compressed = GZipEncoder().encode(data);
-    final compressedSize = compressed?.length ?? 0;
+    final compressedSize = compressed.length;
 
     final compressionRatio = originalSize > 0
         ? (1 - (compressedSize / originalSize)) * 100
@@ -20,17 +24,18 @@ class GzipCompressionEngine implements ICompressionEngine {
       originalSize: originalSize,
       compressedSize: compressedSize,
       compressionRatio: compressionRatio,
-      data: compressed ?? data,
+      data: compressed,
       timestamp: DateTime.now().millisecondsSinceEpoch,
     );
   }
 
-  /// Checks if data is already compressed
-  /// Throws ArgumentError if a known compressed format is detected
+  /// Checks if [data] starts with magic bytes of a known compressed format.
+  ///
+  /// Throws [ArgumentError] if a compressed header (GZip, ZIP, BZip2, 7z, RAR)
+  /// is detected, to prevent double compression.
   void _checkIfAlreadyCompressed(List<int> data) {
     if (data.isEmpty) return;
 
-    // Check magic number (first 2-3 bytes)
     final first = data[0];
     final second = data.length > 1 ? data[1] : 0;
     final third = data.length > 2 ? data[2] : 0;
@@ -79,7 +84,6 @@ class GzipCompressionEngine implements ICompressionEngine {
       final decompressed = GZipDecoder().decodeBytes(compressed.data);
       return decompressed;
     } catch (e) {
-      // Se la decompressione fallisce, ritorna i dati originali
       return compressed.data;
     }
   }
