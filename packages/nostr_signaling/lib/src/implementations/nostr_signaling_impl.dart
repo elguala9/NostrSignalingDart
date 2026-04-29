@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:nostr/nostr.dart';
+
+import 'package:dart_nostr/dart_nostr.dart';
 
 import '../interfaces/i_compression.dart';
 import '../interfaces/i_nostr_signaling.dart';
@@ -69,13 +70,25 @@ class NostrSignalingImpl implements INostrSignaling {
       kind: useCompression ? 1000 : 1001,
     );
 
-    // Publish to all relays and return the event ID
-    // All relays get the same event with the same ID
-    final publishFutures = relays.map((relay) => relay.publishEvent(event));
-    final results = await Future.wait(publishFutures, eagerError: false);
+    // Publish to all relays, return first successful event ID
+    final completer = Completer<String>();
+    var errorCount = 0;
 
-    // Return the first successful result or the first result
-    return results.whereType<String>().firstOrNull ?? results.first;
+    for (final relay in relays) {
+      relay.publishEvent(event).then((id) {
+        if (!completer.isCompleted) completer.complete(id);
+      }).catchError((_) {
+        errorCount++;
+        if (errorCount >= relays.length && !completer.isCompleted) {
+          completer.complete(event.id ?? '');
+        }
+      });
+    }
+
+    return completer.future.timeout(
+      const Duration(seconds: 15),
+      onTimeout: () => event.id ?? '',
+    );
   }
 
   @override
@@ -89,16 +102,18 @@ class NostrSignalingImpl implements INostrSignaling {
     _relaySubscriptionIds[id] = {};
 
     // Subscribe to all events from the specified author with our custom kinds
-    final filter = <String, dynamic>{
-      'authors': [id],
-      'kinds': [1000, 1001],
-      if (since != null) 'since': since,
-    };
+    final filter = NostrFilter(
+      authors: [id],
+      kinds: [1000, 1001],
+      since: since != null
+          ? DateTime.fromMillisecondsSinceEpoch(since * 1000)
+          : null,
+    );
 
     // Subscribe on all relays
     final subscriptionFutures = relays.map((relay) async {
       final subId = await relay.subscribe(filter, (event) {
-        final data = _decodeContent(event.content);
+        final data = _decodeContent(event.content ?? '');
         onEvent(id, data);
       });
       _relaySubscriptionIds[id]![relay] = subId;
@@ -111,11 +126,11 @@ class NostrSignalingImpl implements INostrSignaling {
 
   @override
   Future<List<int>> retriveLast(NostrId id) async {
-    final filter = <String, dynamic>{
-      'authors': [id],
-      'kinds': [1000, 1001],
-      'limit': 1,
-    };
+    final filter = NostrFilter(
+      authors: [id],
+      kinds: [1000, 1001],
+      limit: 1,
+    );
 
     // Try to retrieve from all relays concurrently and return the first successful result
     final retrieveFutures = relays.map((relay) async {
@@ -124,7 +139,7 @@ class NostrSignalingImpl implements INostrSignaling {
 
       try {
         final subId = await relay.subscribe(filter, (event) {
-          lastData = _decodeContent(event.content);
+          lastData = _decodeContent(event.content ?? '');
           if (!completer.isCompleted) {
             completer.complete();
           }
@@ -173,24 +188,12 @@ class NostrSignalingImpl implements INostrSignaling {
     required String content,
     required int kind,
   }) {
-    // Use nostr library Event.from() which automatically:
-    // 1. Generates event ID from canonical JSON
-    // 2. Signs with BIP340 Schnorr signature
-    final event = Event.from(
+    final keyPairs = NostrKeyPairs(private: privkey);
+    return NostrEvent.fromPartialData(
       kind: kind,
-      tags: [],
       content: content,
-      privkey: privkey,
-    );
-
-    return NostrEvent(
-      id: event.id,
-      pubkey: event.pubkey,
-      createdAt: event.createdAt,
-      kind: event.kind,
-      tags: event.tags,
-      content: event.content,
-      sig: event.sig,
+      keyPairs: keyPairs,
+      tags: [],
     );
   }
 

@@ -1,4 +1,6 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
+import 'package:dart_nostr/dart_nostr.dart';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
 
@@ -32,41 +34,39 @@ class DebugSharedRelay implements INostrRelay {
 
     publishedEvents.add(event);
 
-    // Invia l'evento a tutti i subscriber
     for (final subId in subscriptions.keys) {
       final callbacks = subscriptions[subId]!;
       print('   → Notificando $subId con ${callbacks.length} callbacks');
       for (final callback in callbacks) {
-        Future.microtask(() {
+        unawaited(Future.microtask(() {
           print('   ✓ Callback eseguito per $subId');
           callback(event);
-        });
+        }));
       }
     }
 
-    return event.id;
+    return event.id ?? '';
   }
 
   @override
   Future<String> subscribe(
-    Map<String, dynamic> filter,
+    NostrFilter filter,
     RelayEventCallback onEvent,
   ) async {
     final subId = 'sub_${subscriptions.length + 1}';
     print('📥 Relay: subscribe ricevuto');
     print('   SubID: $subId');
-    print('   Filter: $filter');
+    print('   Filter authors: ${filter.authors}');
 
     subscriptions.putIfAbsent(subId, () => []).add(onEvent);
 
-    // Invia gli eventi già pubblicati che corrispondono al filtro
-    final authors = filter['authors'] as List<String>?;
+    final authors = filter.authors;
     if (authors != null) {
       print('   Cercando eventi degli autori: $authors');
       for (final event in publishedEvents) {
         if (authors.contains(event.pubkey)) {
           print('   ✓ Trovato evento di ${event.pubkey}, inviando...');
-          Future.microtask(() => onEvent(event));
+          unawaited(Future.microtask(() => onEvent(event)));
         }
       }
     }
@@ -135,7 +135,7 @@ void main() {
       print('✓ Evento pubblicato con ID: $eventId');
 
       print('\n4️⃣ In attesa della ricezione...');
-      await completer.future.timeout(Duration(seconds: 5));
+      await completer.future.timeout(const Duration(seconds: 5));
       print('✓ Dati ricevuti!');
 
       print('\n5️⃣ Verifica:');

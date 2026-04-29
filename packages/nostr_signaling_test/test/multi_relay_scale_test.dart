@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
@@ -23,7 +24,7 @@ Future<List<NostrRelayImpl>> _connectSequentially(
   final connected = <NostrRelayImpl>[];
   for (final relay in relays) {
     try {
-      await relay.connect().timeout(Duration(seconds: 10));
+      await relay.connect().timeout(const Duration(seconds: 10));
       if (relay.isConnected()) {
         connected.add(relay);
       }
@@ -38,7 +39,7 @@ Future<void> _disconnectAll(List<NostrRelayImpl> relays) async {
   for (final relay in relays) {
     try {
       if (relay.isConnected()) {
-        await relay.disconnect().timeout(Duration(seconds: 5));
+        await relay.disconnect().timeout(const Duration(seconds: 5));
       }
     } catch (_) {}
   }
@@ -63,7 +64,7 @@ void main() {
 
       expect(connected.length, greaterThanOrEqualTo(8),
           reason: 'Almeno 8 relay su 10 devono connettersi');
-    }, timeout: Timeout(Duration(seconds: 120)));
+    }, timeout: const Timeout(Duration(seconds: 120)));
 
     test('disconnect disconnette dai relay connessi', () async {
       final connected = await _connectSequentially(relayInstances);
@@ -73,7 +74,7 @@ void main() {
 
       final stillConnected = connected.where((r) => r.isConnected());
       expect(stillConnected, isEmpty);
-    }, timeout: Timeout(Duration(seconds: 120)));
+    }, timeout: const Timeout(Duration(seconds: 120)));
 
     test('publish restituisce event ID valido sui relay connessi', () async {
       final connected = await _connectSequentially(relayInstances);
@@ -90,7 +91,7 @@ void main() {
 
       expect(eventId, isNotEmpty);
       expect(eventId.length, equals(64));
-    }, timeout: Timeout(Duration(seconds: 30)));
+    }, timeout: const Timeout(Duration(seconds: 30)));
 
     test('publish + callback recupera dati propagati', () async {
       final connected = await _connectSequentially(relayInstances);
@@ -124,13 +125,13 @@ void main() {
 
       print('⏳ Attesa ricezione dati su ${connected.length} relay...');
       final recovered = await completer.future
-          .timeout(Duration(seconds: 15));
+          .timeout(const Duration(seconds: 15));
 
       print('  Dati originali:  $uniqueData');
       print('  Dati ricevuti:   $recovered');
 
       expect(recovered, equals(uniqueData));
-    }, timeout: Timeout(Duration(seconds: 30)));
+    }, timeout: const Timeout(Duration(seconds: 30)));
 
     test('publish multipli senza errori', () async {
       final connected = await _connectSequentially(relayInstances);
@@ -157,7 +158,7 @@ void main() {
       expect(id2, isNot(id3));
 
       print('  Event IDs: $id1, $id2, $id3');
-    }, timeout: Timeout(Duration(seconds: 30)));
+    }, timeout: const Timeout(Duration(seconds: 30)));
 
     test('isConnected true se almeno 1 relay connesso', () async {
       final connected = await _connectSequentially(relayInstances.take(3).toList());
@@ -171,7 +172,7 @@ void main() {
       );
 
       expect(signaling.isConnected(), true);
-    }, timeout: Timeout(Duration(seconds: 30)));
+    }, timeout: const Timeout(Duration(seconds: 30)));
 
     test('isConnected false se nessun relay connesso', () {
       signaling = NostrSignalingImpl(
@@ -200,10 +201,9 @@ void main() {
       );
 
       expect(subId, isNotEmpty);
-      expect(subId, startsWith('sub_'));
 
       await signaling.unsubscribe(NostrTestKeys.testPublicKey2);
-    }, timeout: Timeout(Duration(seconds: 30)));
+    }, timeout: const Timeout(Duration(seconds: 30)));
 
     test('publish scala con i relay connessi (performance)', () async {
       final connected = await _connectSequentially(relayInstances);
@@ -229,7 +229,7 @@ void main() {
         lessThan(10000),
         reason: 'Publish should complete within 10 seconds',
       );
-    }, timeout: Timeout(Duration(seconds: 30)));
+    }, timeout: const Timeout(Duration(seconds: 30)));
   });
 }
 

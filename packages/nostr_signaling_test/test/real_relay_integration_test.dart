@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
@@ -46,7 +47,7 @@ void main() {
 
       print('Connessione al relay...');
       final connectStart = DateTime.now();
-      await peer1.connect().timeout(Duration(seconds: 15));
+      await peer1.connect().timeout(const Duration(seconds: 15));
       final connectTime = DateTime.now().difference(connectStart);
       print('✓ Connesso al relay in ${connectTime.inMilliseconds}ms');
 
@@ -64,20 +65,20 @@ void main() {
           }
         },
         since: since,
-      ).timeout(Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 15));
       final subscribeTime = DateTime.now().difference(subscribeStart);
       print('✓ Sottoscritto in ${subscribeTime.inMilliseconds}ms');
 
       // Peer1 pubblica dati
       print('Peer1 pubblica dati: $testData');
       final publishStart = DateTime.now();
-      final eventId = await peer1.publish(testData).timeout(Duration(seconds: 15));
+      final eventId = await peer1.publish(testData).timeout(const Duration(seconds: 15));
       final publishTime = DateTime.now().difference(publishStart);
       print('✓ Evento pubblicato con ID: $eventId in ${publishTime.inMilliseconds}ms');
 
       // Attendi la ricezione dei dati
       print('In attesa della ricezione dei dati...');
-      await dataReceivedCompleter.future.timeout(Duration(seconds: 10));
+      await dataReceivedCompleter.future.timeout(const Duration(seconds: 10));
       final totalTime = DateTime.now().difference(publishStart);
       print('✓ Dati ricevuti in ${totalTime.inMilliseconds}ms dalla pubblicazione');
 
@@ -111,8 +112,8 @@ void main() {
 
       final since = DateTime.now().millisecondsSinceEpoch ~/ 1000 - 5;
 
-      await peer1.connect().timeout(Duration(seconds: 15));
-      await peer2.connect().timeout(Duration(seconds: 15));
+      await peer1.connect().timeout(const Duration(seconds: 15));
+      await peer2.connect().timeout(const Duration(seconds: 15));
 
       await peer1.subscribe(
         NostrTestKeys.testPublicKey2,
@@ -124,7 +125,7 @@ void main() {
           }
         },
         since: since,
-      ).timeout(Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 15));
 
       await peer2.subscribe(
         NostrTestKeys.testPublicKey1,
@@ -136,7 +137,7 @@ void main() {
           }
         },
         since: since,
-      ).timeout(Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 15));
 
       final setupTime = DateTime.now().difference(setupStart);
       print('✓ Setup completato in ${setupTime.inMilliseconds}ms');
@@ -146,18 +147,18 @@ void main() {
       final exchangeStart = DateTime.now();
 
       print('Peer1 pubblica: $data1');
-      await peer1.publish(data1).timeout(Duration(seconds: 15));
+      await peer1.publish(data1).timeout(const Duration(seconds: 15));
 
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       print('Peer2 pubblica: $data2');
-      await peer2.publish(data2).timeout(Duration(seconds: 15));
+      await peer2.publish(data2).timeout(const Duration(seconds: 15));
 
       // Attendi ricezione
       print('In attesa della ricezione...');
       await Future.wait([
-        peer1Completer.future.timeout(Duration(seconds: 60)),
-        peer2Completer.future.timeout(Duration(seconds: 60)),
+        peer1Completer.future.timeout(const Duration(seconds: 60)),
+        peer2Completer.future.timeout(const Duration(seconds: 60)),
       ]);
 
       final exchangeTime = DateTime.now().difference(exchangeStart);
@@ -175,7 +176,7 @@ void main() {
       print('Setup:     ${setupTime.inMilliseconds}ms');
       print('Scambio:   ${exchangeTime.inMilliseconds}ms');
       print('Totale:    ${DateTime.now().difference(setupStart).inMilliseconds}ms\n');
-    }, timeout: Timeout(Duration(seconds: 150)));
+    }, timeout: const Timeout(Duration(seconds: 150)));
 
     test('Multipli messaggi successivi mantengono ordine e integrità', () async {
       print('\n=== Test: Multiple Messages Integrity ===');
@@ -183,11 +184,11 @@ void main() {
       // Record since before connecting so we only get new events
       final since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-      await peer1.connect().timeout(Duration(seconds: 15));
+      await peer1.connect().timeout(const Duration(seconds: 15));
 
       final receivedMessages = <List<int>>[];
       final completer = Completer<void>();
-      int messagesExpected = 3;
+      const messagesExpected = 3;
 
       final messages = [
         [1, 1, 1],
@@ -209,23 +210,23 @@ void main() {
           }
         },
         since: since,
-      ).timeout(Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 15));
 
       print('Invio di $messagesExpected messaggi...');
       final startTime = DateTime.now();
 
-      for (int i = 0; i < messages.length; i++) {
+      for (var i = 0; i < messages.length; i++) {
         print('Invio messaggio ${i + 1}: ${messages[i]}');
-        await peer1.publish(messages[i]).timeout(Duration(seconds: 15));
-        await Future.delayed(Duration(milliseconds: 200));
+        await peer1.publish(messages[i]).timeout(const Duration(seconds: 15));
+        await Future.delayed(const Duration(milliseconds: 200));
       }
 
       print('In attesa della ricezione di tutti i messaggi...');
-      await completer.future.timeout(Duration(seconds: 10));
+      await completer.future.timeout(const Duration(seconds: 10));
       final totalTime = DateTime.now().difference(startTime);
 
       print('\n=== Verifica Integrità ===');
-      for (int i = 0; i < messages.length; i++) {
+      for (var i = 0; i < messages.length; i++) {
         print('Messaggio ${i + 1}: inviato ${messages[i]}, ricevuto ${receivedMessages[i]}');
         expect(receivedMessages[i], equals(messages[i]));
       }

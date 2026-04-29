@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:dart_nostr/dart_nostr.dart';
 import 'package:mockito/mockito.dart';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
@@ -27,31 +29,28 @@ class SharedNostrRelay extends Mock implements INostrRelay {
   Future<String> publishEvent(NostrEvent event) async {
     publishedEvents.add(event);
 
-    // Invia l'evento a tutti i subscriber
     for (final subscribers in subscriptions.values) {
       for (final callback in subscribers) {
-        // Simula l'invio asincrono dell'evento
-        Future.microtask(() => callback(event));
+        unawaited(Future.microtask(() => callback(event)));
       }
     }
 
-    return event.id;
+    return event.id ?? '';
   }
 
   @override
   Future<String> subscribe(
-    Map<String, dynamic> filter,
+    NostrFilter filter,
     RelayEventCallback onEvent,
   ) async {
     final subId = 'sub_${subscriptions.length + 1}';
     subscriptions.putIfAbsent(subId, () => []).add(onEvent);
 
-    // Invia gli eventi già pubblicati che corrispondono al filtro
-    final authors = filter['authors'] as List<String>?;
+    final authors = filter.authors;
     if (authors != null) {
       for (final event in publishedEvents) {
         if (authors.contains(event.pubkey)) {
-          Future.microtask(() => onEvent(event));
+          unawaited(Future.microtask(() => onEvent(event)));
         }
       }
     }
@@ -64,7 +63,6 @@ class SharedNostrRelay extends Mock implements INostrRelay {
     subscriptions.remove(subscriptionId);
   }
 
-  // Helper per ottenere l'ultimo evento di un specifico autore
   NostrEvent? getLastEventFromAuthor(String pubkey) {
     for (final event in publishedEvents.reversed) {
       if (event.pubkey == pubkey) {
@@ -197,8 +195,6 @@ void main() {
       await peer1.connect();
       await peer2.connect();
 
-      final receivedEvents = <NostrEvent>[];
-
       // Peer2 si iscrive agli eventi di Peer1
       await peer2.subscribe(NostrTestKeys.testPublicKey1, (id, data) {
         // Callback ricevuto
@@ -208,7 +204,7 @@ void main() {
       await peer1.publish([111, 222, 233]);
 
       // Aspetta che il callback venga processato
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       // Verifica che l'evento sia stato pubblicato
       expect(sharedRelay.publishedEvents.length, equals(1));

@@ -1,23 +1,25 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
+import 'package:dart_nostr/dart_nostr.dart';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
 
-class _Subscription {
-  final Map<String, dynamic> filter;
+class TimingSubscription {
+  TimingSubscription(this.filter, this.callback);
+  final NostrFilter filter;
   final RelayEventCallback callback;
-  _Subscription(this.filter, this.callback);
 }
 
 class TimingRelay implements INostrRelay {
   final List<NostrEvent> publishedEvents = [];
-  final Map<String, _Subscription> subscriptions = {};
+  final Map<String, TimingSubscription> subscriptions = {};
   bool _isConnected = false;
 
-  bool _matchesFilter(NostrEvent event, Map<String, dynamic> filter) {
-    final authors = filter['authors'] as List?;
+  bool _matchesFilter(NostrEvent event, NostrFilter filter) {
+    final authors = filter.authors;
     if (authors != null && !authors.contains(event.pubkey)) return false;
-    final kinds = filter['kinds'] as List?;
-    if (kinds != null && !kinds.contains(event.kind)) return false;
+    final kinds = filter.kinds;
+    if (kinds != null && event.kind != null && !kinds.contains(event.kind)) return false;
     return true;
   }
 
@@ -41,22 +43,22 @@ class TimingRelay implements INostrRelay {
     publishedEvents.add(event);
     for (final sub in subscriptions.values) {
       if (_matchesFilter(event, sub.filter)) {
-        Future.microtask(() => sub.callback(event));
+        unawaited(Future.microtask(() => sub.callback(event)));
       }
     }
-    return event.id;
+    return event.id ?? '';
   }
 
   @override
   Future<String> subscribe(
-    Map<String, dynamic> filter,
+    NostrFilter filter,
     RelayEventCallback onEvent,
   ) async {
     final subId = 'sub_${subscriptions.length + 1}';
-    subscriptions[subId] = _Subscription(filter, onEvent);
+    subscriptions[subId] = TimingSubscription(filter, onEvent);
     for (final event in publishedEvents) {
       if (_matchesFilter(event, filter)) {
-        Future.microtask(() => onEvent(event));
+        unawaited(Future.microtask(() => onEvent(event)));
       }
     }
     return subId;
@@ -76,8 +78,7 @@ void main() {
     late NostrSignalingImpl peer3;
 
     setUp(() {
-      relay = TimingRelay();
-      relay.connect();
+      relay = TimingRelay()..connect();
 
       peer1 = NostrSignalingImpl.single(
         pubkey: NostrTestKeys.testPublicKey1,
@@ -124,7 +125,7 @@ void main() {
       print('📤 PUBBLICAZIONE');
       print('   Dati: $testData');
       final publishStart = DateTime.now();
-      final eventId = await peer1.publish(testData);
+      await peer1.publish(testData);
       final publishTime = DateTime.now().difference(publishStart);
       print('   Tempo di pubblicazione: ${publishTime.inMicroseconds}μs\n');
 
@@ -209,7 +210,6 @@ void main() {
 
       // Publish
       print('📤 PUBBLICAZIONE');
-      final publishStart = DateTime.now();
 
       final p1PubStart = DateTime.now();
       await peer1.publish(data1);
@@ -264,7 +264,7 @@ void main() {
       print('║        THROUGHPUT: 50 MESSAGGI DA PEER1            ║');
       print('╚════════════════════════════════════════════════════════╝\n');
 
-      int receivedCount = 0;
+      var receivedCount = 0;
       final completer = Completer<void>();
 
       print('📍 SETUP');
@@ -281,11 +281,11 @@ void main() {
       print('📤 INVIO DI 50 MESSAGGI');
       final publishStart = DateTime.now();
 
-      for (int i = 1; i <= 50; i++) {
+      for (var i = 1; i <= 50; i++) {
         final data = [i];
         await peer1.publish(data);
         if (i % 10 == 0) {
-          print('   ✓ ${i} messaggi inviati');
+          print('   ✓ $i messaggi inviati');
         }
       }
 

@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
@@ -47,7 +48,7 @@ void main() {
       const testData = [42, 99, 123, 200];
       late List<int> retrievedData;
       final completer = Completer<void>();
-      bool dataFound = false;
+      var dataFound = false;
 
       print('📍 FASE 1: PUBBLICAZIONE DEI DATI');
       print('Publisher pubkey: ${publisher.pubkey}');
@@ -56,13 +57,13 @@ void main() {
 
       print('Connessione del publisher al relay...');
       final publishStart = DateTime.now();
-      await publisher.connect().timeout(Duration(seconds: 15));
+      await publisher.connect().timeout(const Duration(seconds: 15));
       print(
           '✓ Publisher connesso in ${DateTime.now().difference(publishStart).inMilliseconds}ms');
 
       print('Pubblicazione dei dati...');
       final pubStart = DateTime.now();
-      final eventId = await publisher.publish(testData).timeout(Duration(
+      final eventId = await publisher.publish(testData).timeout(const Duration(
           seconds: 15)); // Firma Schnorr valida = evento accettato!
       final pubTime = DateTime.now().difference(pubStart);
       print('✓ Dati pubblicati con Event ID: $eventId');
@@ -70,12 +71,12 @@ void main() {
 
       // Attesa per propagazione nel relay
       print('⏳ Attesa propagazione nel relay (3 secondi)...');
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 3));
 
       print('\n📍 FASE 2: RECUPERO DEI DATI');
       print('Connessione del receiver al relay...');
       final recvStart = DateTime.now();
-      await receiver.connect().timeout(Duration(seconds: 15));
+      await receiver.connect().timeout(const Duration(seconds: 15));
       print(
           '✓ Receiver connesso in ${DateTime.now().difference(recvStart).inMilliseconds}ms');
 
@@ -96,12 +97,12 @@ void main() {
             if (!completer.isCompleted) completer.complete();
           }
         },
-      ).timeout(Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 15));
       print('✓ Receiver iscritto\n');
 
       print('In attesa della ricezione dei dati memorizzati dal relay...');
       try {
-        await completer.future.timeout(Duration(seconds: 10));
+        await completer.future.timeout(const Duration(seconds: 10));
       } catch (e) {
         print('⚠️  Timeout attesa dati');
       }

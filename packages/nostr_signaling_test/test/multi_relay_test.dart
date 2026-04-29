@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
@@ -11,7 +12,7 @@ void main() {
 
       final testData = [111, 222, 100, 50];
       late List<int> retrievedData;
-      bool dataFound = false;
+      var dataFound = false;
 
       final relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
@@ -32,24 +33,24 @@ void main() {
       try {
         print('📤 Pubblicazione su nos.lol...');
         final pubStart = DateTime.now();
-        await publisher.connect().timeout(Duration(seconds: 15));
-        final eventId = await publisher.publish(testData).timeout(Duration(seconds: 15));
+        await publisher.connect().timeout(const Duration(seconds: 15));
+        final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
         print('✓ Evento pubblicato: $eventId');
         print('  Tempo: ${DateTime.now().difference(pubStart).inMilliseconds}ms\n');
 
         print('⏳ Attesa propagazione nel relay: 10 secondi...');
-        for (int i = 1; i <= 10; i++) {
-          await Future.delayed(Duration(seconds: 1));
+        for (var i = 1; i <= 10; i++) {
+          await Future.delayed(const Duration(seconds: 1));
           print('   $i/10 secondi...');
         }
 
         print('\n📥 Tentativo di recupero con RETRY (max 3 tentativi)...');
-        for (int attempt = 1; attempt <= 3; attempt++) {
+        for (var attempt = 1; attempt <= 3; attempt++) {
           print('\nTentativo $attempt:');
           final completer = Completer<void>();
 
           if (!receiver.isConnected()) {
-            await receiver.connect().timeout(Duration(seconds: 15));
+            await receiver.connect().timeout(const Duration(seconds: 15));
           }
 
           await receiver.subscribe(
@@ -65,16 +66,16 @@ void main() {
                 if (!completer.isCompleted) completer.complete();
               }
             },
-          ).timeout(Duration(seconds: 15));
+          ).timeout(const Duration(seconds: 15));
 
           try {
-            await completer.future.timeout(Duration(seconds: 5));
+            await completer.future.timeout(const Duration(seconds: 5));
             print('  ✓ TROVATO!');
             break;
           } catch (e) {
             print('  ⏳ Tentativo $attempt fallito, retry...');
             if (attempt < 3) {
-              await Future.delayed(Duration(seconds: 3));
+              await Future.delayed(const Duration(seconds: 3));
             }
           }
         }
@@ -100,7 +101,7 @@ void main() {
 
       final testData = [200, 150, 100, 50];
       late List<int> retrievedData;
-      bool dataFound = false;
+      var dataFound = false;
 
       final relay = NostrRelayImpl(relayUrl: 'wss://relay.damus.io');
 
@@ -121,24 +122,24 @@ void main() {
       try {
         print('📤 Pubblicazione su relay.damus.io...');
         final pubStart = DateTime.now();
-        await publisher.connect().timeout(Duration(seconds: 15));
-        final eventId = await publisher.publish(testData).timeout(Duration(seconds: 15));
+        await publisher.connect().timeout(const Duration(seconds: 15));
+        final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
         print('✓ Evento pubblicato: $eventId');
         print('  Tempo: ${DateTime.now().difference(pubStart).inMilliseconds}ms\n');
 
         print('⏳ Attesa propagazione nel relay: 10 secondi...');
-        for (int i = 1; i <= 10; i++) {
-          await Future.delayed(Duration(seconds: 1));
+        for (var i = 1; i <= 10; i++) {
+          await Future.delayed(const Duration(seconds: 1));
           print('   $i/10 secondi...');
         }
 
         print('\n📥 Tentativo di recupero con RETRY (max 3 tentativi)...');
-        for (int attempt = 1; attempt <= 3; attempt++) {
+        for (var attempt = 1; attempt <= 3; attempt++) {
           print('\nTentativo $attempt:');
           final completer = Completer<void>();
 
           if (!receiver.isConnected()) {
-            await receiver.connect().timeout(Duration(seconds: 15));
+            await receiver.connect().timeout(const Duration(seconds: 15));
           }
 
           await receiver.subscribe(
@@ -154,16 +155,16 @@ void main() {
                 if (!completer.isCompleted) completer.complete();
               }
             },
-          ).timeout(Duration(seconds: 15));
+          ).timeout(const Duration(seconds: 15));
 
           try {
-            await completer.future.timeout(Duration(seconds: 5));
+            await completer.future.timeout(const Duration(seconds: 5));
             print('  ✓ TROVATO!');
             break;
           } catch (e) {
             print('  ⏳ Tentativo $attempt fallito, retry...');
             if (attempt < 3) {
-              await Future.delayed(Duration(seconds: 3));
+              await Future.delayed(const Duration(seconds: 3));
             }
           }
         }
@@ -189,7 +190,7 @@ void main() {
 
       final testData = [250, 200, 150, 100];
       late List<int> retrievedData;
-      bool dataFound = false;
+      var dataFound = false;
 
       final relay = NostrRelayImpl(relayUrl: 'wss://relay.primal.net');
 
@@ -210,24 +211,24 @@ void main() {
       try {
         print('📤 Pubblicazione su relay.primal.net...');
         final pubStart = DateTime.now();
-        await publisher.connect().timeout(Duration(seconds: 15));
-        final eventId = await publisher.publish(testData).timeout(Duration(seconds: 15));
+        await publisher.connect().timeout(const Duration(seconds: 15));
+        final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
         print('✓ Evento pubblicato: $eventId');
         print('  Tempo: ${DateTime.now().difference(pubStart).inMilliseconds}ms\n');
 
         print('⏳ Attesa propagazione nel relay: 10 secondi...');
-        for (int i = 1; i <= 10; i++) {
-          await Future.delayed(Duration(seconds: 1));
+        for (var i = 1; i <= 10; i++) {
+          await Future.delayed(const Duration(seconds: 1));
           print('   $i/10 secondi...');
         }
 
         print('\n📥 Tentativo di recupero con RETRY (max 3 tentativi)...');
-        for (int attempt = 1; attempt <= 3; attempt++) {
+        for (var attempt = 1; attempt <= 3; attempt++) {
           print('\nTentativo $attempt:');
           final completer = Completer<void>();
 
           if (!receiver.isConnected()) {
-            await receiver.connect().timeout(Duration(seconds: 15));
+            await receiver.connect().timeout(const Duration(seconds: 15));
           }
 
           await receiver.subscribe(
@@ -242,16 +243,16 @@ void main() {
                 if (!completer.isCompleted) completer.complete();
               }
             },
-          ).timeout(Duration(seconds: 15));
+          ).timeout(const Duration(seconds: 15));
 
           try {
-            await completer.future.timeout(Duration(seconds: 5));
+            await completer.future.timeout(const Duration(seconds: 5));
             print('  ✓ TROVATO!');
             break;
           } catch (e) {
             print('  ⏳ Tentativo $attempt fallito, retry...');
             if (attempt < 3) {
-              await Future.delayed(Duration(seconds: 3));
+              await Future.delayed(const Duration(seconds: 3));
             }
           }
         }

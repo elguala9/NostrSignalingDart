@@ -13,4 +13,5 @@ dependencies:
   test: ^1.24.0
 
 dev_dependencies:
+  dart_nostr: any
   lints: ^2.1.0

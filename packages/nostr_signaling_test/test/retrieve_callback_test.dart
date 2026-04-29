@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:async';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
@@ -12,7 +13,7 @@ void main() {
       final testData = [42, 84, 126];
       late List<int> retrievedViaRetrieve;
       late List<int> receivedViaCallback;
-      bool callbackTriggered = false;
+      var callbackTriggered = false;
 
       final relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
@@ -36,14 +37,14 @@ void main() {
         print('═══════════════════════════════════════════════════════════\n');
 
         print('📤 Publisher si connette e pubblica dati...');
-        await publisher.connect().timeout(Duration(seconds: 15));
-        final eventId = await publisher.publish(testData).timeout(Duration(seconds: 15));
+        await publisher.connect().timeout(const Duration(seconds: 15));
+        final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
         print('✓ Evento pubblicato: $eventId');
         print('  Dati: $testData\n');
 
         print('⏳ Attesa 5 secondi per propagazione nel relay...');
-        for (int i = 1; i <= 5; i++) {
-          await Future.delayed(Duration(seconds: 1));
+        for (var i = 1; i <= 5; i++) {
+          await Future.delayed(const Duration(seconds: 1));
           print('   $i/5 secondi...');
         }
 
@@ -52,7 +53,7 @@ void main() {
         print('═══════════════════════════════════════════════════════════\n');
 
         print('📥 Receiver si connette...');
-        await receiver.connect().timeout(Duration(seconds: 15));
+        await receiver.connect().timeout(const Duration(seconds: 15));
         print('✓ Receiver connesso\n');
 
         print('🔍 Tentativo di retriveLast() dal publisher...');
@@ -60,7 +61,7 @@ void main() {
         try {
           retrievedViaRetrieve = await receiver
               .retriveLast(publisher.pubkey)
-              .timeout(Duration(seconds: 10));
+              .timeout(const Duration(seconds: 10));
           final retrieveTime = DateTime.now().difference(retrieveStart);
           print('✅ retriveLast() SUCCESSO!');
           print('  Dati recuperati: $retrievedViaRetrieve');
@@ -91,13 +92,13 @@ void main() {
             callbackTriggered = true;
             if (!completer.isCompleted) completer.complete();
           },
-        ).timeout(Duration(seconds: 15));
+        ).timeout(const Duration(seconds: 15));
 
         print('✓ Sottoscrizione registrata');
         print('  In attesa di callback...\n');
 
         try {
-          await completer.future.timeout(Duration(seconds: 10));
+          await completer.future.timeout(const Duration(seconds: 10));
           print('✅ subscribe() SUCCESSO!');
           expect(receivedViaCallback, equals(testData));
         } catch (e) {
@@ -115,12 +116,8 @@ void main() {
         print('═══════════════════════════════════════════════════════════\n');
 
         print('Dati originali:       $testData');
-        if (retrievedViaRetrieve != null) {
-          print('Dati via retriveLast: $retrievedViaRetrieve ✓');
-        } else {
-          print('Dati via retriveLast: ❌ Non recuperati');
-        }
-        if (callbackTriggered) {
+        print('Dati via retriveLast: $retrievedViaRetrieve ✓');
+              if (callbackTriggered) {
           print('Dati via callback:    $receivedViaCallback ✓');
         } else {
           print('Dati via callback:    ❌ Non ricevuti');
@@ -159,28 +156,28 @@ void main() {
 
       try {
         print('1️⃣ Connessione Peer1...');
-        await peer1.connect().timeout(Duration(seconds: 15));
+        await peer1.connect().timeout(const Duration(seconds: 15));
         print('✓ Peer1 connesso\n');
 
         print('2️⃣ Pubblicazione evento...');
-        final eventId = await peer1.publish(testData).timeout(Duration(seconds: 15));
+        final eventId = await peer1.publish(testData).timeout(const Duration(seconds: 15));
         print('✓ Evento ID: $eventId');
         print('  Firma: Schnorr BIP340 (valida)');
         print('  Dati: $testData\n');
 
         print('3️⃣ Connessione Peer2...');
-        await peer2.connect().timeout(Duration(seconds: 15));
+        await peer2.connect().timeout(const Duration(seconds: 15));
         print('✓ Peer2 connesso\n');
 
         print('4️⃣ Attesa propagazione (3 secondi)...');
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 3));
         print('✓ Pronto per retrieve\n');
 
         print('5️⃣ Test retriveLast() - Peer2 cerca ultimi dati di Peer1...');
         try {
           final retrieved = await peer2
               .retriveLast(peer1.pubkey)
-              .timeout(Duration(seconds: 10));
+              .timeout(const Duration(seconds: 10));
           print('✅ TROVATO: $retrieved');
         } catch (e) {
           print('❌ NON TROVATO: $e');
@@ -188,7 +185,7 @@ void main() {
 
         print('\n6️⃣ Test subscribe() + callback - Peer2 si sottoscrive...');
         final completer = Completer<void>();
-        bool callbackFired = false;
+        var callbackFired = false;
 
         await peer2.subscribe(
           peer1.pubkey,
@@ -197,13 +194,13 @@ void main() {
             callbackFired = true;
             if (!completer.isCompleted) completer.complete();
           },
-        ).timeout(Duration(seconds: 15));
+        ).timeout(const Duration(seconds: 15));
 
         print('✓ Sottoscrizione registrata');
 
         print('\n⏳ Attesa callback (5 secondi)...');
         try {
-          await completer.future.timeout(Duration(seconds: 5));
+          await completer.future.timeout(const Duration(seconds: 5));
           if (callbackFired) {
             print('✅ CALLBACK FUNZIONA');
           }

@@ -30,53 +30,53 @@ void main() {
 
     test('connect si connette al relay reale', () async {
       expect(realRelay.isConnected(), false);
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       expect(realRelay.isConnected(), true);
     });
 
     test('disconnect si disconnette dal relay reale', () async {
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       expect(realRelay.isConnected(), true);
-      await signaling.disconnect().timeout(Duration(seconds: 15));
+      await signaling.disconnect().timeout(const Duration(seconds: 15));
       expect(realRelay.isConnected(), false);
     });
 
     test('isConnected ritorna lo stato del relay reale', () async {
       expect(signaling.isConnected(), false);
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       expect(signaling.isConnected(), true);
     });
 
     test('publish invia un evento al relay reale', () async {
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       const testData = [1, 2, 3, 4, 5];
 
-      final eventId = await signaling.publish(testData).timeout(Duration(seconds: 15));
+      final eventId = await signaling.publish(testData).timeout(const Duration(seconds: 15));
 
       expect(eventId, isNotEmpty);
     });
 
     test('subscribe si sottoscrive al relay reale', () async {
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       const targetId = 'target_user_id';
 
-      final subId = await signaling.subscribe(targetId, (id, data) {}).timeout(Duration(seconds: 15));
+      final subId = await signaling.subscribe(targetId, (id, data) {}).timeout(const Duration(seconds: 15));
 
       expect(subId, isNotEmpty);
     });
 
     test('unsubscribe rimuove la sottoscrizione dal relay reale', () async {
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       const targetId = 'target_user_id';
 
-      final subId = await signaling.subscribe(targetId, (id, data) {}).timeout(Duration(seconds: 15));
-      await signaling.unsubscribe(targetId).timeout(Duration(seconds: 15));
+      await signaling.subscribe(targetId, (id, data) {}).timeout(const Duration(seconds: 15));
+      await signaling.unsubscribe(targetId).timeout(const Duration(seconds: 15));
 
       expect(true, equals(true));
     });
@@ -138,25 +138,25 @@ void main() {
     test('connect connette a tutti i relay', () async {
       expect(relay1.isConnected(), false);
       expect(relay2.isConnected(), false);
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       expect(signaling.isConnected(), true);
     });
 
     test('publish invia a tutti i relay', () async {
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       const testData = [1, 2, 3, 4, 5];
 
-      final eventId = await signaling.publish(testData).timeout(Duration(seconds: 15));
+      final eventId = await signaling.publish(testData).timeout(const Duration(seconds: 15));
 
       expect(eventId, isNotEmpty);
     });
 
     test('isConnected ritorna true se almeno un relay è connesso', () async {
       expect(signaling.isConnected(), false);
-      await signaling.connect().timeout(Duration(seconds: 15));
-      await Future.delayed(Duration(milliseconds: 500));
+      await signaling.connect().timeout(const Duration(seconds: 15));
+      await Future.delayed(const Duration(milliseconds: 500));
       expect(signaling.isConnected(), true);
     });
   });
