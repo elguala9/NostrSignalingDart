@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dart_nostr/dart_nostr.dart';
+import 'package:singleton_manager/singleton_manager.dart';
 
 import '../interfaces/i_relay.dart';
 
@@ -8,7 +9,7 @@ import '../interfaces/i_relay.dart';
 ///
 /// Manages a single WebSocket connection to a Nostr relay with
 /// automatic subscription lifecycle tracking.
-class NostrRelayImpl implements INostrRelay {
+class NostrRelayImpl implements INostrRelay, IValueForRegistry {
   /// The WebSocket URL of the Nostr relay.
   final String relayUrl;
 
@@ -37,6 +38,11 @@ class NostrRelayImpl implements INostrRelay {
       // Already disconnected, ignore
     }
     _isConnected = false;
+  }
+
+  @override
+  Future<void> destroy() async {
+    await disconnect();
   }
 
   @override

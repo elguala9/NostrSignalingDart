@@ -13,15 +13,19 @@ void main() {
       relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
       peer1 = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
         relay: relay,
         useCompression: false,
       );
 
       peer2 = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey2,
-        privkey: NostrTestKeys.testPrivateKey2,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey2,
+          publicKey: NostrTestKeys.testPublicKey2,
+        ),
         relay: relay,
         useCompression: false,
       );

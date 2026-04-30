@@ -1,4 +1,5 @@
 import 'package:dart_nostr/dart_nostr.dart';
+import 'package:singleton_manager/singleton_manager.dart';
 
 /// Callback for raw Nostr events received from a relay.
 typedef RelayEventCallback = void Function(NostrEvent event);
@@ -7,7 +8,7 @@ typedef RelayEventCallback = void Function(NostrEvent event);
 ///
 /// Encapsulates a WebSocket connection to a single Nostr relay with
 /// connect, disconnect, publish, and subscribe capabilities.
-abstract class INostrRelay {
+abstract class INostrRelay implements IValueForRegistry{
   /// Opens a WebSocket connection to the relay.
   Future<void> connect();
 

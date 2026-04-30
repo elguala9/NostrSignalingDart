@@ -4,6 +4,8 @@ import 'implementations/nostr_signaling_impl.dart';
 import 'interfaces/i_relay.dart';
 import 'interfaces/i_compression.dart';
 import 'interfaces/i_nostr_signaling.dart';
+import 'keys.dart';
+import 'nostr_relay_list.dart';
 
 /// Factory for creating [INostrSignaling] instances with common configurations.
 ///
@@ -17,8 +19,7 @@ class NostrSignalingFactory {
   /// Uses the Damus relay by default. Optionally enables compression
   /// with a custom [compressionEngine].
   static INostrSignaling create({
-    required String pubkey,
-    required String privkey,
+    required NostrKeyPair keyPair,
     String relayUrl = _defaultRelayUrl,
     bool useCompression = false,
     ICompressionEngine? compressionEngine,
@@ -26,8 +27,7 @@ class NostrSignalingFactory {
     final relay = NostrRelayImpl(relayUrl: relayUrl);
 
     return NostrSignalingImpl.single(
-      pubkey: pubkey,
-      privkey: privkey,
+      keyPair: keyPair,
       relay: relay,
       useCompression: useCompression,
       compressionEngine: compressionEngine,
@@ -39,8 +39,7 @@ class NostrSignalingFactory {
   /// Events are published to all relays. The first successful response
   /// is returned.
   static INostrSignaling createWithMultipleRelays({
-    required String pubkey,
-    required String privkey,
+    required NostrKeyPair keyPair,
     List<String> relayUrls = const [_defaultRelayUrl],
     bool useCompression = false,
     ICompressionEngine? compressionEngine,
@@ -48,9 +47,8 @@ class NostrSignalingFactory {
     final relays = relayUrls.map((url) => NostrRelayImpl(relayUrl: url)).toList();
 
     return NostrSignalingImpl(
-      pubkey: pubkey,
-      privkey: privkey,
-      relays: relays,
+      keyPair: keyPair,
+      relays: NostrRelayList(relays),
       useCompression: useCompression,
       compressionEngine: compressionEngine,
     );
@@ -58,16 +56,14 @@ class NostrSignalingFactory {
 
   /// Creates an [INostrSignaling] with GZip compression and a single relay.
   static INostrSignaling createWithGzipCompression({
-    required String pubkey,
-    required String privkey,
+    required NostrKeyPair keyPair,
     String relayUrl = _defaultRelayUrl,
   }) {
     final relay = NostrRelayImpl(relayUrl: relayUrl);
     final compressionEngine = GzipCompressionEngine();
 
     return NostrSignalingImpl.single(
-      pubkey: pubkey,
-      privkey: privkey,
+      keyPair: keyPair,
       relay: relay,
       useCompression: true,
       compressionEngine: compressionEngine,
@@ -76,17 +72,15 @@ class NostrSignalingFactory {
 
   /// Creates an [INostrSignaling] with GZip compression and multiple relays.
   static INostrSignaling createWithGzipCompressionAndMultipleRelays({
-    required String pubkey,
-    required String privkey,
+    required NostrKeyPair keyPair,
     List<String> relayUrls = const [_defaultRelayUrl],
   }) {
     final relays = relayUrls.map((url) => NostrRelayImpl(relayUrl: url)).toList();
     final compressionEngine = GzipCompressionEngine();
 
     return NostrSignalingImpl(
-      pubkey: pubkey,
-      privkey: privkey,
-      relays: relays,
+      keyPair: keyPair,
+      relays: NostrRelayList(relays),
       useCompression: true,
       compressionEngine: compressionEngine,
     );
@@ -96,16 +90,14 @@ class NostrSignalingFactory {
   ///
   /// Use this when you need full control over relay configuration.
   static INostrSignaling createWithCustomRelays({
-    required String pubkey,
-    required String privkey,
+    required NostrKeyPair keyPair,
     required List<INostrRelay> relays,
     bool useCompression = false,
     ICompressionEngine? compressionEngine,
   }) {
     return NostrSignalingImpl(
-      pubkey: pubkey,
-      privkey: privkey,
-      relays: relays,
+      keyPair: keyPair,
+      relays: NostrRelayList(relays),
       useCompression: useCompression,
       compressionEngine: compressionEngine,
     );

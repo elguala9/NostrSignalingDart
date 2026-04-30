@@ -19,12 +19,15 @@ topics:
   - decentralized
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '^3.11.0'
+
+resolution: workspace
 
 dependencies:
   archive: ^4.0.9
   dart_nostr: ^10.0.1
   convert: ^3.1.0
+  singleton_manager: ^0.6.1
 
 dev_dependencies:
   test: ^1.31.1

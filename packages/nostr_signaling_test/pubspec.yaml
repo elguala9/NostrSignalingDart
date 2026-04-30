@@ -4,7 +4,9 @@ description: Test package for Nostr Signaling library
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '^3.11.0'
+
+resolution: workspace
 
 dependencies:
   mockito: ^5.4.0
@@ -14,4 +16,4 @@ dependencies:
 
 dev_dependencies:
   dart_nostr: any
-  lints: ^2.1.0
+  lints: ^4.0.0

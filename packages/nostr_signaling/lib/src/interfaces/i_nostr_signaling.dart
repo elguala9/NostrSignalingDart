@@ -1,3 +1,5 @@
+import 'package:singleton_manager/singleton_manager.dart';
+
 import '../types.dart';
 
 /// Callback invoked when an event is received from a peer.
@@ -10,7 +12,7 @@ typedef EventCallback = void Function(NostrUserId id, List<int> data);
 /// Provides publish/subscribe semantics for exchanging binary data
 /// between Nostr peers. Supports optional compression and multi-relay
 /// redundancy.
-abstract class INostrSignaling {
+abstract class INostrSignaling implements IValueForRegistry {
   /// Connects to the configured Nostr relay(s).
   Future<void> connect();
 

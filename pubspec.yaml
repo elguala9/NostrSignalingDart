@@ -3,4 +3,36 @@ version: 0.1.0
 description: Monorepo for Nostr signaling system with data compression
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '^3.11.0'
+
+workspace:
+  - packages/nostr_signaling
+  - packages/nostr_signaling_test
+
+dev_dependencies:
+  melos: ^7.5.1
+
+melos:
+  scripts:
+    analyze:
+      description: Run dart analyze on all packages
+      run: melos exec -c 1 -- dart analyze
+
+    generate:
+      description: Run singleton_manager_generator on nostr_signaling
+      run: melos exec --scope="nostr_signaling" -- singleton_manager_generator --input lib/src --output lib/generated
+
+    test:
+      description: Run tests in all packages
+      run: melos exec -- dart test
+      select-package:
+        dir-exists:
+          - test
+
+    format:
+      description: Format dart files
+      run: melos exec -- dart format --set-exit-if-changed .
+
+    clean:
+      description: Clean all builds and caches
+      run: melos exec -- dart clean

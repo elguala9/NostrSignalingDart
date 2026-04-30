@@ -13,3 +13,5 @@ coverage/
 .vexp
 test/coverage/
 *.lcov
+.melos/
+coverage/

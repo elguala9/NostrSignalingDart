@@ -80,9 +80,11 @@ void main() {
       final connected = await _connectSequentially(relayInstances);
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: connected,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(connected),
         useCompression: false,
       );
 
@@ -97,9 +99,11 @@ void main() {
       final connected = await _connectSequentially(relayInstances);
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: connected,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(connected),
         useCompression: false,
       );
 
@@ -137,9 +141,11 @@ void main() {
       final connected = await _connectSequentially(relayInstances);
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: connected,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(connected),
         useCompression: false,
       );
 
@@ -165,9 +171,11 @@ void main() {
       expect(connected, isNotEmpty);
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: connected,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(connected),
         useCompression: false,
       );
 
@@ -176,9 +184,11 @@ void main() {
 
     test('isConnected false se nessun relay connesso', () {
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: relayInstances,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(relayInstances),
         useCompression: false,
       );
 
@@ -189,9 +199,11 @@ void main() {
       final connected = await _connectSequentially(relayInstances);
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: connected,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(connected),
         useCompression: false,
       );
 
@@ -209,9 +221,11 @@ void main() {
       final connected = await _connectSequentially(relayInstances);
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: connected,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList(connected),
         useCompression: false,
       );
 

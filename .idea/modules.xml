@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+<module fileurl="file://$PROJECT_DIR$/packages/nostr_signaling/melos_nostr_signaling.iml" filepath="$PROJECT_DIR$/packages/nostr_signaling/melos_nostr_signaling.iml"/>
+<module fileurl="file://$PROJECT_DIR$/packages/nostr_signaling_test/melos_nostr_signaling_test.iml" filepath="$PROJECT_DIR$/packages/nostr_signaling_test/melos_nostr_signaling_test.iml"/>
+<module fileurl="file://$PROJECT_DIR$/melos_nostr_signaling_monorepo.iml" filepath="$PROJECT_DIR$/melos_nostr_signaling_monorepo.iml"/>
+    </modules>
+  </component>
+</project>

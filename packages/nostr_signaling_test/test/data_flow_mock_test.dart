@@ -78,6 +78,11 @@ class DebugSharedRelay implements INostrRelay {
   Future<void> unsubscribe(String subscriptionId) async {
     subscriptions.remove(subscriptionId);
   }
+
+  @override
+  Future<void> destroy() async {
+    await disconnect();
+  }
 }
 
 void main() {
@@ -90,15 +95,19 @@ void main() {
       debugRelay = DebugSharedRelay();
 
       peer1 = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
         relay: debugRelay,
         useCompression: false,
       );
 
       peer2 = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey2,
-        privkey: NostrTestKeys.testPrivateKey2,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey2,
+          publicKey: NostrTestKeys.testPublicKey2,
+        ),
         relay: debugRelay,
         useCompression: false,
       );

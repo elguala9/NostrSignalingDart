@@ -11,8 +11,10 @@ void main() {
       realRelay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
 
       signaling = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
         relay: realRelay,
         useCompression: false,
       );
@@ -88,8 +90,10 @@ void main() {
 
     test('useCompression flag è impostato correttamente', () {
       final withoutCompression = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
         relay: realRelay,
         useCompression: false,
       );
@@ -98,8 +102,10 @@ void main() {
 
       final gzipEngine = GzipCompressionEngine();
       final withCompression = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
         relay: realRelay,
         useCompression: true,
         compressionEngine: gzipEngine,
@@ -119,9 +125,11 @@ void main() {
       relay2 = NostrRelayImpl(relayUrl: 'wss://relay.damus.io');
 
       signaling = NostrSignalingImpl(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
-        relays: [relay1, relay2],
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
+        relays: NostrRelayList([relay1, relay2]),
         useCompression: false,
       );
     });

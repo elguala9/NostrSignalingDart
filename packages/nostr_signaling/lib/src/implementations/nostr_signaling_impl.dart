@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:meta/meta.dart';
 
 import 'package:dart_nostr/dart_nostr.dart';
+import 'package:nostr_signaling/nostr_signaling.dart';
+import 'package:singleton_manager/singleton_manager.dart';
 
 import '../interfaces/i_compression.dart';
 import '../interfaces/i_nostr_signaling.dart';
 import '../interfaces/i_relay.dart';
+import '../nostr_relay_list.dart';
 import '../types.dart';
 
 /// Concrete implementation of [INostrSignaling].
@@ -14,50 +18,69 @@ import '../types.dart';
 /// compression. Data is base64-encoded for safe transport over Nostr.
 /// Events are published to all relays concurrently; the first successful
 /// response is returned.
-class NostrSignalingImpl implements INostrSignaling {
-  /// The signer's Nostr public key.
-  final String pubkey;
+@isSingleton
+class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
+    /// The signer's Nostr key pair (public + private key).
+  @protected
+  @isMandatoryParameter
+  late NostrKeyPair keyPair;
 
-  /// The signer's Nostr private key.
-  final String privkey;
+  /// Convenience getter for the public key.
+  String get pubkey => keyPair.publicKey;
+
+  /// Convenience getter for the private key.
+  String get privkey => keyPair.privateKey;
 
   /// The list of relays to publish/subscribe to.
-  final List<INostrRelay> relays;
+  @isInjected
+  @protected
+  late NostrRelayList relays;
+
+
 
   /// Whether to compress data before publishing.
-  final bool useCompression;
+  @protected
+  late bool useCompression;
 
   /// The compression engine to use (required if [useCompression] is true).
-  final ICompressionEngine? compressionEngine;
+  @isOptionalParameter
+  @protected
+  late ICompressionEngine? compressionEngine = GzipCompressionEngine();
 
   final Map<NostrUserId, EventCallback> _subscriptions = {};
   final Map<NostrUserId, Map<INostrRelay, String>> _relaySubscriptionIds = {};
+
+  NostrSignalingImpl.emptyForDI();
+
+  void initializeDI() {
+    relays = NostrRelayList([]);
+  }
 
   /// Creates a [NostrSignalingImpl] with one or more relays.
   ///
   /// Throws [ArgumentError] if [relays] is empty.
   NostrSignalingImpl({
-    required this.pubkey,
-    required this.privkey,
-    required List<INostrRelay> relays,
+    required NostrKeyPair keyPair,
+    required NostrRelayList relays,
     this.useCompression = false,
-    this.compressionEngine,
-  }) : relays = relays.isNotEmpty ? relays : throw ArgumentError('At least one relay is required');
+    ICompressionEngine? compressionEngine,
+  }) : keyPair = keyPair,
+       relays = relays,
+       compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
   /// Creates a [NostrSignalingImpl] with a single relay.
   NostrSignalingImpl.single({
-    required this.pubkey,
-    required this.privkey,
+    required NostrKeyPair keyPair,
     required INostrRelay relay,
     this.useCompression = false,
-    this.compressionEngine,
-  }) : relays = [relay] {
-    if (relays.isEmpty) throw ArgumentError('At least one relay is required');
-  }
+    ICompressionEngine? compressionEngine,
+  }) : keyPair = keyPair,
+       relays = NostrRelayList.single(relay),
+       compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
   @override
   Future<void> connect() async {
-    await Future.wait(relays.map((relay) => relay.connect()));
+    await relays.connectAll();
   }
 
   @override
@@ -65,18 +88,23 @@ class NostrSignalingImpl implements INostrSignaling {
     for (final id in _subscriptions.keys) {
       await unsubscribe(id);
     }
-    await Future.wait(relays.map((relay) => relay.disconnect()));
+    await relays.disconnectAll();
+  }
+
+  @override
+  Future<void> destroy() async {
+    await disconnect();
   }
 
   @override
   bool isConnected() {
-    return relays.any((relay) => relay.isConnected());
+    return relays.isAnyConnected();
   }
 
   @override
   Future<String> publish(List<int> data) async {
-    final contentToPublish = useCompression && compressionEngine != null
-        ? await compressionEngine!.compress(data)
+    final contentToPublish = useCompression
+        ? await compressionEngine?.compress(data)
         : data;
 
     final content = contentToPublish is CompressedData
@@ -206,7 +234,7 @@ class NostrSignalingImpl implements INostrSignaling {
     required String content,
     required int kind,
   }) {
-    final keyPairs = NostrKeyPairs(private: privkey);
+    final keyPairs = NostrKeyPairs(private: keyPair.privateKey);
     return NostrEvent.fromPartialData(
       kind: kind,
       content: content,

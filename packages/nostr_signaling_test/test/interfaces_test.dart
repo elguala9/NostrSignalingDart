@@ -19,8 +19,10 @@ void main() {
     test('NostrSignalingImpl implementa INostrSignaling', () {
       final relay = NostrRelayImpl(relayUrl: 'wss://relay.test.com');
       final signaling = NostrSignalingImpl.single(
-        pubkey: NostrTestKeys.testPublicKey1,
-        privkey: NostrTestKeys.testPrivateKey1,
+        keyPair: NostrKeyPair(
+          privateKey: NostrTestKeys.testPrivateKey1,
+          publicKey: NostrTestKeys.testPublicKey1,
+        ),
         relay: relay,
       );
 
