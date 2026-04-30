@@ -4,16 +4,16 @@ import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:test/test.dart';
 
 const allRelayUrls = [
-  NostrTestRelays.damus,
-  NostrTestRelays.nostr,
-  NostrTestRelays.nos,
-  NostrTestRelays.primal,
-  NostrTestRelays.startr,
-  NostrTestRelays.band,
-  NostrTestRelays.purple,
-  NostrTestRelays.snort,
-  NostrTestRelays.wine,
-  NostrTestRelays.offchain,
+  NostrStandardRelays.damus,
+  NostrStandardRelays.nostr,
+  NostrStandardRelays.nos,
+  NostrStandardRelays.primal,
+  NostrStandardRelays.startr,
+  NostrStandardRelays.band,
+  NostrStandardRelays.purple,
+  NostrStandardRelays.snort,
+  NostrStandardRelays.wine,
+  NostrStandardRelays.offchain,
 ];
 
 List<NostrRelayImpl> _createRelayInstances() =>

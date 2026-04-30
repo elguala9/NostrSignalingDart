@@ -134,6 +134,41 @@ final signaling = NostrSignalingFactory.createWithMultipleRelays(
 );
 ```
 
+## Config file
+
+`NostrConfig` persists relay URLs and key pair to a JSON file on disk.
+
+```dart
+// Save config
+final config = NostrConfig(
+  keyPair: myKeyPair,
+  relays: ['wss://relay.damus.io'],
+);
+await config.save();                // → nostr_config.json
+
+// Load config
+final loaded = await NostrConfig.load();      // async
+final loadedSync = NostrConfig.loadSync();    // sync
+```
+
+### Initial point from config (no required parameters)
+
+Loads key pair and relays from the config file automatically.
+Throws `StateError` if the file is missing or has no key pair.
+
+```dart
+// Singleton DI — no parameters needed
+await initialPointNostrSignalingFromConfig();
+
+final signaling = getINostrSignaling();
+
+// Registry DI — supports multiple named instances
+initialPointNostrSignalingRegistryFromConfig(key: 'alice');
+initialPointNostrSignalingRegistryFromConfig(key: 'bob');
+```
+
+Both accept an optional `configPath` (default: `nostr_config.json`).
+
 ## API overview
 
 | Class / Interface | Description |
@@ -144,6 +179,7 @@ final signaling = NostrSignalingFactory.createWithMultipleRelays(
 | `NostrRelayImpl` | Concrete WebSocket relay via dart_nostr |
 | `ICompressionEngine` | Pluggable compression interface |
 | `GzipCompressionEngine` | GZip compression with auto-detection |
+| `NostrConfig` | Config file persistence (relays + key pair) |
 | `NostrSignalingFactory` | Factory with pre-configured factory methods |
 | `NostrKeys` / `NostrKeyPair` | Key generation, import, and validation |
 | `CompressedData` | Compression metadata (original size, ratio, timestamp) |

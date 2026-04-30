@@ -1,3 +1,4 @@
+import 'package:nostr_signaling/src/implementations/config.dart';
 import 'package:singleton_manager/singleton_manager.dart';
 
 import '../implementations/gzip_compression_engine.dart';
@@ -41,7 +42,59 @@ Future<void> initialPointNostrSignaling({
   SingletonDIAccess.addInstanceAs<INostrSignaling, NostrSignalingImpl>(signaling);
 }
 
+/// Convenience initial point that uses 10 standard Nostr relays and no compression.
+///
+/// Only [keyPair] is required; everything else is pre-configured.
+///
+/// Usage:
+/// ```dart
+/// await initialPointNostrSignalingDefault(keyPair: myKeyPair);
+/// ```
+Future<void> initialPointNostrSignalingDefault({
+  required NostrKeyPair keyPair,
+}) async {
 
-/// Retrieve IIdHandlerStorageRepository from registry by key.
-INostrSignaling getINostrSignaling({String key = 'default'}) =>
-    RegistryAccess.getInstance<INostrSignaling>(key);
+  NostrConfig config = (await NostrConfig.load()) ?? NostrConfig();
+  await initialPointNostrSignaling(
+    keyPair: keyPair,
+    relayUrls: config.relays,
+    useCompression: false,
+  );
+}
+
+/// Initial point that reads key pair and relays from [NostrConfig].
+///
+/// Loads [NostrConfig] from [configPath] (default: `nostr_config.json`).
+/// Throws [StateError] if the file is missing or contains no key pair.
+///
+/// Usage:
+/// ```dart
+/// await initialPointNostrSignalingFromConfig();
+/// ```
+Future<void> initialPointNostrSignalingFromConfig({
+  String configPath = NostrConfig.defaultConfigPath,
+  bool useCompression = false,
+  ICompressionEngine? compressionEngine,
+}) async {
+  final config = await NostrConfig.load(configPath);
+  if (config == null) {
+    throw StateError('Config file not found: $configPath');
+  }
+  final keyPair = config.keyPair;
+  if (keyPair == null) {
+    throw StateError('No keyPair in config: $configPath');
+  }
+  await initialPointNostrSignaling(
+    keyPair: keyPair,
+    relayUrls: config.relays,
+    useCompression: useCompression,
+    compressionEngine: compressionEngine,
+  );
+}
+
+/// Retrieve [INostrSignaling] from the singleton DI registry.
+///
+/// Must be called after [initialPointNostrSignaling] or
+/// [initialPointNostrSignalingDefault] has completed.
+INostrSignaling getINostrSignaling() =>
+    SingletonDIAccess.get<INostrSignaling>();

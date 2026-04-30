@@ -53,8 +53,8 @@ void main() {
     });
 
     test('createWithCustomRelays() accetta una lista di relay iniettati', () {
-      final customRelay1 = NostrRelayImpl(relayUrl: NostrTestRelays.nos);
-      final customRelay2 = NostrRelayImpl(relayUrl: NostrTestRelays.damus);
+      final customRelay1 = NostrRelayImpl(relayUrl: NostrStandardRelays.nos);
+      final customRelay2 = NostrRelayImpl(relayUrl: NostrStandardRelays.damus);
 
       final signaling = NostrSignalingFactory.createWithCustomRelays(
         keyPair: NostrKeyPair(
@@ -73,7 +73,7 @@ void main() {
           privateKey: NostrTestKeys.testPrivateKey1,
           publicKey: NostrTestKeys.testPublicKey1,
         ),
-        relayUrls: [NostrTestRelays.nos, NostrTestRelays.damus],
+        relayUrls: [NostrStandardRelays.nos, NostrStandardRelays.damus],
       );
 
       expect(signaling, isA<INostrSignaling>());
@@ -85,7 +85,7 @@ void main() {
           privateKey: NostrTestKeys.testPrivateKey1,
           publicKey: NostrTestKeys.testPublicKey1,
         ),
-        relayUrls: [NostrTestRelays.nos, NostrTestRelays.damus],
+        relayUrls: [NostrStandardRelays.nos, NostrStandardRelays.damus],
       );
 
       expect(signaling, isA<INostrSignaling>());

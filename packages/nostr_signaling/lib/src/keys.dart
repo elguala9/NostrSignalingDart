@@ -1,10 +1,11 @@
 import 'package:dart_nostr/dart_nostr.dart';
+import 'package:singleton_manager/singleton_manager.dart';
 
 /// A validated Nostr key pair (private + public key).
 ///
 /// Use [NostrKeys] to generate or import key pairs. Instances can be
 /// validated with [isValid] and compared for equality.
-class NostrKeyPair {
+class NostrKeyPair implements IValueForRegistry {
   /// The hex-encoded private key (32 bytes, 64 hex chars).
   final String privateKey;
 
@@ -52,6 +53,11 @@ class NostrKeyPair {
 
   @override
   int get hashCode => privateKey.hashCode ^ publicKey.hashCode;
+
+  @override
+  void destroy(){
+
+  }
 }
 
 /// Utility class for Nostr key generation, import, and validation.
@@ -108,4 +114,5 @@ class NostrKeys {
     final hexRegex = RegExp(r'^[0-9a-fA-F]+$');
     return hexRegex.hasMatch(key);
   }
+  
 }

@@ -51,30 +51,30 @@ void main() {
 
   group('NostrTestRelays', () {
     test('tutti i relay hanno URL validi', () {
-      expect(NostrTestRelays.damus, startsWith('wss://'));
-      expect(NostrTestRelays.nostr, startsWith('wss://'));
-      expect(NostrTestRelays.nos, startsWith('wss://'));
-      expect(NostrTestRelays.primal, startsWith('wss://'));
-      expect(NostrTestRelays.startr, startsWith('wss://'));
-      expect(NostrTestRelays.band, startsWith('wss://'));
-      expect(NostrTestRelays.purple, startsWith('wss://'));
-      expect(NostrTestRelays.snort, startsWith('wss://'));
-      expect(NostrTestRelays.wine, startsWith('wss://'));
-      expect(NostrTestRelays.offchain, startsWith('wss://'));
+      expect(NostrStandardRelays.damus, startsWith('wss://'));
+      expect(NostrStandardRelays.nostr, startsWith('wss://'));
+      expect(NostrStandardRelays.nos, startsWith('wss://'));
+      expect(NostrStandardRelays.primal, startsWith('wss://'));
+      expect(NostrStandardRelays.startr, startsWith('wss://'));
+      expect(NostrStandardRelays.band, startsWith('wss://'));
+      expect(NostrStandardRelays.purple, startsWith('wss://'));
+      expect(NostrStandardRelays.snort, startsWith('wss://'));
+      expect(NostrStandardRelays.wine, startsWith('wss://'));
+      expect(NostrStandardRelays.offchain, startsWith('wss://'));
     });
 
     test('i relay sono diversi gli uni dagli altri', () {
       final allRelays = [
-        NostrTestRelays.damus,
-        NostrTestRelays.nostr,
-        NostrTestRelays.nos,
-        NostrTestRelays.primal,
-        NostrTestRelays.startr,
-        NostrTestRelays.band,
-        NostrTestRelays.purple,
-        NostrTestRelays.snort,
-        NostrTestRelays.wine,
-        NostrTestRelays.offchain,
+        NostrStandardRelays.damus,
+        NostrStandardRelays.nostr,
+        NostrStandardRelays.nos,
+        NostrStandardRelays.primal,
+        NostrStandardRelays.startr,
+        NostrStandardRelays.band,
+        NostrStandardRelays.purple,
+        NostrStandardRelays.snort,
+        NostrStandardRelays.wine,
+        NostrStandardRelays.offchain,
       ];
       for (var i = 0; i < allRelays.length; i++) {
         for (var j = i + 1; j < allRelays.length; j++) {
@@ -84,30 +84,30 @@ void main() {
     });
 
     test('gli URL dei relay non sono vuoti', () {
-      expect(NostrTestRelays.damus.isNotEmpty, true);
-      expect(NostrTestRelays.nostr.isNotEmpty, true);
-      expect(NostrTestRelays.nos.isNotEmpty, true);
-      expect(NostrTestRelays.primal.isNotEmpty, true);
-      expect(NostrTestRelays.startr.isNotEmpty, true);
-      expect(NostrTestRelays.band.isNotEmpty, true);
-      expect(NostrTestRelays.purple.isNotEmpty, true);
-      expect(NostrTestRelays.snort.isNotEmpty, true);
-      expect(NostrTestRelays.wine.isNotEmpty, true);
-      expect(NostrTestRelays.offchain.isNotEmpty, true);
+      expect(NostrStandardRelays.damus.isNotEmpty, true);
+      expect(NostrStandardRelays.nostr.isNotEmpty, true);
+      expect(NostrStandardRelays.nos.isNotEmpty, true);
+      expect(NostrStandardRelays.primal.isNotEmpty, true);
+      expect(NostrStandardRelays.startr.isNotEmpty, true);
+      expect(NostrStandardRelays.band.isNotEmpty, true);
+      expect(NostrStandardRelays.purple.isNotEmpty, true);
+      expect(NostrStandardRelays.snort.isNotEmpty, true);
+      expect(NostrStandardRelays.wine.isNotEmpty, true);
+      expect(NostrStandardRelays.offchain.isNotEmpty, true);
     });
 
     test('10 relay disponibili per test', () {
       final allRelays = [
-        NostrTestRelays.damus,
-        NostrTestRelays.nostr,
-        NostrTestRelays.nos,
-        NostrTestRelays.primal,
-        NostrTestRelays.startr,
-        NostrTestRelays.band,
-        NostrTestRelays.purple,
-        NostrTestRelays.snort,
-        NostrTestRelays.wine,
-        NostrTestRelays.offchain,
+        NostrStandardRelays.damus,
+        NostrStandardRelays.nostr,
+        NostrStandardRelays.nos,
+        NostrStandardRelays.primal,
+        NostrStandardRelays.startr,
+        NostrStandardRelays.band,
+        NostrStandardRelays.purple,
+        NostrStandardRelays.snort,
+        NostrStandardRelays.wine,
+        NostrStandardRelays.offchain,
       ];
       expect(allRelays.length, equals(10));
       expect(allRelays.toSet().length, equals(10));

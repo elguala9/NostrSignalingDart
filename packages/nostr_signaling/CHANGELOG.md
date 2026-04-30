@@ -1,3 +1,14 @@
+## 0.2.0
+
+- `NostrConfig` — config file persistence with `load()` / `loadSync()` / `save()`.
+- `initialPointNostrSignalingFromConfig()` — singleton initial point that reads
+  key pair and relays from a JSON config file (no required parameters).
+- `initialPointNostrSignalingRegistryFromConfig()` — registry variant for
+  multiple named instances from config files.
+- `initialPointNostrSignalingDefault()` and
+  `initialPointNostrSignalingRegistryDefault()` now try loading an existing
+  config file before falling back to defaults.
+
 ## 0.1.0
 
 - Initial release.

@@ -36,7 +36,7 @@ class NostrTestKeys {
 }
 
 /// Well-known Nostr relay URLs for testing and development.
-class NostrTestRelays {
+class NostrStandardRelays {
   /// Damus relay: `wss://relay.damus.io`
   static const String damus = 'wss://relay.damus.io';
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:nostr_signaling/nostr_signaling.dart';
 
 void main() async {
@@ -7,24 +9,23 @@ void main() async {
   print('=== Example 1: Basic Signaling ===');
 
   final signaling = NostrSignalingFactory.create(
-    pubkey: NostrTestKeys.testPublicKey1,
-    privkey: NostrTestKeys.testPrivateKey1,
-    relayUrl: NostrTestRelays.damus,
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey1,
+      publicKey: NostrTestKeys.testPublicKey1,
+    ),
+    relayUrl: NostrStandardRelays.damus,
   );
 
   await signaling.connect();
   print('Connected to relay');
 
-  // Publish raw data
   final eventId = await signaling.publish([1, 2, 3, 4, 5]);
   print('Event published: $eventId');
 
-  // Listen for messages from a peer
   await signaling.subscribe('target_user_id', (id, data) {
     print('Received from $id: $data');
   });
 
-  // Retrieve the last event from a peer
   final lastData = await signaling.retrieveLast('target_user_id');
   print('Last data from peer: $lastData');
 
@@ -39,15 +40,16 @@ void main() async {
 
   final signalingWithCompression =
       NostrSignalingFactory.createWithGzipCompression(
-    pubkey: NostrTestKeys.testPublicKey2,
-    privkey: NostrTestKeys.testPrivateKey2,
-    relayUrl: NostrTestRelays.nos,
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey2,
+      publicKey: NostrTestKeys.testPublicKey2,
+    ),
+    relayUrl: NostrStandardRelays.nos,
   );
 
   await signalingWithCompression.connect();
   print('Connected to relay with compression');
 
-  // Large data will be compressed automatically before publishing
   final largeData = List<int>.generate(1000, (i) => i % 256);
   final compressedEventId = await signalingWithCompression.publish(largeData);
   print('Compressed event published: $compressedEventId');
@@ -80,11 +82,13 @@ void main() async {
   print('=== Example 4: Multi-Relay Redundancy ===');
 
   final multiRelay = NostrSignalingFactory.createWithMultipleRelays(
-    pubkey: NostrTestKeys.testPublicKey3,
-    privkey: NostrTestKeys.testPrivateKey3,
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey3,
+      publicKey: NostrTestKeys.testPublicKey3,
+    ),
     relayUrls: [
-      NostrTestRelays.damus,
-      NostrTestRelays.nos,
+      NostrStandardRelays.damus,
+      NostrStandardRelays.nos,
     ],
   );
 
@@ -95,4 +99,97 @@ void main() async {
   print('Event published to all relays: $multiEventId');
 
   await multiRelay.disconnect();
+
+  print('');
+
+  // ====================================================================
+  // Example 5: Initial point — Singleton DI variant
+  // ====================================================================
+  print('=== Example 5: Initial Point — Singleton DI ===');
+
+  await initialPointNostrSignaling(
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey1,
+      publicKey: NostrTestKeys.testPublicKey1,
+    ),
+    relayUrls: [NostrStandardRelays.damus],
+  );
+
+  final fromSingleton = getINostrSignaling();
+  print('Retrieved signaling instance: $fromSingleton');
+
+  print('');
+
+  // ====================================================================
+  // Example 6: Initial point — Registry variant (multiple instances)
+  // ====================================================================
+  print('=== Example 6: Initial Point — Registry (multi-instance) ===');
+
+  initialPointNostrSignalingRegistry(
+    registryKey: 'alice',
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey1,
+      publicKey: NostrTestKeys.testPublicKey1,
+    ),
+    relayUrls: [NostrStandardRelays.damus],
+  );
+
+  initialPointNostrSignalingRegistry(
+    registryKey: 'bob',
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey2,
+      publicKey: NostrTestKeys.testPublicKey2,
+    ),
+    relayUrls: [NostrStandardRelays.nos],
+  );
+
+  final alice = getINostrSignalingFromRegistry(key: 'alice');
+  final bob = getINostrSignalingFromRegistry(key: 'bob');
+  print('Alice instance: $alice');
+  print('Bob instance: $bob');
+
+  print('');
+
+  // ====================================================================
+  // Example 7: Initial point from config file — Singleton
+  // ====================================================================
+  print('=== Example 7: Initial Point From Config (Singleton) ===');
+
+  final configPath = 'example_config.json';
+  await NostrConfig(
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey1,
+      publicKey: NostrTestKeys.testPublicKey1,
+    ),
+    relays: [NostrStandardRelays.damus],
+  ).save(configPath);
+
+  await initialPointNostrSignalingFromConfig(configPath: configPath);
+
+  final fromConfigSingleton = getINostrSignaling();
+  print('Retrieved from config: $fromConfigSingleton');
+  File(configPath).deleteSync();
+
+  print('');
+
+  // ====================================================================
+  // Example 8: Initial point from config file — Registry
+  // ====================================================================
+  print('=== Example 8: Initial Point From Config (Registry) ===');
+
+  await NostrConfig(
+    keyPair: NostrKeyPair(
+      privateKey: NostrTestKeys.testPrivateKey2,
+      publicKey: NostrTestKeys.testPublicKey2,
+    ),
+  ).save(configPath);
+
+  initialPointNostrSignalingRegistryFromConfig(
+    key: 'from_config',
+    configPath: configPath,
+  );
+
+  final fromConfigRegistry = getINostrSignalingFromRegistry(key: 'from_config');
+  print('Retrieved from config registry: $fromConfigRegistry');
+  File(configPath).deleteSync();
 }
