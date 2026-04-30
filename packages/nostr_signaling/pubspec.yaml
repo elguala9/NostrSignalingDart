@@ -29,6 +29,7 @@ dependencies:
   convert: ^3.1.0
   singleton_manager: ^0.6.1
 
+  meta: any
 dev_dependencies:
   test: ^1.31.1
   lints: ^4.0.0

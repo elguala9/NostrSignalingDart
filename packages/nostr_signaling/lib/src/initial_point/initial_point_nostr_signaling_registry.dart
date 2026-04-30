@@ -1,5 +1,4 @@
 import 'package:nostr_signaling/nostr_signaling.dart';
-import 'package:nostr_signaling/src/implementations/config.dart';
 import 'package:singleton_manager/singleton_manager.dart';
 
 

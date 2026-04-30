@@ -6,11 +6,6 @@ import 'package:dart_nostr/dart_nostr.dart';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:singleton_manager/singleton_manager.dart';
 
-import '../interfaces/i_compression.dart';
-import '../interfaces/i_nostr_signaling.dart';
-import '../interfaces/i_relay.dart';
-import '../nostr_relay_list.dart';
-import '../types.dart';
 
 /// Concrete implementation of [INostrSignaling].
 ///
@@ -39,7 +34,6 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
 
 
   /// Whether to compress data before publishing.
-  @protected
   late bool useCompression;
 
   /// The compression engine to use (required if [useCompression] is true).
@@ -60,22 +54,19 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
   ///
   /// Throws [ArgumentError] if [relays] is empty.
   NostrSignalingImpl({
-    required NostrKeyPair keyPair,
-    required NostrRelayList relays,
+    required this.keyPair,
+    required this.relays,
     this.useCompression = false,
     ICompressionEngine? compressionEngine,
-  }) : keyPair = keyPair,
-       relays = relays,
-       compressionEngine = compressionEngine ?? GzipCompressionEngine();
+  }) : compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
   /// Creates a [NostrSignalingImpl] with a single relay.
   NostrSignalingImpl.single({
-    required NostrKeyPair keyPair,
+    required this.keyPair,
     required INostrRelay relay,
     this.useCompression = false,
     ICompressionEngine? compressionEngine,
-  }) : keyPair = keyPair,
-       relays = NostrRelayList.single(relay),
+  }) : relays = NostrRelayList.single(relay),
        compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
   @override

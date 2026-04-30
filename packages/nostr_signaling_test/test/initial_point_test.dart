@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:nostr_signaling/nostr_signaling.dart';
-import 'package:nostr_signaling/src/implementations/config.dart';
 import 'package:singleton_manager/singleton_manager.dart';
 import 'package:test/test.dart';
 
@@ -430,11 +429,11 @@ void main() {
   });
 
   group('initialPointNostrSignalingFromConfig (Singleton from config)', () {
-    int _counter = 0;
+    var counter = 0;
 
-    String _tempPath() {
-      _counter++;
-      return '${Directory.systemTemp.path}\\nostr_test_config_$_counter.json';
+    String tempPath() {
+      counter++;
+      return '${Directory.systemTemp.path}\\nostr_test_config_$counter.json';
     }
 
     tearDown(() {
@@ -443,7 +442,7 @@ void main() {
     });
 
     test('loads keyPair from config file and registers signaling', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -459,7 +458,7 @@ void main() {
     });
 
     test('uses relays from config file', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -472,7 +471,7 @@ void main() {
     });
 
     test('getINostrSignaling retrieves instance loaded from config', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -485,7 +484,7 @@ void main() {
     });
 
     test('throws StateError when config file does not exist', () async {
-      final path = '${Directory.systemTemp.path}\\nostr_nonexistent_$_counter.json';
+      final path = '${Directory.systemTemp.path}\\nostr_nonexistent_$counter.json';
 
       await expectLater(
         () => initialPointNostrSignalingFromConfig(configPath: path),
@@ -494,7 +493,7 @@ void main() {
     });
 
     test('throws StateError when config has no keyPair', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -510,11 +509,11 @@ void main() {
 
   group('initialPointNostrSignalingRegistryFromConfig (Registry from config)',
       () {
-    int _counter = 0;
+    var counter = 0;
 
-    String _tempPath() {
-      _counter++;
-      return '${Directory.systemTemp.path}\\nostr_test_reg_config_$_counter.json';
+    String tempPath() {
+      counter++;
+      return '${Directory.systemTemp.path}\\nostr_test_reg_config_$counter.json';
     }
 
     tearDown(() {
@@ -523,7 +522,7 @@ void main() {
     });
 
     test('loads keyPair from config file and registers signaling', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -539,7 +538,7 @@ void main() {
     });
 
     test('registers with custom registry key', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -554,7 +553,7 @@ void main() {
     });
 
     test('uses relays from config file', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -568,7 +567,7 @@ void main() {
 
     test('getINostrSignalingFromRegistry retrieves instance loaded from config',
         () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
@@ -582,7 +581,7 @@ void main() {
 
     test('throws StateError when config file does not exist', () {
       final path =
-          '${Directory.systemTemp.path}\\nostr_nonexistent_reg_$_counter.json';
+          '${Directory.systemTemp.path}\\nostr_nonexistent_reg_$counter.json';
 
       expect(
         () => initialPointNostrSignalingRegistryFromConfig(configPath: path),
@@ -591,7 +590,7 @@ void main() {
     });
 
     test('throws StateError when config has no keyPair', () async {
-      final path = _tempPath();
+      final path = tempPath();
       addTearDown(() {
         if (File(path).existsSync()) File(path).deleteSync();
       });
