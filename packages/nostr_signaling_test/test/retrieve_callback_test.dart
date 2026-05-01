@@ -86,7 +86,7 @@ void main() {
 
         await receiver.subscribe(
           publisher.pubkey,
-          (id, data) {
+          EventCallback((id, data) {
             final receiveTime = DateTime.now().difference(subscribeStart);
             print('📨 CALLBACK TRIGERATO!');
             print('  ID: $id');
@@ -95,7 +95,7 @@ void main() {
             receivedViaCallback = data;
             callbackTriggered = true;
             if (!completer.isCompleted) completer.complete();
-          },
+          }),
         ).timeout(const Duration(seconds: 15));
 
         print('✓ Sottoscrizione registrata');
@@ -197,11 +197,11 @@ void main() {
 
         await peer2.subscribe(
           peer1.pubkey,
-          (id, data) {
+          EventCallback((id, data) {
             print('📨 CALLBACK RICEVUTO: $data da $id');
             callbackFired = true;
             if (!completer.isCompleted) completer.complete();
-          },
+          }),
         ).timeout(const Duration(seconds: 15));
 
         print('✓ Sottoscrizione registrata');

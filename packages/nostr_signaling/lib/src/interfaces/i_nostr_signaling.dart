@@ -5,7 +5,19 @@ import '../types.dart';
 /// Callback invoked when an event is received from a peer.
 ///
 /// [id] is the sender's Nostr public key, [data] is the decoded payload.
-typedef EventCallback = void Function(NostrUserId id, List<int> data);
+/// Tracks seen event hashes to avoid invoking the callback twice for
+/// the same hash.
+class EventCallback {
+  final void Function(NostrUserId id, List<int> data) _callback;
+  final Set<String> _seenHashes = {};
+
+  EventCallback(this._callback);
+
+  void call(NostrUserId id, List<int> data, {String? hash}) {
+    if (hash != null && !_seenHashes.add(hash)) return;
+    _callback(id, data);
+  }
+}
 
 /// Abstract Nostr signaling interface.
 ///

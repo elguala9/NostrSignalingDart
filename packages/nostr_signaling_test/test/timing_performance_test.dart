@@ -125,10 +125,10 @@ void main() {
       // Setup
       print('📍 SETUP');
       final setupStart = DateTime.now();
-      await peer2.subscribe(peer1.pubkey, (id, data) {
+      await peer2.subscribe(peer1.pubkey, EventCallback((id, data) {
         receivedData = data;
         completer.complete();
-      });
+      }));
       final setupTime = DateTime.now().difference(setupStart);
       print('   Sottoscrizione completata in: ${setupTime.inMicroseconds}μs\n');
 
@@ -191,30 +191,30 @@ void main() {
       print('📍 SETUP SOTTOSCRIZIONI');
       final setupStart = DateTime.now();
 
-      await peer2.subscribe(peer1.pubkey, (id, data) {
+      await peer2.subscribe(peer1.pubkey, EventCallback((id, data) {
         p2ReceivedFromP1 = data;
         if (!completers['p2←p1']!.isCompleted) completers['p2←p1']!.complete();
-      });
-      await peer3.subscribe(peer1.pubkey, (id, data) {
+      }));
+      await peer3.subscribe(peer1.pubkey, EventCallback((id, data) {
         p3ReceivedFromP1 = data;
         if (!completers['p3←p1']!.isCompleted) completers['p3←p1']!.complete();
-      });
-      await peer1.subscribe(peer2.pubkey, (id, data) {
+      }));
+      await peer1.subscribe(peer2.pubkey, EventCallback((id, data) {
         p1ReceivedFromP2 = data;
         if (!completers['p1←p2']!.isCompleted) completers['p1←p2']!.complete();
-      });
-      await peer3.subscribe(peer2.pubkey, (id, data) {
+      }));
+      await peer3.subscribe(peer2.pubkey, EventCallback((id, data) {
         p3ReceivedFromP2 = data;
         if (!completers['p3←p2']!.isCompleted) completers['p3←p2']!.complete();
-      });
-      await peer1.subscribe(peer3.pubkey, (id, data) {
+      }));
+      await peer1.subscribe(peer3.pubkey, EventCallback((id, data) {
         p1ReceivedFromP3 = data;
         if (!completers['p1←p3']!.isCompleted) completers['p1←p3']!.complete();
-      });
-      await peer2.subscribe(peer3.pubkey, (id, data) {
+      }));
+      await peer2.subscribe(peer3.pubkey, EventCallback((id, data) {
         p2ReceivedFromP3 = data;
         if (!completers['p2←p3']!.isCompleted) completers['p2←p3']!.complete();
-      });
+      }));
 
       final setupTime = DateTime.now().difference(setupStart);
       print('   6 sottoscrizioni completate in: ${setupTime.inMicroseconds}μs\n');
@@ -280,12 +280,12 @@ void main() {
 
       print('📍 SETUP');
       final setupStart = DateTime.now();
-      await peer2.subscribe(peer1.pubkey, (id, data) {
+      await peer2.subscribe(peer1.pubkey, EventCallback((id, data) {
         receivedCount++;
         if (receivedCount == 50) {
           completer.complete();
         }
-      });
+      }));
       final setupTime = DateTime.now().difference(setupStart);
       print('   Setup completato in: ${setupTime.inMicroseconds}μs\n');
 

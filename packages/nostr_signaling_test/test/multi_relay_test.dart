@@ -5,282 +5,94 @@ import 'package:test/test.dart';
 
 void main() {
   group('Multi-Relay Test - Pubblicazione su 3 Relay Diversi', () {
-    test('Pubblica su nos.lol e attendi recupero con retry', () async {
+    // Helper per testare un relay: subscribe PRIMA, poi publish, poi attendi callback live
+    Future<void> testRelay({
+      required String relayUrl,
+      required String relayName,
+      required List<int> testData,
+    }) async {
       print('\n╔═══════════════════════════════════════════════════════════╗');
-      print('║        TEST RELAY 1: nos.lol                             ║');
+      print('║        TEST RELAY: $relayName');
       print('╚═══════════════════════════════════════════════════════════╝\n');
 
-      final testData = [111, 222, 100, 50];
-      late List<int> retrievedData;
-      var dataFound = false;
-
-      final relay = NostrRelayImpl(relayUrl: 'wss://nos.lol');
+      final relay = NostrRelayImpl(relayUrl: relayUrl);
+      final pubKeys = NostrKeys.generate();
+      final recvKeys = NostrKeys.generate();
 
       final publisher = NostrSignalingImpl.single(
-        keyPair: NostrKeyPair(
-          privateKey: NostrTestKeys.testPrivateKey1,
-          publicKey: NostrTestKeys.testPublicKey1,
-        ),
+        keyPair: pubKeys,
         relay: relay,
         useCompression: false,
       );
 
       final receiver = NostrSignalingImpl.single(
-        keyPair: NostrKeyPair(
-          privateKey: NostrTestKeys.testPrivateKey2,
-          publicKey: NostrTestKeys.testPublicKey2,
-        ),
+        keyPair: recvKeys,
         relay: relay,
         useCompression: false,
       );
 
       try {
-        print('📤 Pubblicazione su nos.lol...');
-        final pubStart = DateTime.now();
+        print('🔌 Connessione...');
         await publisher.connect().timeout(const Duration(seconds: 15));
+        print('✓ Connesso\n');
+
+        // Subscribe PRIMA (live subscription - pattern provato funzionante)
+        final completer = Completer<void>();
+        late List<int> retrievedData;
+
+        print('📡 Sottoscrizione (subscribe prima del publish)...');
+        await receiver.subscribe(
+          publisher.pubkey,
+          EventCallback((id, data) {
+            print('  ✓ Dati ricevuti: $data');
+            retrievedData = data;
+            if (!completer.isCompleted) completer.complete();
+          }),
+        ).timeout(const Duration(seconds: 15));
+        print('✓ Sottoscrizione attiva\n');
+
+        print('📤 Pubblicazione...');
         final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
-        print('✓ Evento pubblicato: $eventId');
-        print('  Tempo: ${DateTime.now().difference(pubStart).inMilliseconds}ms\n');
+        print('✓ Evento pubblicato: $eventId\n');
 
-        print('⏳ Attesa propagazione nel relay: 10 secondi...');
-        for (var i = 1; i <= 10; i++) {
-          await Future.delayed(const Duration(seconds: 1));
-          print('   $i/10 secondi...');
-        }
+        print('⏳ Attesa ricezione callback...');
+        await completer.future.timeout(const Duration(seconds: 10));
 
-        print('\n📥 Tentativo di recupero con RETRY (max 3 tentativi)...');
-        for (var attempt = 1; attempt <= 3; attempt++) {
-          print('\nTentativo $attempt:');
-          final completer = Completer<void>();
-
-          if (!receiver.isConnected()) {
-            await receiver.connect().timeout(const Duration(seconds: 15));
-          }
-
-          await receiver.subscribe(
-            publisher.pubkey,
-            (id, data) {
-              print('  ✓ Dati ricevuti: $data (aspettiamo: $testData)');
-              // Only complete when we find the exact data we published
-              if (data.length == testData.length &&
-                  List.generate(data.length, (i) => data[i] == testData[i])
-                      .every((e) => e)) {
-                retrievedData = data;
-                dataFound = true;
-                if (!completer.isCompleted) completer.complete();
-              }
-            },
-          ).timeout(const Duration(seconds: 15));
-
-          try {
-            await completer.future.timeout(const Duration(seconds: 5));
-            print('  ✓ TROVATO!');
-            break;
-          } catch (e) {
-            print('  ⏳ Tentativo $attempt fallito, retry...');
-            if (attempt < 3) {
-              await Future.delayed(const Duration(seconds: 3));
-            }
-          }
-        }
-
-        if (dataFound) {
-          expect(retrievedData, equals(testData));
-          print('\n✅ SUCCESSO: Dati recuperati da nos.lol!');
-        } else {
-          print('\n⚠️  Dati non trovati su nos.lol dopo 3 tentativi');
-        }
+        print('\n✅ SUCCESSO: Dati ricevuti da $relayName!');
+        print('  Originali: $testData');
+        print('  Ricevuti:  $retrievedData');
+        expect(retrievedData, equals(testData));
 
         await relay.disconnect();
       } catch (e) {
         print('❌ Errore: $e');
         await relay.disconnect();
+        rethrow;
       }
-    });
+    }
+
+    test('Pubblica su nos.lol e attendi recupero', () async {
+      await testRelay(
+        relayUrl: 'wss://nos.lol',
+        relayName: 'nos.lol',
+        testData: [111, 222, 100, 50],
+      );
+    }, timeout: const Timeout(Duration(seconds: 60)));
 
     test('Pubblica su relay.damus.io e attendi recupero', () async {
-      print('\n╔═══════════════════════════════════════════════════════════╗');
-      print('║        TEST RELAY 2: relay.damus.io                      ║');
-      print('╚═══════════════════════════════════════════════════════════╝\n');
-
-      final testData = [200, 150, 100, 50];
-      late List<int> retrievedData;
-      var dataFound = false;
-
-      final relay = NostrRelayImpl(relayUrl: 'wss://relay.damus.io');
-
-      final publisher = NostrSignalingImpl.single(
-        keyPair: NostrKeyPair(
-          privateKey: NostrTestKeys.testPrivateKey1,
-          publicKey: NostrTestKeys.testPublicKey1,
-        ),
-        relay: relay,
-        useCompression: false,
+      await testRelay(
+        relayUrl: 'wss://relay.damus.io',
+        relayName: 'relay.damus.io',
+        testData: [200, 150, 100, 50],
       );
-
-      final receiver = NostrSignalingImpl.single(
-        keyPair: NostrKeyPair(
-          privateKey: NostrTestKeys.testPrivateKey2,
-          publicKey: NostrTestKeys.testPublicKey2,
-        ),
-        relay: relay,
-        useCompression: false,
-      );
-
-      try {
-        print('📤 Pubblicazione su relay.damus.io...');
-        final pubStart = DateTime.now();
-        await publisher.connect().timeout(const Duration(seconds: 15));
-        final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
-        print('✓ Evento pubblicato: $eventId');
-        print('  Tempo: ${DateTime.now().difference(pubStart).inMilliseconds}ms\n');
-
-        print('⏳ Attesa propagazione nel relay: 10 secondi...');
-        for (var i = 1; i <= 10; i++) {
-          await Future.delayed(const Duration(seconds: 1));
-          print('   $i/10 secondi...');
-        }
-
-        print('\n📥 Tentativo di recupero con RETRY (max 3 tentativi)...');
-        for (var attempt = 1; attempt <= 3; attempt++) {
-          print('\nTentativo $attempt:');
-          final completer = Completer<void>();
-
-          if (!receiver.isConnected()) {
-            await receiver.connect().timeout(const Duration(seconds: 15));
-          }
-
-          await receiver.subscribe(
-            publisher.pubkey,
-            (id, data) {
-              print('  ✓ Dati ricevuti: $data (aspettiamo: $testData)');
-              // Only complete when we find the exact data we published
-              if (data.length == testData.length &&
-                  List.generate(data.length, (i) => data[i] == testData[i])
-                      .every((e) => e)) {
-                retrievedData = data;
-                dataFound = true;
-                if (!completer.isCompleted) completer.complete();
-              }
-            },
-          ).timeout(const Duration(seconds: 15));
-
-          try {
-            await completer.future.timeout(const Duration(seconds: 5));
-            print('  ✓ TROVATO!');
-            break;
-          } catch (e) {
-            print('  ⏳ Tentativo $attempt fallito, retry...');
-            if (attempt < 3) {
-              await Future.delayed(const Duration(seconds: 3));
-            }
-          }
-        }
-
-        if (dataFound) {
-          expect(retrievedData, equals(testData));
-          print('\n✅ SUCCESSO: Dati recuperati da relay.damus.io!');
-        } else {
-          print('\n⚠️  Dati non trovati su relay.damus.io dopo 3 tentativi');
-        }
-
-        await relay.disconnect();
-      } catch (e) {
-        print('❌ Errore: $e');
-        await relay.disconnect();
-      }
-    });
+    }, timeout: const Timeout(Duration(seconds: 60)));
 
     test('Pubblica su relay.primal.net e attendi recupero', () async {
-      print('\n╔═══════════════════════════════════════════════════════════╗');
-      print('║        TEST RELAY 3: relay.primal.net                    ║');
-      print('╚═══════════════════════════════════════════════════════════╝\n');
-
-      final testData = [250, 200, 150, 100];
-      late List<int> retrievedData;
-      var dataFound = false;
-
-      final relay = NostrRelayImpl(relayUrl: 'wss://relay.primal.net');
-
-      final publisher = NostrSignalingImpl.single(
-        keyPair: NostrKeyPair(
-          privateKey: NostrTestKeys.testPrivateKey1,
-          publicKey: NostrTestKeys.testPublicKey1,
-        ),
-        relay: relay,
-        useCompression: false,
+      await testRelay(
+        relayUrl: 'wss://relay.primal.net',
+        relayName: 'relay.primal.net',
+        testData: [250, 200, 150, 100],
       );
-
-      final receiver = NostrSignalingImpl.single(
-        keyPair: NostrKeyPair(
-          privateKey: NostrTestKeys.testPrivateKey2,
-          publicKey: NostrTestKeys.testPublicKey2,
-        ),
-        relay: relay,
-        useCompression: false,
-      );
-
-      try {
-        print('📤 Pubblicazione su relay.primal.net...');
-        final pubStart = DateTime.now();
-        await publisher.connect().timeout(const Duration(seconds: 15));
-        final eventId = await publisher.publish(testData).timeout(const Duration(seconds: 15));
-        print('✓ Evento pubblicato: $eventId');
-        print('  Tempo: ${DateTime.now().difference(pubStart).inMilliseconds}ms\n');
-
-        print('⏳ Attesa propagazione nel relay: 10 secondi...');
-        for (var i = 1; i <= 10; i++) {
-          await Future.delayed(const Duration(seconds: 1));
-          print('   $i/10 secondi...');
-        }
-
-        print('\n📥 Tentativo di recupero con RETRY (max 3 tentativi)...');
-        for (var attempt = 1; attempt <= 3; attempt++) {
-          print('\nTentativo $attempt:');
-          final completer = Completer<void>();
-
-          if (!receiver.isConnected()) {
-            await receiver.connect().timeout(const Duration(seconds: 15));
-          }
-
-          await receiver.subscribe(
-            publisher.pubkey,
-            (id, data) {
-              print('  ✓ Dati ricevuti: $data (aspettiamo: $testData)');
-              if (data.length == testData.length &&
-                  List.generate(data.length, (i) => data[i] == testData[i])
-                      .every((e) => e)) {
-                retrievedData = data;
-                dataFound = true;
-                if (!completer.isCompleted) completer.complete();
-              }
-            },
-          ).timeout(const Duration(seconds: 15));
-
-          try {
-            await completer.future.timeout(const Duration(seconds: 5));
-            print('  ✓ TROVATO!');
-            break;
-          } catch (e) {
-            print('  ⏳ Tentativo $attempt fallito, retry...');
-            if (attempt < 3) {
-              await Future.delayed(const Duration(seconds: 3));
-            }
-          }
-        }
-
-        if (dataFound) {
-          expect(retrievedData, equals(testData));
-          print('\n✅ SUCCESSO: Dati recuperati da relay.primal.net!');
-        } else {
-          print('\n⚠️  Dati non trovati su relay.primal.net dopo 3 tentativi');
-        }
-
-        await relay.disconnect();
-      } catch (e) {
-        print('❌ Errore: $e');
-        await relay.disconnect();
-      }
-    });
+    }, timeout: const Timeout(Duration(seconds: 60)));
   });
 }

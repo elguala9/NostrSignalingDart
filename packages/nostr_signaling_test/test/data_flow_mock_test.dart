@@ -130,12 +130,12 @@ void main() {
 
       await peer2.subscribe(
         peer1.pubkey,
-        (id, data) {
+        EventCallback((id, data) {
           print('📨 CALLBACK: Peer2 ha ricevuto dati da $id');
           print('   Data: $data');
           receivedData = data;
           completer.complete();
-        },
+        }),
       );
       print('✓ Peer2 iscritto');
 

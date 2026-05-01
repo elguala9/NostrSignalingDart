@@ -22,9 +22,9 @@ void main() async {
   final eventId = await signaling.publish([1, 2, 3, 4, 5]);
   print('Event published: $eventId');
 
-  await signaling.subscribe('target_user_id', (id, data) {
+  await signaling.subscribe('target_user_id', EventCallback((id, data) {
     print('Received from $id: $data');
-  });
+  }));
 
   final lastData = await signaling.retrieveLast('target_user_id');
   print('Last data from peer: $lastData');

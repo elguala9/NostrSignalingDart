@@ -67,7 +67,7 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 500));
       const targetId = 'target_user_id';
 
-      final subId = await signaling.subscribe(targetId, (id, data) {}).timeout(const Duration(seconds: 15));
+      final subId = await signaling.subscribe(targetId, EventCallback((id, data) {})).timeout(const Duration(seconds: 15));
 
       expect(subId, isNotEmpty);
     });
@@ -77,7 +77,7 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 500));
       const targetId = 'target_user_id';
 
-      await signaling.subscribe(targetId, (id, data) {}).timeout(const Duration(seconds: 15));
+      await signaling.subscribe(targetId, EventCallback((id, data) {})).timeout(const Duration(seconds: 15));
       await signaling.unsubscribe(targetId).timeout(const Duration(seconds: 15));
 
       expect(true, equals(true));

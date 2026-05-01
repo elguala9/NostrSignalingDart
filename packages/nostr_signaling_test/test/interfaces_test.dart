@@ -42,12 +42,42 @@ void main() {
     });
   });
 
-  group('EventCallback typedef', () {
+  group('EventCallback class', () {
     test('EventCallback è definito correttamente', () {
-      // EventCallback = void Function(NostrUserId id, List<int> data)
       void testCallback(String id, List<int> data) {}
+      final callback = EventCallback(testCallback);
 
-      expect(testCallback, isNotNull);
+      expect(callback, isNotNull);
+    });
+
+    test('EventCallback non chiama due volte per lo stesso hash', () {
+      int callCount = 0;
+      final callback = EventCallback((id, data) { callCount++; });
+
+      callback('id', [1, 2, 3], hash: 'abc');
+      callback('id', [4, 5, 6], hash: 'abc');
+
+      expect(callCount, equals(1));
+    });
+
+    test('EventCallback chiama per hash diversi', () {
+      int callCount = 0;
+      final callback = EventCallback((id, data) { callCount++; });
+
+      callback('id', [1, 2, 3], hash: 'abc');
+      callback('id', [4, 5, 6], hash: 'def');
+
+      expect(callCount, equals(2));
+    });
+
+    test('EventCallback chiama sempre senza hash', () {
+      int callCount = 0;
+      final callback = EventCallback((id, data) { callCount++; });
+
+      callback('id', [1, 2, 3]);
+      callback('id', [4, 5, 6]);
+
+      expect(callCount, equals(2));
     });
   });
 

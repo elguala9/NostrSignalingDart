@@ -117,11 +117,11 @@ void main() {
       final completer = Completer<List<int>>();
       await signaling.subscribe(
         NostrTestKeys.testPublicKey1,
-        (id, data) {
+        EventCallback((id, data) {
           if (!completer.isCompleted && _listMatches(data, uniqueData)) {
             completer.complete(data);
           }
-        },
+        }),
         since: since,
       );
 
@@ -209,7 +209,7 @@ void main() {
 
       final subId = await signaling.subscribe(
         NostrTestKeys.testPublicKey2,
-        (id, data) {},
+        EventCallback((id, data) {}),
       );
 
       expect(subId, isNotEmpty);

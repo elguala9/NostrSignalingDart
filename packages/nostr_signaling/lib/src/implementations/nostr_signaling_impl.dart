@@ -1,42 +1,29 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:meta/meta.dart';
+import 'package:crypto/crypto.dart' as crypto;
 
 import 'package:dart_nostr/dart_nostr.dart';
 import 'package:nostr_signaling/nostr_signaling.dart';
 import 'package:singleton_manager/singleton_manager.dart';
 
 
-/// Concrete implementation of [INostrSignaling].
-///
-/// Supports single and multi-relay configurations with optional
-/// compression. Data is base64-encoded for safe transport over Nostr.
-/// Events are published to all relays concurrently; the first successful
-/// response is returned.
 @isSingleton
 class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
-    /// The signer's Nostr key pair (public + private key).
   @protected
   @isMandatoryParameter
   late NostrKeyPair keyPair;
 
-  /// Convenience getter for the public key.
   String get pubkey => keyPair.publicKey;
-
-  /// Convenience getter for the private key.
   String get privkey => keyPair.privateKey;
 
-  /// The list of relays to publish/subscribe to.
   @isInjected
   @protected
   late NostrRelayList relays;
 
-
-
-  /// Whether to compress data before publishing.
   late bool useCompression;
+  late PayloadHashLength payloadHashLength;
 
-  /// The compression engine to use (required if [useCompression] is true).
   @isOptionalParameter
   @protected
   late ICompressionEngine? compressionEngine = GzipCompressionEngine();
@@ -50,114 +37,96 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
     relays = NostrRelayList([]);
   }
 
-  /// Creates a [NostrSignalingImpl] with one or more relays.
-  ///
-  /// Throws [ArgumentError] if [relays] is empty.
   NostrSignalingImpl({
     required this.keyPair,
     required this.relays,
     this.useCompression = false,
+    this.payloadHashLength = PayloadHashLength.bits64,
     ICompressionEngine? compressionEngine,
   }) : compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
-  /// Creates a [NostrSignalingImpl] with a single relay.
   NostrSignalingImpl.single({
     required this.keyPair,
     required INostrRelay relay,
     this.useCompression = false,
+    this.payloadHashLength = PayloadHashLength.bits64,
     ICompressionEngine? compressionEngine,
   }) : relays = NostrRelayList.single(relay),
        compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
   @override
-  Future<void> connect() async {
-    await relays.connectAll();
-  }
+  Future<void> connect() async => relays.connectAll();
 
   @override
   Future<void> disconnect() async {
-    for (final id in _subscriptions.keys) {
-      await unsubscribe(id);
-    }
+    await Future.wait(_subscriptions.keys.map(unsubscribe));
     await relays.disconnectAll();
   }
 
   @override
-  Future<void> destroy() async {
-    await disconnect();
-  }
+  Future<void> destroy() => disconnect();
 
   @override
-  bool isConnected() {
-    return relays.isAnyConnected();
-  }
+  bool isConnected() => relays.isAnyConnected();
 
   @override
   Future<String> publish(List<int> data) async {
-    final contentToPublish = useCompression
-        ? await compressionEngine?.compress(data)
+    final rawBytes = useCompression
+        ? (await compressionEngine?.compress(data) as CompressedData).data
         : data;
 
-    final content = contentToPublish is CompressedData
-        ? _encodeContent(contentToPublish.data)
-        : _encodeContent(contentToPublish as List<int>);
+    final payloadInfo = _PayloadInfo(
+      data: rawBytes,
+      createdAt: DateTime.now().toUtc(),
+      hashLength: payloadHashLength,
+    );
 
     final event = _createEvent(
-      content: content,
+      content: payloadInfo.toJson(),
       kind: useCompression ? 1000 : 1001,
     );
 
-    // Publish to all relays, return first successful event ID
     final completer = Completer<String>();
-    var errorCount = 0;
-
+    int failures = 0;
     for (final relay in relays) {
       relay.publishEvent(event).then((id) {
         if (!completer.isCompleted) completer.complete(id);
       }).catchError((_) {
-        errorCount++;
-        if (errorCount >= relays.length && !completer.isCompleted) {
-          completer.complete(event.id ?? '');
+        failures++;
+        if (failures == relays.length && !completer.isCompleted) {
+          completer.completeError(Exception('All relays failed to publish'));
         }
       });
     }
 
-    return completer.future.timeout(
-      const Duration(seconds: 15),
-      onTimeout: () => event.id ?? '',
-    );
+    return completer.future.timeout(const Duration(seconds: 15));
   }
 
   @override
   Future<String> subscribe(NostrUserId id, EventCallback onEvent, {int? since}) async {
-    // Unsubscribe from previous subscription to this ID if it exists
-    if (_relaySubscriptionIds.containsKey(id)) {
-      await unsubscribe(id);
-    }
+    if (_relaySubscriptionIds.containsKey(id)) await unsubscribe(id);
 
     _subscriptions[id] = onEvent;
     _relaySubscriptionIds[id] = {};
 
-    // Subscribe to all events from the specified author with our custom kinds
+    since ??= DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
     final filter = NostrFilter(
       authors: [id],
       kinds: [1000, 1001],
-      since: since != null
-          ? DateTime.fromMillisecondsSinceEpoch(since * 1000)
-          : null,
+      since: DateTime.fromMillisecondsSinceEpoch(since * 1000),
     );
 
-    // Subscribe on all relays
-    final subscriptionFutures = relays.map((relay) async {
+    final subIds = await Future.wait(relays.map((relay) async {
       final subId = await relay.subscribe(filter, (event) {
-        final data = _decodeContent(event.content ?? '');
-        onEvent(id, data);
+        final content = event.content ?? '';
+        final payload = _decodePayload(content);
+        final data = payload?.data ?? _decodeContent(content);
+        onEvent(id, data, hash: payload?.hash);
       });
       _relaySubscriptionIds[id]![relay] = subId;
       return subId;
-    });
-
-    final subIds = await Future.wait(subscriptionFutures);
+    }));
     return subIds.first;
   }
 
@@ -169,56 +138,32 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
       limit: 1,
     );
 
-    // Try to retrieve from all relays concurrently and return the first successful result
-    final retrieveFutures = relays.map((relay) async {
-      List<int> lastData = [];
-      final completer = Completer<void>();
+    final results = <_PayloadInfo>[];
+    await Future.wait(relays.map((relay) async {
+      final subId = await relay.subscribe(filter, (event) {
+        final payload = _decodePayload(event.content ?? '');
+        if (payload != null) results.add(payload);
+      });
+      Future.delayed(const Duration(seconds: 5), () {
+        relay.unsubscribe(subId);
+      });
+    }));
 
-      try {
-        final subId = await relay.subscribe(filter, (event) {
-          lastData = _decodeContent(event.content ?? '');
-          if (!completer.isCompleted) {
-            completer.complete();
-          }
-        });
+    await Future.delayed(const Duration(seconds: 6));
+    if (results.isEmpty) return [];
 
-        try {
-          await completer.future.timeout(const Duration(seconds: 5));
-        } finally {
-          await relay.unsubscribe(subId);
-        }
-      } catch (e) {
-        // Relay failed, will try next one
-      }
-
-      return lastData;
-    });
-
-    final results = await Future.wait(retrieveFutures);
-
-    // Return the first non-empty result, or empty list if all failed
-    return results.firstWhere(
-      (data) => data.isNotEmpty,
-      orElse: () => [],
-    );
+    results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return results.first.data;
   }
 
   @override
   Future<void> unsubscribe(NostrUserId id) async {
-    if (_subscriptions.containsKey(id)) {
-      _subscriptions.remove(id);
-      final relaySubIds = _relaySubscriptionIds.remove(id) ?? {};
-
-      // Unsubscribe from all relays
-      await Future.wait(
-        relaySubIds.entries.map((entry) async {
-          final relay = entry.key;
-          final subId = entry.value;
-          await relay.unsubscribe(subId);
-        }),
-        eagerError: false,
-      );
-    }
+    _subscriptions.remove(id);
+    final subIds = _relaySubscriptionIds.remove(id) ?? {};
+    await Future.wait(
+      subIds.entries.map((e) => e.key.unsubscribe(e.value)),
+      eagerError: false,
+    );
   }
 
   NostrEvent _createEvent({
@@ -234,17 +179,58 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
     );
   }
 
-  String _encodeContent(List<int> data) {
-    // Codifica i dati come base64 per trasporto sicuro
-    return base64Encode(data);
+  List<int> _decodeContent(String content) {
+    if (content.startsWith('{')) {
+      final d = jsonDecode(content);
+      if (d is Map && d['data'] is String) return base64Decode(d['data'] as String);
+    }
+    if (RegExp(r'^[A-Za-z0-9+/]*={0,2}$').hasMatch(content)) return base64Decode(content);
+    return utf8.encode(content);
   }
 
-  List<int> _decodeContent(String content) {
-    // Decodifica il contenuto da base64
-    try {
-      return base64Decode(content);
-    } catch (e) {
-      return utf8.encode(content);
+  _PayloadInfo? _decodePayload(String content) => _PayloadInfo.fromJson(content);
+}
+
+class _PayloadInfo {
+  final List<int> data;
+  final DateTime createdAt;
+  final String hash;
+  final PayloadHashLength hashLength;
+
+  _PayloadInfo({
+    required this.data,
+    required this.createdAt,
+    this.hashLength = PayloadHashLength.bits64,
+  }) : hash = crypto.sha256
+            .convert(data)
+            .toString()
+            .substring(0, hashLength.hexChars);
+
+  _PayloadInfo._fromParsed({
+    required this.data,
+    required this.createdAt,
+    required this.hash,
+  }) : hashLength = PayloadHashLength.values.firstWhere(
+          (l) => l.hexChars == hash.length,
+          orElse: () => PayloadHashLength.bits64,
+        );
+
+  String toJson() => jsonEncode({
+        'data': base64Encode(data),
+        'created_at': createdAt.toUtc().toIso8601String(),
+        'hash': hash,
+      });
+
+  static _PayloadInfo? fromJson(String content) {
+    if (!content.startsWith('{')) return null;
+    final d = jsonDecode(content);
+    if (d is Map && d['data'] is String && d['created_at'] is String && d['hash'] is String) {
+      return _PayloadInfo._fromParsed(
+        data: base64Decode(d['data'] as String),
+        createdAt: DateTime.parse(d['created_at'] as String),
+        hash: d['hash'] as String,
+      );
     }
+    return null;
   }
 }

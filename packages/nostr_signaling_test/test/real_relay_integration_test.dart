@@ -61,13 +61,13 @@ void main() {
       final subscribeStart = DateTime.now();
       await peer2.subscribe(
         NostrTestKeys.testPublicKey1,
-        (id, data) {
+        EventCallback((id, data) {
           print('✓ Peer2 ha ricevuto dati: $data');
           if (!dataReceivedCompleter.isCompleted && _listEquals(data, testData)) {
             receivedData = data;
             dataReceivedCompleter.complete();
           }
-        },
+        }),
         since: since,
       ).timeout(const Duration(seconds: 15));
       final subscribeTime = DateTime.now().difference(subscribeStart);
@@ -121,25 +121,25 @@ void main() {
 
       await peer1.subscribe(
         NostrTestKeys.testPublicKey2,
-        (id, data) {
+        EventCallback((id, data) {
           print('✓ Peer1 riceve da Peer2: $data');
           if (!peer1Completer.isCompleted && _listEquals(data, data2)) {
             peer1ReceivedFromPeer2 = data;
             peer1Completer.complete();
           }
-        },
+        }),
         since: since,
       ).timeout(const Duration(seconds: 15));
 
       await peer2.subscribe(
         NostrTestKeys.testPublicKey1,
-        (id, data) {
+        EventCallback((id, data) {
           print('✓ Peer2 riceve da Peer1: $data');
           if (!peer2Completer.isCompleted && _listEquals(data, data1)) {
             peer2ReceivedFromPeer1 = data;
             peer2Completer.complete();
           }
-        },
+        }),
         since: since,
       ).timeout(const Duration(seconds: 15));
 
@@ -202,7 +202,7 @@ void main() {
 
       await peer2.subscribe(
         NostrTestKeys.testPublicKey1,
-        (id, data) {
+        EventCallback((id, data) {
           // Only count messages that belong to this test's expected set
           if (messages.any((m) => _listEquals(m, data)) &&
               !receivedMessages.any((m) => _listEquals(m, data))) {
@@ -212,7 +212,7 @@ void main() {
               if (!completer.isCompleted) completer.complete();
             }
           }
-        },
+        }),
         since: since,
       ).timeout(const Duration(seconds: 15));
 

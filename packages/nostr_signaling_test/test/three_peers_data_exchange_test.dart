@@ -207,9 +207,9 @@ void main() {
       await peer2.connect();
 
       // Peer2 si iscrive agli eventi di Peer1
-      await peer2.subscribe(NostrTestKeys.testPublicKey1, (id, data) {
+      await peer2.subscribe(NostrTestKeys.testPublicKey1, EventCallback((id, data) {
         // Callback ricevuto
-      });
+      }));
 
       // Peer1 pubblica
       await peer1.publish([111, 222, 233]);

@@ -88,7 +88,7 @@ void main() {
           'Receiver si sottoscrive ai dati del Publisher (dai dati memorizzati)...');
       await receiver.subscribe(
         publisher.pubkey,
-        (id, data) {
+        EventCallback((id, data) {
           print(
               '📨 Receiver ha ricevuto dati dal relay: ${data.toString().replaceAll('List<int> ', '')}');
           // Only complete when we find the exact data we published
@@ -100,7 +100,7 @@ void main() {
             dataFound = true;
             if (!completer.isCompleted) completer.complete();
           }
-        },
+        }),
       ).timeout(const Duration(seconds: 15));
       print('✓ Receiver iscritto\n');
 
