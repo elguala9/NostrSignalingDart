@@ -143,6 +143,30 @@ void main() {
 
       expect(RegistryAccess.contains<INostrSignaling>('default'), isFalse);
     });
+
+    test('accepts onEventCallbacks parameter', () async {
+      final callback = EventCallback((id, data) {});
+      await initialPointNostrSignaling(
+        keyPair: testKeyPair1,
+        onEventCallbacks: {'target-user': callback},
+      );
+
+      expect(SingletonDIAccess.exists<INostrSignaling>(), isTrue);
+    });
+
+    test('accepts onEventCallbacks with multiple entries', () async {
+      final callback1 = EventCallback((id, data) {});
+      final callback2 = EventCallback((id, data) {});
+      await initialPointNostrSignaling(
+        keyPair: testKeyPair1,
+        onEventCallbacks: {
+          'user-one': callback1,
+          'user-two': callback2,
+        },
+      );
+
+      expect(SingletonDIAccess.exists<INostrSignaling>(), isTrue);
+    });
   });
 
   group('initialPointNostrSignalingDefault (Singleton convenience)', () {
@@ -166,6 +190,16 @@ void main() {
 
       final instance = getINostrSignaling();
       expect(instance, isA<INostrSignaling>());
+    });
+
+    test('accepts onEventCallbacks parameter', () async {
+      final callback = EventCallback((id, data) {});
+      await initialPointNostrSignalingDefault(
+        keyPair: testKeyPair1,
+        onEventCallbacks: {'target-user': callback},
+      );
+
+      expect(SingletonDIAccess.exists<INostrSignaling>(), isTrue);
     });
   });
 
@@ -329,6 +363,30 @@ void main() {
           getINostrSignalingFromRegistry() as NostrSignalingImpl;
       expect(instance.pubkey, equals(NostrTestKeys.testPublicKey1));
     });
+
+    test('accepts onEventCallbacks parameter', () {
+      final callback = EventCallback((id, data) {});
+      initialPointNostrSignalingRegistry(
+        keyPair: testKeyPair1,
+        onEventCallbacks: {'target-user': callback},
+      );
+
+      expect(RegistryAccess.contains<INostrSignaling>('default'), isTrue);
+    });
+
+    test('accepts onEventCallbacks with multiple entries', () {
+      final callback1 = EventCallback((id, data) {});
+      final callback2 = EventCallback((id, data) {});
+      initialPointNostrSignalingRegistry(
+        keyPair: testKeyPair1,
+        onEventCallbacks: {
+          'user-one': callback1,
+          'user-two': callback2,
+        },
+      );
+
+      expect(RegistryAccess.contains<INostrSignaling>('default'), isTrue);
+    });
   });
 
   group('initialPointNostrSignalingRegistryDefault (Registry convenience)',
@@ -363,6 +421,16 @@ void main() {
 
       final instance = getINostrSignalingFromRegistry();
       expect(instance, isA<INostrSignaling>());
+    });
+
+    test('accepts onEventCallbacks parameter', () {
+      final callback = EventCallback((id, data) {});
+      initialPointNostrSignalingRegistryDefault(
+        keyPair: testKeyPair1,
+        onEventCallbacks: {'target-user': callback},
+      );
+
+      expect(RegistryAccess.contains<INostrSignaling>('default'), isTrue);
     });
   });
 
@@ -505,6 +573,22 @@ void main() {
         throwsA(isA<StateError>()),
       );
     });
+
+    test('accepts onEventCallbacks parameter', () async {
+      final path = tempPath();
+      addTearDown(() {
+        if (File(path).existsSync()) File(path).deleteSync();
+      });
+
+      final callback = EventCallback((id, data) {});
+      await NostrConfig(keyPair: testKeyPair1).save(path);
+      await initialPointNostrSignalingFromConfig(
+        configPath: path,
+        onEventCallbacks: {'target-user': callback},
+      );
+
+      expect(SingletonDIAccess.exists<INostrSignaling>(), isTrue);
+    });
   });
 
   group('initialPointNostrSignalingRegistryFromConfig (Registry from config)',
@@ -601,6 +685,22 @@ void main() {
         () => initialPointNostrSignalingRegistryFromConfig(configPath: path),
         throwsA(isA<StateError>()),
       );
+    });
+
+    test('accepts onEventCallbacks parameter', () async {
+      final path = tempPath();
+      addTearDown(() {
+        if (File(path).existsSync()) File(path).deleteSync();
+      });
+
+      final callback = EventCallback((id, data) {});
+      await NostrConfig(keyPair: testKeyPair1).save(path);
+      initialPointNostrSignalingRegistryFromConfig(
+        configPath: path,
+        onEventCallbacks: {'target-user': callback},
+      );
+
+      expect(RegistryAccess.contains<INostrSignaling>('default'), isTrue);
     });
   });
 }

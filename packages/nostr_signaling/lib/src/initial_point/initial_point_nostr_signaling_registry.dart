@@ -3,7 +3,6 @@ import 'package:singleton_manager/singleton_manager.dart';
 
 
 
-
 /// Registry-based variant of [initialPointNostrSignaling].
 ///
 /// Registers [NostrSignalingImpl] under a named [registryKey] via [RegistryAccess],
@@ -22,6 +21,7 @@ void initialPointNostrSignalingRegistry({
   List<String> relayUrls = const ['wss://relay.damus.io'],
   bool useCompression = false,
   ICompressionEngine? compressionEngine,
+  Map<NostrUserId, IEventCallback>? onEventCallbacks,
 }) {
   final relays = relayUrls
       .map((url) => NostrRelayImpl(relayUrl: url))
@@ -34,6 +34,10 @@ void initialPointNostrSignalingRegistry({
     compressionEngine: compressionEngine ??
         (useCompression ? GzipCompressionEngine() : null),
   );
+
+  if (onEventCallbacks != null) {
+    signaling.setOnEventCallbacks(onEventCallbacks);
+  }
 
   RegistryAccess.register<INostrSignaling>(registryKey, signaling);
 }
@@ -49,6 +53,7 @@ void initialPointNostrSignalingRegistry({
 void initialPointNostrSignalingRegistryDefault({
   String key = 'default',
   required NostrKeyPair keyPair,
+  Map<NostrUserId, IEventCallback>? onEventCallbacks,
 }) {
   
   NostrConfig config = NostrConfig.loadSync() ?? NostrConfig();
@@ -57,6 +62,7 @@ void initialPointNostrSignalingRegistryDefault({
     keyPair: keyPair,
     relayUrls: config.relays,
     useCompression: false,
+    onEventCallbacks: onEventCallbacks,
   );
 }
 
@@ -75,6 +81,7 @@ void initialPointNostrSignalingRegistryFromConfig({
   String configPath = NostrConfig.defaultConfigPath,
   bool useCompression = false,
   ICompressionEngine? compressionEngine,
+  Map<NostrUserId, IEventCallback>? onEventCallbacks,
 }) {
   final config = NostrConfig.loadSync(configPath);
   if (config == null) {
@@ -90,6 +97,7 @@ void initialPointNostrSignalingRegistryFromConfig({
     relayUrls: config.relays,
     useCompression: useCompression,
     compressionEngine: compressionEngine,
+    onEventCallbacks: onEventCallbacks,
   );
 }
 

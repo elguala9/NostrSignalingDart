@@ -38,7 +38,7 @@ void main() {
       expect(callCount, equals(3));
     });
 
-    test('collection di default è "nostr_signaling_seen_hashes"', () {
+    test('collection di default è defaultEventCallbackCollection', () {
       final db = WorkDb.memory() as ClientWorkDb;
       final cb = EventCallback((id, data) {}, database: db);
 
@@ -46,9 +46,9 @@ void main() {
       cb('peer', [3, 4], hash: 'hash-due');
 
       final collections = db.getCollectionsSync();
-      expect(collections, contains('nostr_signaling_seen_hashes'));
+      expect(collections, contains(defaultEventCallbackCollection));
 
-      final items = db.getItemsInCollectionSync('nostr_signaling_seen_hashes');
+      final items = db.getItemsInCollectionSync(defaultEventCallbackCollection);
       expect(items, hasLength(2));
       expect(items, containsAll(['hash-uno', 'hash-due']));
     });
@@ -65,7 +65,7 @@ void main() {
 
       final collections = db.getCollectionsSync();
       expect(collections, contains('custom-collection'));
-      expect(collections, isNot(contains('nostr_signaling_seen_hashes')));
+      expect(collections, isNot(contains(defaultEventCallbackCollection)));
     });
 
     test('database condiviso persiste dedup tra istanze', () {
@@ -103,7 +103,7 @@ void main() {
       cb('peer', [1], hash: 'first');
       cb('peer', [2], hash: 'second');
 
-      final items = db.getItemsInCollectionSync('nostr_signaling_seen_hashes');
+      final items = db.getItemsInCollectionSync(defaultEventCallbackCollection);
       expect(items, hasLength(1));
       expect(items, contains('second'));
       expect(items, isNot(contains('first')));
@@ -116,10 +116,10 @@ void main() {
       cb('peer', [1], hash: 'a');
       cb('peer', [2], hash: 'b');
       cb('peer', [3], hash: 'c');
-      expect(db.getItemsInCollectionSync('nostr_signaling_seen_hashes'), hasLength(3));
+      expect(db.getItemsInCollectionSync(defaultEventCallbackCollection), hasLength(3));
 
       cb('peer', [4], hash: 'd');
-      final items = db.getItemsInCollectionSync('nostr_signaling_seen_hashes');
+      final items = db.getItemsInCollectionSync(defaultEventCallbackCollection);
       expect(items, hasLength(3));
       expect(items, isNot(contains('a')));
       expect(items, containsAll(['b', 'c', 'd']));
@@ -137,7 +137,7 @@ void main() {
       cb('peer', [2], hash: 'h1');
 
       expect(callCount, equals(2));
-      expect(db.getItemsInCollectionSync('nostr_signaling_seen_hashes'), hasLength(0));
+      expect(db.getItemsInCollectionSync(defaultEventCallbackCollection), hasLength(0));
     });
 
     test('maxRecords = 1000 default non evitta prematuramente', () {
@@ -148,7 +148,7 @@ void main() {
         cb('peer', [i], hash: 'hash-$i');
       }
 
-      expect(db.getItemsInCollectionSync('nostr_signaling_seen_hashes'), hasLength(100));
+      expect(db.getItemsInCollectionSync(defaultEventCallbackCollection), hasLength(100));
     });
 
     test('maxRecords su default db evitta dopo il limite', () {

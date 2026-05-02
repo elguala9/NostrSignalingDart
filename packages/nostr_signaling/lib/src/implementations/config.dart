@@ -24,10 +24,15 @@ class NostrConfig{
 
   NostrKeyPair? keyPair;
 
-  NostrConfig({List<String>? relays, this.keyPair}): relays = relays ?? standardRelays;
+  String collection;
+
+  NostrConfig({List<String>? relays, this.keyPair, String? collection})
+      : relays = relays ?? standardRelays,
+        collection = collection ?? defaultEventCallbackCollection;
 
   Map<String, dynamic> toJson() => {
     'relays': relays,
+    'collection': collection,
     if (keyPair != null) ...{
       'privateKey': keyPair!.privateKey,
       'publicKey': keyPair!.publicKey,
@@ -44,6 +49,7 @@ class NostrConfig{
     return NostrConfig(
       relays: (json['relays'] as List<dynamic>?)?.cast<String>(),
       keyPair: keyPair,
+      collection: json['collection'] as String?,
     );
   }
 

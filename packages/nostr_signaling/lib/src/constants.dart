@@ -67,3 +67,6 @@ class NostrStandardRelays {
   /// Offchain.pub relay: `wss://offchain.pub`
   static const String offchain = 'wss://offchain.pub';
 }
+
+/// Default collection name for EventCallback dedup storage.
+const String defaultEventCallbackCollection = 'nostr_signaling_seen_hashes';

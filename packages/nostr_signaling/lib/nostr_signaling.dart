@@ -15,6 +15,8 @@ export 'src/implementations/nostr_signaling_impl.dart';
 export 'src/implementations/nostr_relay_impl.dart';
 export 'src/implementations/gzip_compression_engine.dart';
 export 'src/implementations/config.dart';
+export 'src/implementations/event_callback.dart';
+export 'src/interfaces/i_event_callback.dart';
 export 'src/nostr_relay_list.dart';
 export 'src/nostr_signaling_factory.dart';
 export 'src/initial_point/initial_point_nostr_signaling.dart';

@@ -1,3 +1,11 @@
+## 0.3.0
+
+- `EventCallback` is now a class (not a typedef) with built-in deduplication
+  via `work_db` — the same event hash is never processed twice.
+- `PayloadHashLength` enum — choose between 32-bit, 64-bit, or full 256-bit
+  payload hash to balance collision risk vs. overhead.
+- Various test improvements and refactoring.
+
 ## 0.2.0
 
 - `NostrConfig` — config file persistence with `load()` / `loadSync()` / `save()`.

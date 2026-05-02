@@ -2,7 +2,7 @@
 
 [![Dart SDK](https://img.shields.io/badge/dart-%3E%3D3.0.0-blue)](https://dart.dev)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![pub.dev](https://img.shields.io/badge/pub.dev-v0.1.0-orange)](https://pub.dev/packages/nostr_signaling)
+[![pub.dev](https://img.shields.io/badge/pub.dev-v0.3.0-orange)](https://pub.dev/packages/nostr_signaling)
 
 A Nostr-based signaling library for Dart. Exchange arbitrary binary data
 between Nostr peers, with optional **GZip compression** and **multi-relay
@@ -26,7 +26,7 @@ Add `nostr_signaling` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  nostr_signaling: ^0.1.0
+  nostr_signaling: ^0.3.0
 ```
 
 ## Usage
@@ -120,6 +120,18 @@ final signaling = NostrSignalingFactory.create(
 );
 ```
 
+### Event deduplication
+
+`EventCallback` is now a class with built-in dedup. The same event hash
+is never processed twice.
+
+```dart
+final callback = EventCallback(
+  (id, data) => print('Received from $id: ${data.length} bytes'),
+  maxRecords: 5000,           // keep last 5000 hashes
+);
+```
+
 ### Multi-relay redundancy
 
 ```dart
@@ -179,6 +191,8 @@ Both accept an optional `configPath` (default: `nostr_config.json`).
 | `NostrRelayImpl` | Concrete WebSocket relay via dart_nostr |
 | `ICompressionEngine` | Pluggable compression interface |
 | `GzipCompressionEngine` | GZip compression with auto-detection |
+| `EventCallback` | Callback wrapper with automatic hash-based deduplication |
+| `PayloadHashLength` | Payload hash length (32/64/256 bits) |
 | `NostrConfig` | Config file persistence (relays + key pair) |
 | `NostrSignalingFactory` | Factory with pre-configured factory methods |
 | `NostrKeys` / `NostrKeyPair` | Key generation, import, and validation |

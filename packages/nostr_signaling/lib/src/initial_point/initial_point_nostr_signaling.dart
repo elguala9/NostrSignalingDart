@@ -1,4 +1,5 @@
 import 'package:nostr_signaling/src/implementations/config.dart';
+import 'package:nostr_signaling/src/interfaces/i_event_callback.dart';
 import 'package:singleton_manager/singleton_manager.dart';
 
 import '../implementations/gzip_compression_engine.dart';
@@ -8,6 +9,7 @@ import '../interfaces/i_compression.dart';
 import '../interfaces/i_nostr_signaling.dart';
 import '../keys.dart';
 import '../nostr_relay_list.dart';
+import '../types.dart';
 
 /// DI-style initialisation of the Nostr signaling stack.
 ///
@@ -26,6 +28,7 @@ Future<void> initialPointNostrSignaling({
   List<String> relayUrls = const ['wss://relay.damus.io'],
   bool useCompression = false,
   ICompressionEngine? compressionEngine,
+  Map<NostrUserId, IEventCallback>? onEventCallbacks,
 }) async {
   final relays = relayUrls
       .map((url) => NostrRelayImpl(relayUrl: url))
@@ -38,6 +41,10 @@ Future<void> initialPointNostrSignaling({
     compressionEngine: compressionEngine ??
         (useCompression ? GzipCompressionEngine() : null),
   );
+
+  if (onEventCallbacks != null) {
+    signaling.setOnEventCallbacks(onEventCallbacks);
+  }
 
   SingletonDIAccess.addInstanceAs<INostrSignaling, NostrSignalingImpl>(signaling);
 }
@@ -52,6 +59,7 @@ Future<void> initialPointNostrSignaling({
 /// ```
 Future<void> initialPointNostrSignalingDefault({
   required NostrKeyPair keyPair,
+  Map<NostrUserId, IEventCallback>? onEventCallbacks,
 }) async {
 
   NostrConfig config = (await NostrConfig.load()) ?? NostrConfig();
@@ -59,6 +67,7 @@ Future<void> initialPointNostrSignalingDefault({
     keyPair: keyPair,
     relayUrls: config.relays,
     useCompression: false,
+    onEventCallbacks: onEventCallbacks,
   );
 }
 
@@ -75,6 +84,7 @@ Future<void> initialPointNostrSignalingFromConfig({
   String configPath = NostrConfig.defaultConfigPath,
   bool useCompression = false,
   ICompressionEngine? compressionEngine,
+  Map<NostrUserId, IEventCallback>? onEventCallbacks,
 }) async {
   final config = await NostrConfig.load(configPath);
   if (config == null) {
@@ -89,6 +99,7 @@ Future<void> initialPointNostrSignalingFromConfig({
     relayUrls: config.relays,
     useCompression: useCompression,
     compressionEngine: compressionEngine,
+    onEventCallbacks: onEventCallbacks,
   );
 }
 

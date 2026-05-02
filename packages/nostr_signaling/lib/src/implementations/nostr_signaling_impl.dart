@@ -28,8 +28,9 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
   @protected
   late ICompressionEngine? compressionEngine = GzipCompressionEngine();
 
-  final Map<NostrUserId, EventCallback> _subscriptions = {};
+  final Map<NostrUserId, IEventCallback> _subscriptions = {};
   final Map<NostrUserId, Map<INostrRelay, String>> _relaySubscriptionIds = {};
+  Map<NostrUserId, IEventCallback>? _pendingCallbacks;
 
   NostrSignalingImpl.emptyForDI();
 
@@ -54,8 +55,20 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
   }) : relays = NostrRelayList.single(relay),
        compressionEngine = compressionEngine ?? GzipCompressionEngine();
 
+  void setOnEventCallbacks(Map<NostrUserId, IEventCallback> onEventCallbacks) {
+    _pendingCallbacks = onEventCallbacks;
+  }
+
   @override
-  Future<void> connect() async => relays.connectAll();
+  Future<void> connect() async {
+    await relays.connectAll();
+    if (_pendingCallbacks != null) {
+      await Future.wait(
+        _pendingCallbacks!.entries.map((e) => subscribe(e.key, e.value)),
+      );
+      _pendingCallbacks = null;
+    }
+  }
 
   @override
   Future<void> disconnect() async {
@@ -103,7 +116,7 @@ class NostrSignalingImpl implements INostrSignaling, IValueForRegistry {
   }
 
   @override
-  Future<String> subscribe(NostrUserId id, EventCallback onEvent, {int? since}) async {
+  Future<String> subscribe(NostrUserId id, IEventCallback onEvent, {int? since}) async {
     if (_relaySubscriptionIds.containsKey(id)) await unsubscribe(id);
 
     _subscriptions[id] = onEvent;
