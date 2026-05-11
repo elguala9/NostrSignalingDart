@@ -19,4 +19,5 @@ export 'src/implementations/event_callback.dart';
 export 'src/interfaces/i_event_callback.dart';
 export 'src/nostr_relay_list.dart';
 export 'src/nostr_signaling_factory.dart';
-export 'src/initial_point/initial_point.dart';
+export 'src/initial_point/initial_point_nostr_signaling.dart';
+export 'src/initial_point/initial_point_nostr_signaling_registry.dart';
