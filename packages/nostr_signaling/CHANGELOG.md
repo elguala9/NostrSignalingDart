@@ -1,3 +1,20 @@
+## 0.4.0
+
+- `NostrConfig.load()` / `loadSync()` now return non-nullable `NostrConfig`
+  and auto-create the config file with a freshly generated key pair if it
+  doesn't exist — no more null checks needed.
+- `NostrSignalingFactory` simplified from 6 methods to 2:
+  - `create()` now accepts `relayUrls` (list) and `useCompression` directly.
+  - Removed `createWithMultipleRelays`, `createWithGzipCompression`,
+    `createWithGzipCompressionAndMultipleRelays` — use `create(relayUrls: [...],
+    useCompression: true)` instead.
+  - `createWithCustomRelays()` unchanged for pre-built relay instances.
+- Initial point files merged: both Singleton DI and Registry variants live in
+  a single `initial_point.dart` with shared creation logic — less duplication.
+- `initialPointNostrSignalingFromConfig()` and
+  `initialPointNostrSignalingRegistryFromConfig()` no longer throw when the
+  config file is missing (it's auto-created with a new key pair).
+
 ## 0.3.0
 
 - `EventCallback` is now a class (not a typedef) with built-in deduplication

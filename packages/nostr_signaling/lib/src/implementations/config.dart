@@ -53,28 +53,28 @@ class NostrConfig{
     );
   }
 
-  static Future<NostrConfig?> load([String path = defaultConfigPath]) async {
-    try {
-      final file = File(path);
-      if (await file.exists()) {
-        final contents = await file.readAsString();
-        final json = jsonDecode(contents) as Map<String, dynamic>;
-        return NostrConfig.fromJson(json);
-      }
-    } catch (_) {}
-    return null;
+  static Future<NostrConfig> load([String path = defaultConfigPath]) async {
+    final file = File(path);
+    if (await file.exists()) {
+      final contents = await file.readAsString();
+      final json = jsonDecode(contents) as Map<String, dynamic>;
+      return NostrConfig.fromJson(json);
+    }
+    final config = NostrConfig(keyPair: NostrKeys.generate());
+    await config.save(path);
+    return config;
   }
 
-  static NostrConfig? loadSync([String path = defaultConfigPath]) {
-    try {
-      final file = File(path);
-      if (file.existsSync()) {
-        final contents = file.readAsStringSync();
-        final json = jsonDecode(contents) as Map<String, dynamic>;
-        return NostrConfig.fromJson(json);
-      }
-    } catch (_) {}
-    return null;
+  static NostrConfig loadSync([String path = defaultConfigPath]) {
+    final file = File(path);
+    if (file.existsSync()) {
+      final contents = file.readAsStringSync();
+      final json = jsonDecode(contents) as Map<String, dynamic>;
+      return NostrConfig.fromJson(json);
+    }
+    final config = NostrConfig(keyPair: NostrKeys.generate());
+    File(path).writeAsStringSync(jsonEncode(config.toJson()));
+    return config;
   }
 
   Future<void> save([String path = defaultConfigPath]) async {

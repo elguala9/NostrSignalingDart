@@ -2,7 +2,7 @@
 
 [![Dart SDK](https://img.shields.io/badge/dart-%3E%3D3.0.0-blue)](https://dart.dev)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![pub.dev](https://img.shields.io/badge/pub.dev-v0.3.0-orange)](https://pub.dev/packages/nostr_signaling)
+[![pub.dev](https://img.shields.io/badge/pub.dev-v0.4.0-orange)](https://pub.dev/packages/nostr_signaling)
 
 A Nostr-based signaling library for Dart. Exchange arbitrary binary data
 between Nostr peers, with optional **GZip compression** and **multi-relay
@@ -26,7 +26,7 @@ Add `nostr_signaling` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  nostr_signaling: ^0.3.0
+  nostr_signaling: ^0.4.0
 ```
 
 ## Usage
@@ -38,8 +38,7 @@ import 'package:nostr_signaling/nostr_signaling.dart';
 
 void main() async {
   final signaling = NostrSignalingFactory.create(
-    pubkey: 'your-public-key-hex',
-    privkey: 'your-private-key-hex',
+    keyPair: keyPair,
   );
 
   await signaling.connect();
@@ -59,9 +58,9 @@ void main() async {
 ### With GZip compression
 
 ```dart
-final signaling = NostrSignalingFactory.createWithGzipCompression(
-  pubkey: 'your-public-key-hex',
-  privkey: 'your-private-key-hex',
+final signaling = NostrSignalingFactory.create(
+  keyPair: keyPair,
+  useCompression: true,
 );
 
 await signaling.connect();
@@ -113,8 +112,7 @@ class MyCompressionEngine implements ICompressionEngine {
 }
 
 final signaling = NostrSignalingFactory.create(
-  pubkey: 'pubkey',
-  privkey: 'privkey',
+  keyPair: keyPair,
   useCompression: true,
   compressionEngine: MyCompressionEngine(),
 );
@@ -135,9 +133,8 @@ final callback = EventCallback(
 ### Multi-relay redundancy
 
 ```dart
-final signaling = NostrSignalingFactory.createWithMultipleRelays(
-  pubkey: 'pubkey',
-  privkey: 'privkey',
+final signaling = NostrSignalingFactory.create(
+  keyPair: keyPair,
   relayUrls: [
     'wss://relay.damus.io',
     'wss://nos.lol',
@@ -148,25 +145,42 @@ final signaling = NostrSignalingFactory.createWithMultipleRelays(
 
 ## Config file
 
-`NostrConfig` persists relay URLs and key pair to a JSON file on disk.
+`NostrConfig` persists signaling configuration to a JSON file on disk.
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `relays` | `List<String>` | 10 standard Nostr relays | Relay WebSocket URLs to publish/subscribe |
+| `keyPair` | `NostrKeyPair?` | `null` | Nostr key pair (private + public key hex) |
+| `collection` | `String` | `'nostr_signaling_seen_hashes'` | Collection name for event callback dedup |
+
+Example `nostr_config.json`:
+```json
+{
+  "relays": ["wss://relay.damus.io", "wss://nos.lol"],
+  "collection": "nostr_signaling_seen_hashes",
+  "privateKey": "hex-private-key",
+  "publicKey": "hex-public-key"
+}
+```
 
 ```dart
-// Save config
+// Create and save
 final config = NostrConfig(
   keyPair: myKeyPair,
   relays: ['wss://relay.damus.io'],
 );
 await config.save();                // → nostr_config.json
 
-// Load config
+// Load (auto-creates with new key pair if file missing)
 final loaded = await NostrConfig.load();      // async
 final loadedSync = NostrConfig.loadSync();    // sync
 ```
 
 ### Initial point from config (no required parameters)
 
-Loads key pair and relays from the config file automatically.
-Throws `StateError` if the file is missing or has no key pair.
+Loads `keyPair` and `relays` from the config file automatically.
+Creates the file with a fresh key pair if missing. Throws `StateError` if the
+file exists but has no key pair.
 
 ```dart
 // Singleton DI — no parameters needed
@@ -194,7 +208,7 @@ Both accept an optional `configPath` (default: `nostr_config.json`).
 | `EventCallback` | Callback wrapper with automatic hash-based deduplication |
 | `PayloadHashLength` | Payload hash length (32/64/256 bits) |
 | `NostrConfig` | Config file persistence (relays + key pair) |
-| `NostrSignalingFactory` | Factory with pre-configured factory methods |
+| `NostrSignalingFactory` | Factory with `create()` and `createWithCustomRelays()` |
 | `NostrKeys` / `NostrKeyPair` | Key generation, import, and validation |
 | `CompressedData` | Compression metadata (original size, ratio, timestamp) |
 | `NostrTestKeys` / `NostrTestRelays` | Test constants |

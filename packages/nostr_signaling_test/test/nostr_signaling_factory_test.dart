@@ -23,8 +23,6 @@ void main() {
       );
 
       expect(signaling, isNotNull);
-      // Il relay è privato, quindi non possiamo controllarlo direttamente
-      // ma sappiamo che è stato creato
     });
 
     test('create() accetta un relay URL custom', () {
@@ -35,18 +33,19 @@ void main() {
           privateKey: NostrTestKeys.testPrivateKey1,
           publicKey: NostrTestKeys.testPublicKey1,
         ),
-        relayUrl: customRelay,
+        relayUrls: [customRelay],
       );
 
       expect(signaling, isA<INostrSignaling>());
     });
 
-    test('createWithGzipCompression() abilita la compressione', () {
-      final signaling = NostrSignalingFactory.createWithGzipCompression(
+    test('create() con compressione abilitata', () {
+      final signaling = NostrSignalingFactory.create(
         keyPair: NostrKeyPair(
           privateKey: NostrTestKeys.testPrivateKey1,
           publicKey: NostrTestKeys.testPublicKey1,
         ),
+        useCompression: true,
       );
 
       expect(signaling, isA<INostrSignaling>());
@@ -67,8 +66,8 @@ void main() {
       expect(signaling, isA<INostrSignaling>());
     });
 
-    test('createWithMultipleRelays() accetta una lista di URL', () {
-      final signaling = NostrSignalingFactory.createWithMultipleRelays(
+    test('create() con multi-relay tramite URL', () {
+      final signaling = NostrSignalingFactory.create(
         keyPair: NostrKeyPair(
           privateKey: NostrTestKeys.testPrivateKey1,
           publicKey: NostrTestKeys.testPublicKey1,
@@ -79,13 +78,14 @@ void main() {
       expect(signaling, isA<INostrSignaling>());
     });
 
-    test('createWithGzipCompressionAndMultipleRelays() abilita compressione e multi-relay', () {
-      final signaling = NostrSignalingFactory.createWithGzipCompressionAndMultipleRelays(
+    test('create() con compressione e multi-relay', () {
+      final signaling = NostrSignalingFactory.create(
         keyPair: NostrKeyPair(
           privateKey: NostrTestKeys.testPrivateKey1,
           publicKey: NostrTestKeys.testPublicKey1,
         ),
         relayUrls: [NostrStandardRelays.nos, NostrStandardRelays.damus],
+        useCompression: true,
       );
 
       expect(signaling, isA<INostrSignaling>());

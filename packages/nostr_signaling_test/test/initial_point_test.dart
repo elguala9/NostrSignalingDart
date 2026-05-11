@@ -551,13 +551,15 @@ void main() {
       expect(instance, isA<INostrSignaling>());
     });
 
-    test('throws StateError when config file does not exist', () async {
+    test('creates config file if it does not exist', () async {
       final path = '${Directory.systemTemp.path}\\nostr_nonexistent_$counter.json';
+      addTearDown(() {
+        if (File(path).existsSync()) File(path).deleteSync();
+      });
 
-      await expectLater(
-        () => initialPointNostrSignalingFromConfig(configPath: path),
-        throwsA(isA<StateError>()),
-      );
+      await initialPointNostrSignalingFromConfig(configPath: path);
+
+      expect(SingletonDIAccess.exists<INostrSignaling>(), isTrue);
     });
 
     test('throws StateError when config has no keyPair', () async {
@@ -663,14 +665,16 @@ void main() {
       expect(instance, isA<INostrSignaling>());
     });
 
-    test('throws StateError when config file does not exist', () {
+    test('creates config file if it does not exist', () {
       final path =
           '${Directory.systemTemp.path}\\nostr_nonexistent_reg_$counter.json';
+      addTearDown(() {
+        if (File(path).existsSync()) File(path).deleteSync();
+      });
 
-      expect(
-        () => initialPointNostrSignalingRegistryFromConfig(configPath: path),
-        throwsA(isA<StateError>()),
-      );
+      initialPointNostrSignalingRegistryFromConfig(configPath: path);
+
+      expect(RegistryAccess.contains<INostrSignaling>('default'), isTrue);
     });
 
     test('throws StateError when config has no keyPair', () async {

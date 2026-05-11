@@ -13,7 +13,7 @@ void main() async {
       privateKey: NostrTestKeys.testPrivateKey1,
       publicKey: NostrTestKeys.testPublicKey1,
     ),
-    relayUrl: NostrStandardRelays.damus,
+    relayUrls: [NostrStandardRelays.damus],
   );
 
   await signaling.connect();
@@ -39,12 +39,13 @@ void main() async {
   print('=== Example 2: With GZip Compression ===');
 
   final signalingWithCompression =
-      NostrSignalingFactory.createWithGzipCompression(
+      NostrSignalingFactory.create(
     keyPair: NostrKeyPair(
       privateKey: NostrTestKeys.testPrivateKey2,
       publicKey: NostrTestKeys.testPublicKey2,
     ),
-    relayUrl: NostrStandardRelays.nos,
+    relayUrls: [NostrStandardRelays.nos],
+    useCompression: true,
   );
 
   await signalingWithCompression.connect();
@@ -81,7 +82,7 @@ void main() async {
   // ====================================================================
   print('=== Example 4: Multi-Relay Redundancy ===');
 
-  final multiRelay = NostrSignalingFactory.createWithMultipleRelays(
+  final multiRelay = NostrSignalingFactory.create(
     keyPair: NostrKeyPair(
       privateKey: NostrTestKeys.testPrivateKey3,
       publicKey: NostrTestKeys.testPublicKey3,
