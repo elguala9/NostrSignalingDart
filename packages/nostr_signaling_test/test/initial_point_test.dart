@@ -18,6 +18,8 @@ void main() {
   tearDown(() {
     SingletonManager.instance.destroyAll();
     RegistryAccess.destroyAll();
+    final configFile = File(NostrConfig.defaultConfigPath);
+    if (configFile.existsSync()) configFile.deleteSync();
   });
 
   group('initialPointNostrSignaling (Singleton DI)', () {
@@ -200,6 +202,21 @@ void main() {
       );
 
       expect(SingletonDIAccess.exists<INostrSignaling>(), isTrue);
+    });
+
+    test('crea nostr_config.json con keyPair valido e lo ricarica', () async {
+      final configPath = NostrConfig.defaultConfigPath;
+      final configFile = File(configPath);
+
+      await initialPointNostrSignalingDefault(keyPair: testKeyPair1);
+
+      expect(configFile.existsSync(), isTrue);
+
+      final reloaded = await NostrConfig.load(configPath);
+      expect(reloaded.relays, isNotEmpty);
+      expect(reloaded.keyPair, isNotNull);
+      expect(reloaded.keyPair!.isValid(), isTrue);
+      expect(reloaded.collection, defaultEventCallbackCollection);
     });
   });
 
@@ -431,6 +448,20 @@ void main() {
       );
 
       expect(RegistryAccess.contains<INostrSignaling>('default'), isTrue);
+    });
+
+    test('crea nostr_config.json con keyPair valido e lo ricarica (sync)', () {
+      final configPath = NostrConfig.defaultConfigPath;
+      final configFile = File(configPath);
+
+      initialPointNostrSignalingRegistryDefault(keyPair: testKeyPair1);
+
+      expect(configFile.existsSync(), isTrue);
+
+      final reloaded = NostrConfig.loadSync(configPath);
+      expect(reloaded.relays, isNotEmpty);
+      expect(reloaded.keyPair, isNotNull);
+      expect(reloaded.keyPair!.isValid(), isTrue);
     });
   });
 
